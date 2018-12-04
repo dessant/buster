@@ -1,0 +1,83 @@
+{
+  "extensionName": {
+    "message": "Buster: Captcha Solver for Humans",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Save time by asking Buster to solve captchas for you.",
+    "description": "Description of the extension."
+  },
+
+  "optionSectionTitle_services": {
+    "message": "Services",
+    "description": "Title of the options section."
+  },
+
+  "optionTitle_speechService": {
+    "message": "Speech service",
+    "description": "Title of the option."
+  },
+
+  "optionValue_speechService_googleSpeechApiDemo": {
+    "message": "Google Cloud Speech API (demo)",
+    "description": "Value of the option."
+  },
+
+  "optionValue_speechService_googleSpeechApi": {
+    "message": "Google Cloud Speech API",
+    "description": "Value of the option."
+  },
+
+  "inputLabel_apiKey": {
+    "message": "API key",
+    "description": "Placeholder of the input."
+  },
+
+  "buttonText_solve": {
+    "message": "Solve the challenge",
+    "description": "Text of the button."
+  },
+
+  "pageTitle": {
+    "message": "$PAGETITLE$ - $EXTENSIONNAME$",
+    "description": "Title of the page.",
+    "placeholders": {
+      "pageTitle": {
+        "content": "$1",
+        "example": "Options"
+      },
+      "extensionName": {
+        "content": "$2",
+        "example": "Extension Name"
+      }
+    }
+  },
+
+  "pageTitle_options": {
+    "message": "Options",
+    "description": "Title of the page."
+  },
+
+  "pageTitle_contribute": {
+    "message": "Contribute",
+    "description": "Title of the page."
+  },
+
+  "error_captchaNotSolved": {
+    "message":
+      "Captcha could not be solved. Try again after requesting a new challenge.",
+    "description": "Error message."
+  },
+
+  "error_missingApiKey": {
+    "message":
+      "API key missing. Visit the options page to configure the service.",
+    "description": "Error message."
+  },
+
+  "error_internalError": {
+    "message": "Something went wrong.",
+    "description": "Error message."
+  }
+}

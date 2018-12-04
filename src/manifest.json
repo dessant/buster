@@ -1,0 +1,62 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "version": "0.1.0",
+  "author": "Armin Sebastian",
+  "homepage_url": "https://github.com/dessant/buster",
+  "default_locale": "en",
+
+  "applications": {
+    "gecko": {
+      "id": "{e58d3966-3d76-4cd9-8552-1582fbc800c1}",
+      "strict_min_version": "52.0"
+    }
+  },
+  "minimum_chrome_version": "55.0",
+  "minimum_opera_version": "42.0",
+
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "notifications",
+    "<all_urls>"
+  ],
+
+  "content_security_policy":
+    "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src *; object-src 'none';",
+
+  "icons": {
+    "16": "src/icons/app/icon-16.png",
+    "19": "src/icons/app/icon-19.png",
+    "24": "src/icons/app/icon-24.png",
+    "32": "src/icons/app/icon-32.png",
+    "38": "src/icons/app/icon-38.png",
+    "48": "src/icons/app/icon-48.png",
+    "64": "src/icons/app/icon-64.png",
+    "96": "src/icons/app/icon-96.png",
+    "128": "src/icons/app/icon-128.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/recaptcha/api2/bframe*"],
+      "all_frames": true,
+      "run_at": "document_idle",
+      "css": ["src/solve/style.css"],
+      "js": ["src/manifest.js", "src/solve/script.js"]
+    }
+  ],
+
+  "options_ui": {
+    "page": "src/options/index.html",
+    "browser_style": false,
+    "chrome_style": false,
+    "open_in_tab": true
+  },
+
+  "background": {
+    "page": "src/background/index.html"
+  }
+}

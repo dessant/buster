@@ -1,0 +1,17 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "exclude": ["transform-regenerator"],
+        "modules": false
+      }
+    ]
+  ],
+  "env": {
+    "production": {
+      "plugins": ["lodash"]
+    }
+  }
+}
+
