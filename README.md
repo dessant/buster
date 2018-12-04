@@ -7,7 +7,7 @@
     <img src="https://i.imgur.com/q6E8SOD.png" alt="Chrome Web Store"></a>
   <a href="https://addons.mozilla.org/en-US/firefox/addon/buster-captcha-solver/">
     <img src="https://i.imgur.com/dvof8rG.png" alt="Firefox add-ons"></a>
-  <a href="">
+  <a href="https://addons.opera.com/en/extensions/details/buster-captcha-solver-for-humans/">
     <img src="https://i.imgur.com/wK10qEV.png" alt="Opera add-ons"></a>
   </br></br>
 </p>
