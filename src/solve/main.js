@@ -49,12 +49,12 @@ async function prepareAudio(audio) {
   const data = await ctx.decodeAudioData(audio);
   await ctx.close();
 
-  const offlineCtx = new OfflineAudioContext({
+  const offlineCtx = new OfflineAudioContext(
     // force mono output
-    numberOfChannels: 1,
-    length: 16000 * data.duration,
-    sampleRate: 16000
-  });
+    1,
+    16000 * data.duration,
+    16000
+  );
   const source = offlineCtx.createBufferSource();
   source.buffer = data;
   source.connect(offlineCtx.destination);

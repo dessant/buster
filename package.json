@@ -31,7 +31,7 @@
   },
   "browserslist": [
     "Chrome >= 55",
-    "Firefox >= 52",
+    "Firefox >= 53",
     "FirefoxAndroid >= 57",
     "Opera >= 42"
   ],
