@@ -29,6 +29,16 @@
     "description": "Value of the option."
   },
 
+  "optionValue_speechService_ibmSpeechApi": {
+    "message": "IBM Speech to Text",
+    "description": "Value of the option."
+  },
+
+  "inputLabel_url": {
+    "message": "URL",
+    "description": "Placeholder of the input."
+  },
+
   "inputLabel_apiKey": {
     "message": "API key",
     "description": "Placeholder of the input."
@@ -67,6 +77,12 @@
   "error_captchaNotSolved": {
     "message":
       "Captcha could not be solved. Try again after requesting a new challenge.",
+    "description": "Error message."
+  },
+
+  "error_missingApiUrl": {
+    "message":
+      "API URL missing. Visit the options page to configure the service.",
     "description": "Error message."
   },
 

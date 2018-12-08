@@ -1,6 +1,11 @@
 import browser from 'webextension-polyfill';
 
-const optionKeys = ['speechService', 'googleSpeechApiKey'];
+const optionKeys = [
+  'speechService',
+  'googleSpeechApiKey',
+  'ibmSpeechApiUrl',
+  'ibmSpeechApiKey'
+];
 
 // https://developers.google.com/recaptcha/docs/language
 // https://cloud.google.com/speech-to-text/docs/languages
@@ -77,4 +82,29 @@ const captchaGoogleSpeechApiLangCodes = {
   zu: 'zu-ZA'
 };
 
-export {optionKeys, captchaGoogleSpeechApiLangCodes};
+// https://cloud.ibm.com/apidocs/speech-to-text#recognize-audio
+const captchaIbmSpeechApiLangCodes = {
+  ar: 'ar-AR_BroadbandModel',
+  'zh-CN': 'zh-CN_BroadbandModel',
+  'zh-TW': 'zh-CN_BroadbandModel',
+  'en-GB': 'en-GB_BroadbandModel',
+  en: 'en-US_BroadbandModel',
+  fr: 'fr-FR_BroadbandModel',
+  'fr-CA': 'fr-FR_BroadbandModel',
+  de: 'de-DE_BroadbandModel',
+  'de-AT': 'de-DE_BroadbandModel',
+  'de-CH': 'de-DE_BroadbandModel',
+  ja: 'ja-JP_BroadbandModel',
+  ko: 'ko-KR_BroadbandModel',
+  pt: 'pt-BR_BroadbandModel',
+  'pt-BR': 'pt-BR_BroadbandModel',
+  'pt-PT': 'pt-BR_BroadbandModel',
+  es: 'es-ES_BroadbandModel',
+  'es-419': 'es-ES_BroadbandModel'
+};
+
+export {
+  optionKeys,
+  captchaGoogleSpeechApiLangCodes,
+  captchaIbmSpeechApiLangCodes
+};

@@ -3,7 +3,10 @@ import audioBufferToWav from 'audiobuffer-to-wav';
 
 import storage from 'storage/storage';
 import {getText, waitForElement, arrayBufferToBase64} from 'utils/common';
-import {captchaGoogleSpeechApiLangCodes} from 'utils/data';
+import {
+  captchaGoogleSpeechApiLangCodes,
+  captchaIbmSpeechApiLangCodes
+} from 'utils/data';
 
 let solverRunning = false;
 
@@ -61,9 +64,7 @@ async function prepareAudio(audio) {
   // discard 1 second noise from beginning/end
   source.start(0, 1, data.duration - 2);
 
-  return arrayBufferToBase64(
-    audioBufferToWav(await offlineCtx.startRendering())
-  );
+  return audioBufferToWav(await offlineCtx.startRendering());
 }
 
 function dispatchEnter(node) {
@@ -116,6 +117,7 @@ async function solve() {
     audioUrl = result.audioUrl;
   }
 
+  const lang = document.documentElement.lang;
   const audioRsp = await fetch(audioUrl, {referrer: ''});
   const audioContent = await prepareAudio(await audioRsp.arrayBuffer());
 
@@ -143,13 +145,11 @@ async function solve() {
 
     const data = {
       audio: {
-        content: audioContent
+        content: arrayBufferToBase64(audioContent)
       },
       config: {
         encoding: 'LINEAR16',
-        languageCode:
-          captchaGoogleSpeechApiLangCodes[document.documentElement.lang] ||
-          'en-US',
+        languageCode: captchaGoogleSpeechApiLangCodes[lang] || 'en-US',
         model: 'default',
         sampleRateHertz: 16000
       }
@@ -161,9 +161,54 @@ async function solve() {
       body: JSON.stringify(data)
     });
 
+    if (rsp.status !== 200) {
+      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+    }
+
     const results = (await rsp.json()).results;
     if (results) {
-      solution = results[0].alternatives[0].transcript;
+      solution = results[0].alternatives[0].transcript.trim();
+    }
+  }
+
+  if (speechService === 'ibmSpeechApi') {
+    const {
+      ibmSpeechApiUrl: apiUrl,
+      ibmSpeechApiKey: apiKey
+    } = await storage.get(['ibmSpeechApiUrl', 'ibmSpeechApiKey'], 'sync');
+    if (!apiUrl) {
+      browser.runtime.sendMessage({
+        id: 'notification',
+        messageId: 'error_missingApiUrl'
+      });
+      return;
+    }
+    if (!apiKey) {
+      browser.runtime.sendMessage({
+        id: 'notification',
+        messageId: 'error_missingApiKey'
+      });
+      return;
+    }
+    const model = captchaIbmSpeechApiLangCodes[lang] || 'en-US_BroadbandModel';
+
+    const rsp = await fetch(`${apiUrl}?model=${model}&profanity_filter=false`, {
+      referrer: '',
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey)
+      },
+      body: new Blob([audioContent], {type: 'audio/wav'})
+    });
+
+    if (rsp.status !== 200) {
+      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+    }
+
+    const results = (await rsp.json()).results;
+    if (results && results.length) {
+      solution = results[0].alternatives[0].transcript.trim();
     }
   }
 
