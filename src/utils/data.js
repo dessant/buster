@@ -4,7 +4,9 @@ const optionKeys = [
   'speechService',
   'googleSpeechApiKey',
   'ibmSpeechApiLoc',
-  'ibmSpeechApiKey'
+  'ibmSpeechApiKey',
+  'microsoftSpeechApiLoc',
+  'microsoftSpeechApiKey'
 ];
 
 // https://developers.google.com/recaptcha/docs/language
@@ -103,6 +105,39 @@ const captchaIbmSpeechApiLangCodes = {
   'es-419': 'es-ES_BroadbandModel'
 };
 
+// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#speech-to-text
+const captchaMicrosoftSpeechApiLangCodes = {
+  ar: 'ar-EG',
+  ca: 'ca-ES',
+  'zh-HK': 'zh-HK',
+  'zh-CN': 'zh-CN',
+  'zh-TW': 'zh-TW',
+  da: 'da-DK',
+  nl: 'nl-NL',
+  'en-GB': 'en-GB',
+  en: 'en-US',
+  fi: 'fi-FI',
+  fr: 'fr-FR',
+  'fr-CA': 'fr-CA',
+  de: 'de-DE',
+  'de-AT': 'de-DE',
+  'de-CH': 'de-DE',
+  hi: 'hi-IN',
+  it: 'it-IT',
+  ja: 'ja-JP',
+  ko: 'ko-KR',
+  no: 'nb-NO',
+  pl: 'pl-PL',
+  pt: 'pt-PT',
+  'pt-BR': 'pt-BR',
+  'pt-PT': 'pt-PT',
+  ru: 'ru-RU',
+  es: 'es-ES',
+  'es-419': 'es-MX',
+  sv: 'sv-SE',
+  th: 'th-TH'
+};
+
 // https://cloud.ibm.com/apidocs/speech-to-text#service-endpoint
 const ibmSpeechApiUrls = {
   frankfurt:
@@ -116,9 +151,31 @@ const ibmSpeechApiUrls = {
     'https://gateway-tok.watsonplatform.net/speech-to-text/api/v1/recognize'
 };
 
+// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-apis#regions-and-endpoints
+const microsoftSpeechApiUrls = {
+  eastUs:
+    'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  eastUs2:
+    'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  westUs:
+    'https://westus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  westUs2:
+    'https://westus2.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  eastAsia:
+    'https://eastasia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  southeastAsia:
+    'https://southeastasia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  westEu:
+    'https://westeurope.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  northEu:
+    'https://northeurope.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1'
+};
+
 export {
   optionKeys,
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
-  ibmSpeechApiUrls
+  captchaMicrosoftSpeechApiLangCodes,
+  ibmSpeechApiUrls,
+  microsoftSpeechApiUrls
 };

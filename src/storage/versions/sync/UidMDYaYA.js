@@ -1,16 +1,16 @@
 import browser from 'webextension-polyfill';
 
-const message = 'Add IBM Watson Speech to Text API';
+const message = 'Add Microsoft Azure Speech to Text API';
 
-const revision = 'ONiJBs00o';
-const downRevision = 'UoT3kGyBH';
+const revision = 'UidMDYaYA';
+const downRevision = 'ONiJBs00o';
 
 const storage = browser.storage.sync;
 
 async function upgrade() {
   const changes = {
-    ibmSpeechApiLoc: 'frankfurt', // 'frankfurt', 'dallas', 'washington', 'sydney', 'tokyo'
-    ibmSpeechApiKey: ''
+    microsoftSpeechApiLoc: 'eastUs', // 'eastUs', 'eastUs2', 'westUs', 'westUs2', 'eastAsia', 'southeastAsia', 'westEu', 'northEu'
+    microsoftSpeechApiKey: ''
   };
 
   changes.storageVersion = revision;
@@ -19,7 +19,7 @@ async function upgrade() {
 
 async function downgrade() {
   const changes = {};
-  await storage.remove(['ibmSpeechApiLoc', 'ibmSpeechApiKey']);
+  await storage.remove(['microsoftSpeechApiLoc', 'microsoftSpeechApiKey']);
 
   changes.storageVersion = downRevision;
   return storage.set(changes);

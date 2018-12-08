@@ -6,7 +6,9 @@ import {getText, waitForElement, arrayBufferToBase64} from 'utils/common';
 import {
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
-  ibmSpeechApiUrls
+  captchaMicrosoftSpeechApiLangCodes,
+  ibmSpeechApiUrls,
+  microsoftSpeechApiUrls
 } from 'utils/data';
 
 let solverWorking = false;
@@ -199,16 +201,56 @@ async function solve() {
       });
       return;
     }
+    const apiUrl = ibmSpeechApiUrls[apiLoc];
     const model = captchaIbmSpeechApiLangCodes[lang] || 'en-US_BroadbandModel';
 
+    const rsp = await fetch(`${apiUrl}?model=${model}&profanity_filter=false`, {
+      referrer: '',
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey)
+      },
+      body: new Blob([audioContent], {type: 'audio/wav'})
+    });
+
+    if (rsp.status !== 200) {
+      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+    }
+
+    const results = (await rsp.json()).results;
+    if (results && results.length) {
+      solution = results[0].alternatives[0].transcript.trim();
+    }
+  }
+
+  if (speechService === 'microsoftSpeechApi') {
+    const {
+      microsoftSpeechApiLoc: apiLoc,
+      microsoftSpeechApiKey: apiKey
+    } = await storage.get(
+      ['microsoftSpeechApiLoc', 'microsoftSpeechApiKey'],
+      'sync'
+    );
+    if (!apiKey) {
+      browser.runtime.sendMessage({
+        id: 'notification',
+        messageId: 'error_missingApiKey'
+      });
+      return;
+    }
+    const apiUrl = microsoftSpeechApiUrls[apiLoc];
+    const language = captchaMicrosoftSpeechApiLangCodes[lang] || 'en-US';
+
     const rsp = await fetch(
-      `${ibmSpeechApiUrls[apiLoc]}?model=${model}&profanity_filter=false`,
+      `${apiUrl}?language=${language}&format=detailed&profanity=raw`,
       {
         referrer: '',
         mode: 'cors',
         method: 'POST',
         headers: {
-          Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey)
+          'Ocp-Apim-Subscription-Key': apiKey,
+          'Content-type': 'audio/wav; codec=audio/pcm; samplerate=16000'
         },
         body: new Blob([audioContent], {type: 'audio/wav'})
       }
@@ -218,9 +260,9 @@ async function solve() {
       throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
     }
 
-    const results = (await rsp.json()).results;
-    if (results && results.length) {
-      solution = results[0].alternatives[0].transcript.trim();
+    const results = (await rsp.json()).NBest;
+    if (results) {
+      solution = results[0].Lexical.trim();
     }
   }
 

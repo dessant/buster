@@ -30,6 +30,19 @@
             :label="getText('inputLabel_apiKey')">
         </v-textfield>
       </div>
+      <div class="option select"
+          v-if="options.speechService === 'microsoftSpeechApi'">
+        <v-select :label="getText('optionTitle_microsoftSpeechApiLoc')"
+            v-model="options.microsoftSpeechApiLoc"
+            :options="selectOptions.microsoftSpeechApiLoc">
+        </v-select>
+      </div>
+      <div class="option text-field"
+          v-if="options.speechService === 'microsoftSpeechApi'">
+        <v-textfield v-model="options.microsoftSpeechApiKey"
+            :label="getText('inputLabel_apiKey')">
+        </v-textfield>
+      </div>
     </div>
   </div>
 </div>
@@ -58,7 +71,8 @@ export default {
         speechService: [
           'googleSpeechApiDemo',
           'googleSpeechApi',
-          'ibmSpeechApi'
+          'ibmSpeechApi',
+          'microsoftSpeechApi'
         ],
         ibmSpeechApiLoc: [
           'frankfurt',
@@ -66,6 +80,16 @@ export default {
           'washington',
           'sydney',
           'tokyo'
+        ],
+        microsoftSpeechApiLoc: [
+          'eastUs',
+          'eastUs2',
+          'westUs',
+          'westUs2',
+          'eastAsia',
+          'southeastAsia',
+          'westEu',
+          'northEu'
         ]
       }),
 
@@ -73,7 +97,9 @@ export default {
         speechService: '',
         googleSpeechApiKey: '',
         ibmSpeechApiLoc: '',
-        ibmSpeechApiKey: ''
+        ibmSpeechApiKey: '',
+        microsoftSpeechApiLoc: '',
+        microsoftSpeechApiKey: ''
       }
     };
   },

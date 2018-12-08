@@ -30,7 +30,12 @@
   },
 
   "optionValue_speechService_ibmSpeechApi": {
-    "message": "IBM Speech to Text",
+    "message": "IBM Watson Speech to Text API",
+    "description": "Value of the option."
+  },
+
+  "optionValue_speechService_microsoftSpeechApi": {
+    "message": "Microsoft Azure Speech to Text API",
     "description": "Value of the option."
   },
 
@@ -61,6 +66,51 @@
 
   "optionValue_ibmSpeechApiLoc_tokyo": {
     "message": "Tokyo",
+    "description": "Value of the option."
+  },
+
+  "optionTitle_microsoftSpeechApiLoc": {
+    "message": "API location",
+    "description": "Title of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_eastUs": {
+    "message": "East US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_eastUs2": {
+    "message": "East US 2",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westUs": {
+    "message": "West US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westUs2": {
+    "message": "West US 2",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_eastAsia": {
+    "message": "East Asia",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_southeastAsia": {
+    "message": "Southeast Asia",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westEu": {
+    "message": "West Europe",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_northEu": {
+    "message": "North Europe",
     "description": "Value of the option."
   },
 
