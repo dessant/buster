@@ -157,7 +157,7 @@ gulp.task('license', function() {
   }
 
   const notice = dedent`
-    Buster: Captcha solver for humans
+    Buster: Captcha Solver for Humans
     Copyright (c) ${year} Armin Sebastian
 
     This software is released under the terms of the GNU General Public License v3.0.
