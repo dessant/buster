@@ -5,7 +5,8 @@ import storage from 'storage/storage';
 import {getText, waitForElement, arrayBufferToBase64} from 'utils/common';
 import {
   captchaGoogleSpeechApiLangCodes,
-  captchaIbmSpeechApiLangCodes
+  captchaIbmSpeechApiLangCodes,
+  ibmSpeechApiUrls
 } from 'utils/data';
 
 let solverWorking = false;
@@ -188,16 +189,9 @@ async function solve() {
 
   if (speechService === 'ibmSpeechApi') {
     const {
-      ibmSpeechApiUrl: apiUrl,
+      ibmSpeechApiLoc: apiLoc,
       ibmSpeechApiKey: apiKey
-    } = await storage.get(['ibmSpeechApiUrl', 'ibmSpeechApiKey'], 'sync');
-    if (!apiUrl) {
-      browser.runtime.sendMessage({
-        id: 'notification',
-        messageId: 'error_missingApiUrl'
-      });
-      return;
-    }
+    } = await storage.get(['ibmSpeechApiLoc', 'ibmSpeechApiKey'], 'sync');
     if (!apiKey) {
       browser.runtime.sendMessage({
         id: 'notification',
@@ -207,15 +201,18 @@ async function solve() {
     }
     const model = captchaIbmSpeechApiLangCodes[lang] || 'en-US_BroadbandModel';
 
-    const rsp = await fetch(`${apiUrl}?model=${model}&profanity_filter=false`, {
-      referrer: '',
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey)
-      },
-      body: new Blob([audioContent], {type: 'audio/wav'})
-    });
+    const rsp = await fetch(
+      `${ibmSpeechApiUrls[apiLoc]}?model=${model}&profanity_filter=false`,
+      {
+        referrer: '',
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey)
+        },
+        body: new Blob([audioContent], {type: 'audio/wav'})
+      }
+    );
 
     if (rsp.status !== 200) {
       throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);

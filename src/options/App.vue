@@ -17,11 +17,12 @@
             :label="getText('inputLabel_apiKey')">
         </v-textfield>
       </div>
-      <div class="option text-field"
+      <div class="option select"
           v-if="options.speechService === 'ibmSpeechApi'">
-        <v-textfield v-model="options.ibmSpeechApiUrl"
-            :label="getText('inputLabel_url')">
-        </v-textfield>
+        <v-select :label="getText('optionTitle_ibmSpeechApiLoc')"
+            v-model="options.ibmSpeechApiLoc"
+            :options="selectOptions.ibmSpeechApiLoc">
+        </v-select>
       </div>
       <div class="option text-field"
           v-if="options.speechService === 'ibmSpeechApi'">
@@ -58,13 +59,20 @@ export default {
           'googleSpeechApiDemo',
           'googleSpeechApi',
           'ibmSpeechApi'
+        ],
+        ibmSpeechApiLoc: [
+          'frankfurt',
+          'dallas',
+          'washington',
+          'sydney',
+          'tokyo'
         ]
       }),
 
       options: {
         speechService: '',
         googleSpeechApiKey: '',
-        ibmSpeechApiUrl: '',
+        ibmSpeechApiLoc: '',
         ibmSpeechApiKey: ''
       }
     };
@@ -80,11 +88,7 @@ export default {
     for (const option of Object.keys(this.options)) {
       this.options[option] = options[option];
       this.$watch(`options.${option}`, async function(value) {
-        if (
-          ['googleSpeechApiKey', 'ibmSpeechApiUrl', 'ibmSpeechApiKey'].includes(
-            option
-          )
-        ) {
+        if (['googleSpeechApiKey', 'ibmSpeechApiKey'].includes(option)) {
           value = value.trim();
         }
         await storage.set({[option]: value}, 'sync');

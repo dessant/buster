@@ -9,7 +9,7 @@ const storage = browser.storage.sync;
 
 async function upgrade() {
   const changes = {
-    ibmSpeechApiUrl: '',
+    ibmSpeechApiLoc: 'frankfurt', // frankfurt, dallas, washington, sydney, tokyo
     ibmSpeechApiKey: ''
   };
 
@@ -19,7 +19,7 @@ async function upgrade() {
 
 async function downgrade() {
   const changes = {};
-  await storage.remove(['ibmSpeechApiUrl', 'ibmSpeechApiKey']);
+  await storage.remove(['ibmSpeechApiLoc', 'ibmSpeechApiKey']);
 
   changes.storageVersion = downRevision;
   return storage.set(changes);

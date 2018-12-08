@@ -3,7 +3,7 @@ import browser from 'webextension-polyfill';
 const optionKeys = [
   'speechService',
   'googleSpeechApiKey',
-  'ibmSpeechApiUrl',
+  'ibmSpeechApiLoc',
   'ibmSpeechApiKey'
 ];
 
@@ -103,8 +103,22 @@ const captchaIbmSpeechApiLangCodes = {
   'es-419': 'es-ES_BroadbandModel'
 };
 
+// https://cloud.ibm.com/apidocs/speech-to-text#service-endpoint
+const ibmSpeechApiUrls = {
+  frankfurt:
+    'https://stream-fra.watsonplatform.net/speech-to-text/api/v1/recognize',
+  dallas: 'https://stream.watsonplatform.net/speech-to-text/api/v1/recognize',
+  washington:
+    'https://gateway-wdc.watsonplatform.net/speech-to-text/api/v1/recognize',
+  sydney:
+    'https://gateway-syd.watsonplatform.net/speech-to-text/api/v1/recognize',
+  tokyo:
+    'https://gateway-tok.watsonplatform.net/speech-to-text/api/v1/recognize'
+};
+
 export {
   optionKeys,
   captchaGoogleSpeechApiLangCodes,
-  captchaIbmSpeechApiLangCodes
+  captchaIbmSpeechApiLangCodes,
+  ibmSpeechApiUrls
 };
