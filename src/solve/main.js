@@ -8,7 +8,19 @@ import {
   captchaIbmSpeechApiLangCodes
 } from 'utils/data';
 
-let solverRunning = false;
+let solverWorking = false;
+
+function setSolverState({working = true} = {}) {
+  solverWorking = working;
+  const button = document.querySelector('#buster-button');
+  if (button) {
+    if (working) {
+      button.classList.add('working');
+    } else {
+      button.classList.remove('working');
+    }
+  }
+}
 
 function setButton() {
   const infoButton = document.body.querySelector(
@@ -25,6 +37,9 @@ function setButton() {
     button.setAttribute('tabindex', '0');
     button.setAttribute('title', getText('buttonText_solve'));
     button.id = 'buster-button';
+    if (solverWorking) {
+      button.classList.add('working');
+    }
 
     button.addEventListener('click', start);
     button.addEventListener('keydown', e => {
@@ -230,17 +245,17 @@ function start(e) {
   e.preventDefault();
   e.stopImmediatePropagation();
 
-  if (solverRunning) {
+  if (solverWorking) {
     return;
   }
-  solverRunning = true;
+  setSolverState({working: true});
 
   solve()
     .then(() => {
-      solverRunning = false;
+      setSolverState({working: false});
     })
     .catch(err => {
-      solverRunning = false;
+      setSolverState({working: false});
       console.log(err.toString());
       browser.runtime.sendMessage({
         id: 'notification',
