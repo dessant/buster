@@ -187,9 +187,7 @@ async function solve() {
     if (results) {
       solution = results[0].alternatives[0].transcript.trim();
     }
-  }
-
-  if (speechService === 'ibmSpeechApi') {
+  } else if (speechService === 'ibmSpeechApi') {
     const {
       ibmSpeechApiLoc: apiLoc,
       ibmSpeechApiKey: apiKey
@@ -222,9 +220,7 @@ async function solve() {
     if (results && results.length) {
       solution = results[0].alternatives[0].transcript.trim();
     }
-  }
-
-  if (speechService === 'microsoftSpeechApi') {
+  } else if (speechService === 'microsoftSpeechApi') {
     const {
       microsoftSpeechApiLoc: apiLoc,
       microsoftSpeechApiKey: apiKey
