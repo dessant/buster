@@ -4,7 +4,7 @@
 <p align="center">
   </br></br>
   <a href="https://chrome.google.com/webstore/detail/buster-captcha-solver-for/mpbjkejclgfgadiemmefgebjfooflfhl">
-    <img src="https://i.imgur.com/q6E8SOD.png" alt="Chrome Web Store"></a>
+    <img src="https://i.imgur.com/B0i5sn3.png" alt="Chrome Web Store"></a>
   <a href="https://addons.mozilla.org/en-US/firefox/addon/buster-captcha-solver/">
     <img src="https://i.imgur.com/dvof8rG.png" alt="Firefox add-ons"></a>
   <a href="https://addons.opera.com/en/extensions/details/buster-captcha-solver-for-humans/">
