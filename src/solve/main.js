@@ -145,7 +145,7 @@ async function solve() {
     let apiUrl;
     if (speechService === 'googleSpeechApiDemo') {
       apiUrl =
-        'https://cxl-services.appspot.com/proxy?url=https://speech.googleapis.com/v1/speech:recognize';
+        'https://cxl-services.appspot.com/proxy?url=https://speech.googleapis.com/v1p1beta1/speech:recognize';
     } else {
       const {googleSpeechApiKey: apiKey} = await storage.get(
         'googleSpeechApiKey',
@@ -158,8 +158,9 @@ async function solve() {
         });
         return;
       }
-      apiUrl = `https://speech.googleapis.com/v1/speech:recognize?key=${apiKey}`;
+      apiUrl = `https://speech.googleapis.com/v1p1beta1/speech:recognize?key=${apiKey}`;
     }
+    const language = captchaGoogleSpeechApiLangCodes[lang] || 'en-US';
 
     const data = {
       audio: {
@@ -167,11 +168,15 @@ async function solve() {
       },
       config: {
         encoding: 'LINEAR16',
-        languageCode: captchaGoogleSpeechApiLangCodes[lang] || 'en-US',
+        languageCode: language,
         model: 'default',
         sampleRateHertz: 16000
       }
     };
+    if (!['en-US', 'en-GB'].includes(language)) {
+      data.config.alternativeLanguageCodes = ['en-US'];
+    }
+
     const rsp = await fetch(apiUrl, {
       referrer: '',
       mode: 'cors',
