@@ -4876,9 +4876,9 @@ express@^4.16.2:
     utils-merge "1.0.1"
     vary "~1.1.2"
 
-ext-components@dessant/ext-components#^0.1.5:
-  version "0.1.5"
-  resolved "https://codeload.github.com/dessant/ext-components/tar.gz/a6f4128f032248efbc183fc8af822456f9f91898"
+ext-components@dessant/ext-components#^0.1.6:
+  version "0.1.6"
+  resolved "https://codeload.github.com/dessant/ext-components/tar.gz/b16ebbd8928abe5bf10df8a6fb9b196e64c3ffbe"
   dependencies:
     "@material/button" "^0.31.0"
     "@material/checkbox" "^0.31.0"
@@ -4894,16 +4894,16 @@ ext-components@dessant/ext-components#^0.1.5:
     typeface-roboto "^0.0.54"
     vue "^2.5.17"
 
-ext-contribute@dessant/ext-contribute#^0.1.5:
-  version "0.1.5"
-  resolved "https://codeload.github.com/dessant/ext-contribute/tar.gz/2957d7e7227554838a9015ee4c5f8382679db1af"
+ext-contribute@dessant/ext-contribute#^0.1.6:
+  version "0.1.6"
+  resolved "https://codeload.github.com/dessant/ext-contribute/tar.gz/5cb22ee3d403eb371d4b30fc9b557441310cc6a9"
   dependencies:
     "@material/theme" "^0.30.0"
     "@material/typography" "^0.28.0"
-    ext-components dessant/ext-components#^0.1.5
+    ext-components dessant/ext-components#^0.1.6
     typeface-roboto "^0.0.54"
     vue "^2.5.17"
-    webextension-polyfill "^0.3.0"
+    webextension-polyfill "^0.3.1"
 
 extend-shallow@^1.1.2:
   version "1.1.4"
@@ -12029,15 +12029,15 @@ stdout-stream@^1.4.0:
   dependencies:
     readable-stream "^2.0.1"
 
-storage-versions@dessant/storage-versions#^0.2.3:
-  version "0.2.3"
-  resolved "https://codeload.github.com/dessant/storage-versions/tar.gz/6925601efbca042da51601853e412a651e8a2176"
+storage-versions@dessant/storage-versions#^0.2.4:
+  version "0.2.4"
+  resolved "https://codeload.github.com/dessant/storage-versions/tar.gz/72df3876592344b8f32e31bdbd88422cfc7ecaca"
   dependencies:
     commander "^2.17.1"
     fs-extra "^7.0.0"
     lodash-es "^4.17.10"
     shortid "^2.2.12"
-    webextension-polyfill "^0.3.0"
+    webextension-polyfill "^0.3.1"
 
 stream-browserify@^2.0.1:
   version "2.0.1"
@@ -13340,7 +13340,7 @@ web-ext@^2.8.0:
     yargs "6.6.0"
     zip-dir "1.0.2"
 
-webextension-polyfill@^0.3.0:
+webextension-polyfill@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.3.1.tgz#fab2aed917a713a5d8221e41febad81c5d0b080f"
   integrity sha512-ISB42vlgMyM7xE1u6pREeCqmmXjLsYu/nqAR8Dl/gIAnylb+KpRpvKbVkUYNFePhhXn0Obkkc3jasOII9ztUtg==

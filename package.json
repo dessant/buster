@@ -39,12 +39,12 @@
     "@material/theme": "^0.30.0",
     "@material/typography": "^0.28.0",
     "audiobuffer-to-wav": "^1.0.0",
-    "ext-components": "dessant/ext-components#^0.1.5",
-    "ext-contribute": "dessant/ext-contribute#^0.1.5",
-    "storage-versions": "dessant/storage-versions#^0.2.3",
+    "ext-components": "dessant/ext-components#^0.1.6",
+    "ext-contribute": "dessant/ext-contribute#^0.1.6",
+    "storage-versions": "dessant/storage-versions#^0.2.4",
     "typeface-roboto": "^0.0.54",
     "vue": "^2.5.17",
-    "webextension-polyfill": "^0.3.0"
+    "webextension-polyfill": "^0.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-rc.1",

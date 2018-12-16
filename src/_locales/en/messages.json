@@ -39,6 +39,16 @@
     "description": "Value of the option."
   },
 
+  "optionValue_speechService_witSpeechApiDemo": {
+    "message": "Wit Speech API (demo)",
+    "description": "Value of the option."
+  },
+
+  "optionValue_speechService_witSpeechApi": {
+    "message": "Wit Speech API",
+    "description": "Value of the option."
+  },
+
   "optionTitle_ibmSpeechApiLoc": {
     "message": "API location",
     "description": "Title of the option."
@@ -114,9 +124,300 @@
     "description": "Value of the option."
   },
 
+  "optionSectionTitle_misc": {
+    "message": "Miscellaneous",
+    "description": "Title of the options section."
+  },
+
+  "optionTitle_tryEnglishSpeechModel": {
+    "message": "Retry speech recognition with English model",
+    "description": "Title of the option."
+  },
+
+  "optionTitle_witSpeechApiLang": {
+    "message": "API language",
+    "description": "Title of the option."
+  },
+
+  "optionValue_witSpeechApiLang_afrikaans": {
+    "message": "Afrikaans",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_arabic": {
+    "message": "Arabic",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_azerbaijani": {
+    "message": "Azerbaijani",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_bengali": {
+    "message": "Bengali",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_bulgarian": {
+    "message": "Bulgarian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_catalan": {
+    "message": "Catalan",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_chinese": {
+    "message": "Chinese",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_croatian": {
+    "message": "Croatian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_czech": {
+    "message": "Czech",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_danish": {
+    "message": "Danish",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_dutch": {
+    "message": "Dutch",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_english": {
+    "message": "English",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_estonian": {
+    "message": "Estonian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_finnish": {
+    "message": "Finnish",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_french": {
+    "message": "French",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_georgian": {
+    "message": "Georgian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_german": {
+    "message": "German",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_greek": {
+    "message": "Greek",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_hebrew": {
+    "message": "Hebrew",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_hindi": {
+    "message": "Hindi",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_hungarian": {
+    "message": "Hungarian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_icelandic": {
+    "message": "Icelandic",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_indonesian": {
+    "message": "Indonesian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_italian": {
+    "message": "Italian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_japanese": {
+    "message": "Japanese",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_kannada": {
+    "message": "Kannada",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_korean": {
+    "message": "Korean",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_laothian": {
+    "message": "Laothian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_latvian": {
+    "message": "Latvian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_lithuanian": {
+    "message": "Lithuanian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_malay": {
+    "message": "Malay",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_mongolian": {
+    "message": "Mongolian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_norwegian": {
+    "message": "Norwegian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_persian": {
+    "message": "Persian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_polish": {
+    "message": "Polish",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_portuguese": {
+    "message": "Portuguese",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_romanian": {
+    "message": "Romanian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_russian": {
+    "message": "Russian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_serbian": {
+    "message": "Serbian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_slovak": {
+    "message": "Slovak",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_slovenian": {
+    "message": "Slovenian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_spanish": {
+    "message": "Spanish",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_swahili": {
+    "message": "Swahili",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_swedish": {
+    "message": "Swedish",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_tamil": {
+    "message": "Tamil",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_telugu": {
+    "message": "Telugu",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_thai": {
+    "message": "Thai",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_turkish": {
+    "message": "Turkish",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_ukrainian": {
+    "message": "Ukrainian",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_urdu": {
+    "message": "Urdu",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_vietnamese": {
+    "message": "Vietnamese",
+    "description": "Value of the option."
+  },
+
+  "optionValue_witSpeechApiLang_zulu": {
+    "message": "Zulu",
+    "description": "Value of the option."
+  },
+
   "inputLabel_apiKey": {
     "message": "API key",
-    "description": "Placeholder of the input."
+    "description": "Label of the input."
+  },
+
+  "inputLabel_apiKeyType": {
+    "message": "API key: $TYPE$",
+    "description": "Label of the input.",
+    "placeholders": {
+      "type": {
+        "content": "$1",
+        "example": "English"
+      }
+    }
+  },
+
+  "buttonText_addApi": {
+    "message": "Add API",
+    "description": "Text of the button."
   },
 
   "buttonText_solve": {

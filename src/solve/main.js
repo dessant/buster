@@ -7,9 +7,11 @@ import {
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
   captchaMicrosoftSpeechApiLangCodes,
+  captchaWitSpeechApiLangCodes,
   ibmSpeechApiUrls,
   microsoftSpeechApiUrls
 } from 'utils/data';
+import {witApiKeys} from 'utils/config';
 
 let solverWorking = false;
 
@@ -79,8 +81,8 @@ async function prepareAudio(audio) {
   const source = offlineCtx.createBufferSource();
   source.buffer = data;
   source.connect(offlineCtx.destination);
-  // discard 1 second noise from beginning/end
-  source.start(0, 1, data.duration - 2);
+  // discard 1.5 second noise from beginning/end
+  source.start(0, 1.5, data.duration - 3);
 
   return audioBufferToWav(await offlineCtx.startRendering());
 }
@@ -101,6 +103,91 @@ function dispatchEnter(node) {
   node.dispatchEvent(new KeyboardEvent('keydown', keyEvent));
   node.dispatchEvent(new KeyboardEvent('keypress', keyEvent));
   node.click();
+}
+
+async function getWitSpeechApiKey(speechService, language) {
+  if (speechService === 'witSpeechApiDemo') {
+    return witApiKeys[language];
+  } else {
+    const {witSpeechApiKeys: apiKeys} = await storage.get(
+      'witSpeechApiKeys',
+      'sync'
+    );
+    return apiKeys[language];
+  }
+}
+
+async function getWitSpeechApiResult(apiKey, audioContent) {
+  const rsp = await fetch('https://api.wit.ai/speech', {
+    referrer: '',
+    mode: 'cors',
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + apiKey
+    },
+    body: new Blob([audioContent], {type: 'audio/wav'})
+  });
+
+  if (rsp.status !== 200) {
+    throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+  }
+
+  return (await rsp.json())._text.trim();
+}
+
+async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, language) {
+  const rsp = await fetch(
+    `${apiUrl}?model=${language}&profanity_filter=false`,
+    {
+      referrer: '',
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey),
+        'X-Watson-Learning-Opt-Out': 'true'
+      },
+      body: new Blob([audioContent], {type: 'audio/wav'})
+    }
+  );
+
+  if (rsp.status !== 200) {
+    throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+  }
+
+  const results = (await rsp.json()).results;
+  if (results && results.length) {
+    return results[0].alternatives[0].transcript.trim();
+  }
+}
+
+async function getMicrosoftSpeechApiResult(
+  apiUrl,
+  apiKey,
+  audioContent,
+  language
+) {
+  const rsp = await fetch(
+    `${apiUrl}?language=${language}&format=detailed&profanity=raw`,
+    {
+      referrer: '',
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Ocp-Apim-Subscription-Key': apiKey,
+        'Content-type': 'audio/wav; codec=audio/pcm; samplerate=16000'
+      },
+      body: new Blob([audioContent], {type: 'audio/wav'})
+    }
+  );
+
+  if (rsp.status !== 200) {
+    throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+  }
+
+  const results = (await rsp.json()).NBest;
+  if (results) {
+    return results[0].Lexical.trim();
+  }
 }
 
 async function solve() {
@@ -139,9 +226,38 @@ async function solve() {
   const audioRsp = await fetch(audioUrl, {referrer: ''});
   const audioContent = await prepareAudio(await audioRsp.arrayBuffer());
 
-  const {speechService} = await storage.get('speechService', 'sync');
+  const {speechService, tryEnglishSpeechModel} = await storage.get(
+    ['speechService', 'tryEnglishSpeechModel'],
+    'sync'
+  );
 
-  if (['googleSpeechApiDemo', 'googleSpeechApi'].includes(speechService)) {
+  if (['witSpeechApiDemo', 'witSpeechApi'].includes(speechService)) {
+    const language = captchaWitSpeechApiLangCodes[lang] || 'english';
+
+    const apiKey = await getWitSpeechApiKey(speechService, language);
+    if (!apiKey) {
+      browser.runtime.sendMessage({
+        id: 'notification',
+        messageId: 'error_missingApiKey'
+      });
+      return;
+    }
+
+    solution = await getWitSpeechApiResult(apiKey, audioContent);
+    if (!solution && language !== 'english' && tryEnglishSpeechModel) {
+      const apiKey = await getWitSpeechApiKey(speechService, 'english');
+      if (!apiKey) {
+        browser.runtime.sendMessage({
+          id: 'notification',
+          messageId: 'error_missingApiKey'
+        });
+        return;
+      }
+      solution = await getWitSpeechApiResult(apiKey, audioContent);
+    }
+  } else if (
+    ['googleSpeechApiDemo', 'googleSpeechApi'].includes(speechService)
+  ) {
     let apiUrl;
     if (speechService === 'googleSpeechApiDemo') {
       apiUrl =
@@ -173,7 +289,7 @@ async function solve() {
         sampleRateHertz: 16000
       }
     };
-    if (!['en-US', 'en-GB'].includes(language)) {
+    if (!['en-US', 'en-GB'].includes(language) && tryEnglishSpeechModel) {
       data.config.alternativeLanguageCodes = ['en-US'];
     }
 
@@ -205,25 +321,26 @@ async function solve() {
       return;
     }
     const apiUrl = ibmSpeechApiUrls[apiLoc];
-    const model = captchaIbmSpeechApiLangCodes[lang] || 'en-US_BroadbandModel';
+    const language =
+      captchaIbmSpeechApiLangCodes[lang] || 'en-US_BroadbandModel';
 
-    const rsp = await fetch(`${apiUrl}?model=${model}&profanity_filter=false`, {
-      referrer: '',
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey)
-      },
-      body: new Blob([audioContent], {type: 'audio/wav'})
-    });
-
-    if (rsp.status !== 200) {
-      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
-    }
-
-    const results = (await rsp.json()).results;
-    if (results && results.length) {
-      solution = results[0].alternatives[0].transcript.trim();
+    solution = await getIbmSpeechApiResult(
+      apiUrl,
+      apiKey,
+      audioContent,
+      language
+    );
+    if (
+      !solution &&
+      !['en-US_BroadbandModel', 'en-GB_BroadbandModel'].includes(language) &&
+      tryEnglishSpeechModel
+    ) {
+      solution = await getIbmSpeechApiResult(
+        apiUrl,
+        apiKey,
+        audioContent,
+        'en-US_BroadbandModel'
+      );
     }
   } else if (speechService === 'microsoftSpeechApi') {
     const {
@@ -243,27 +360,23 @@ async function solve() {
     const apiUrl = microsoftSpeechApiUrls[apiLoc];
     const language = captchaMicrosoftSpeechApiLangCodes[lang] || 'en-US';
 
-    const rsp = await fetch(
-      `${apiUrl}?language=${language}&format=detailed&profanity=raw`,
-      {
-        referrer: '',
-        mode: 'cors',
-        method: 'POST',
-        headers: {
-          'Ocp-Apim-Subscription-Key': apiKey,
-          'Content-type': 'audio/wav; codec=audio/pcm; samplerate=16000'
-        },
-        body: new Blob([audioContent], {type: 'audio/wav'})
-      }
+    solution = await getMicrosoftSpeechApiResult(
+      apiUrl,
+      apiKey,
+      audioContent,
+      language
     );
-
-    if (rsp.status !== 200) {
-      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
-    }
-
-    const results = (await rsp.json()).NBest;
-    if (results) {
-      solution = results[0].Lexical.trim();
+    if (
+      !solution &&
+      !['en-US', 'en-GB'].includes(language) &&
+      tryEnglishSpeechModel
+    ) {
+      solution = await getMicrosoftSpeechApiResult(
+        apiUrl,
+        apiKey,
+        audioContent,
+        'en-US'
+      );
     }
   }
 

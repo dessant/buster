@@ -9,7 +9,7 @@ const storage = browser.storage.local;
 
 async function upgrade() {
   const changes = {
-    speechService: 'googleSpeechApiDemo', // 'googleSpeechApiDemo', 'googleSpeechApi', 'ibmSpeechApi', 'microsoftSpeechApi'
+    speechService: 'googleSpeechApiDemo', // 'googleSpeechApiDemo', 'witSpeechApiDemo', 'googleSpeechApi', 'witSpeechApi', 'ibmSpeechApi', 'microsoftSpeechApi'
     googleSpeechApiKey: '',
     installTime: new Date().getTime(),
     useCount: 0
