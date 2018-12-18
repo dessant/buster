@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/dessant/buster/compare/v0.2.0...v0.3.0) (2018-12-18)
+
+
+### Bug Fixes
+
+* use English as alternative language for Google Cloud Speech API ([f13d1ea](https://github.com/dessant/buster/commit/f13d1ea))
+
+
+### Features
+
+* add Wit Speech API and tryEnglishSpeechModel option ([c32a654](https://github.com/dessant/buster/commit/c32a654))
+* load challenge in English by default ([3f581bd](https://github.com/dessant/buster/commit/3f581bd))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/dessant/buster/compare/v0.1.1...v0.2.0) (2018-12-08)
 
