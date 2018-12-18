@@ -79,6 +79,12 @@
     </div>
     <div class="option-wrap">
       <div class="option">
+        <v-form-field input-id="lec"
+            :label="getText('optionTitle_loadEnglishChallenge')">
+          <v-switch id="lec" v-model="options.loadEnglishChallenge"></v-switch>
+        </v-form-field>
+      </div>
+      <div class="option">
         <v-form-field input-id="esm"
             :label="getText('optionTitle_tryEnglishSpeechModel')">
           <v-switch id="esm" v-model="options.tryEnglishSpeechModel"></v-switch>
@@ -155,6 +161,7 @@ export default {
         microsoftSpeechApiLoc: '',
         microsoftSpeechApiKey: '',
         witSpeechApiKeys: {},
+        loadEnglishChallenge: false,
         tryEnglishSpeechModel: false
       }
     };

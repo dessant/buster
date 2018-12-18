@@ -285,11 +285,12 @@ async function solve() {
       config: {
         encoding: 'LINEAR16',
         languageCode: language,
-        model: 'default',
+        model: 'video',
         sampleRateHertz: 16000
       }
     };
     if (!['en-US', 'en-GB'].includes(language) && tryEnglishSpeechModel) {
+      data.config.model = 'default';
       data.config.alternativeLanguageCodes = ['en-US'];
     }
 

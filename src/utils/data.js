@@ -6,6 +6,7 @@ const optionKeys = [
   'microsoftSpeechApiLoc',
   'microsoftSpeechApiKey',
   'witSpeechApiKeys',
+  'loadEnglishChallenge',
   'tryEnglishSpeechModel'
 ];
 

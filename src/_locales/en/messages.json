@@ -129,6 +129,11 @@
     "description": "Title of the options section."
   },
 
+  "optionTitle_loadEnglishChallenge": {
+    "message": "Load challenge in English",
+    "description": "Title of the option."
+  },
+
   "optionTitle_tryEnglishSpeechModel": {
     "message": "Retry speech recognition with English model",
     "description": "Title of the option."
