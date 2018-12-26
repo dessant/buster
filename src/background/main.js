@@ -3,6 +3,12 @@ import browser from 'webextension-polyfill';
 import {initStorage} from 'storage/init';
 import storage from 'storage/storage';
 import {showNotification, showContributePage} from 'utils/app';
+import {
+  executeCode,
+  executeFile,
+  scriptsAllowed,
+  functionInContext
+} from 'utils/common';
 
 function challengeRequestCallback(details) {
   const url = new URL(details.url);
@@ -41,7 +47,7 @@ async function setChallengeLocale() {
   }
 }
 
-async function onMessage(request, sender, sendResponse) {
+async function onMessage(request, sender) {
   if (request.id === 'notification') {
     showNotification({
       message: request.message,
@@ -56,6 +62,31 @@ async function onMessage(request, sender, sendResponse) {
     if ([30, 100].includes(useCount)) {
       await showContributePage('use');
     }
+  } else if (request.id === 'resetCaptcha') {
+    const tabId = sender.tab.id;
+    const frameId = (await browser.webNavigation.getFrame({
+      tabId,
+      frameId: sender.frameId
+    })).parentFrameId;
+
+    if (!(await scriptsAllowed(tabId, frameId))) {
+      await showNotification({messageId: 'error_scriptsNotAllowed'});
+      return;
+    }
+
+    if (!(await functionInContext('addListener', tabId, frameId))) {
+      await executeFile('/src/content/initReset.js', tabId, frameId);
+    }
+    await executeCode('addListener()', tabId, frameId);
+
+    await browser.tabs.sendMessage(
+      tabId,
+      {
+        id: 'resetCaptcha',
+        challengeUrl: request.challengeUrl
+      },
+      {frameId}
+    );
   }
 }
 

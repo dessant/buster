@@ -7,6 +7,7 @@ const gulp = require('gulp');
 const gulpSeq = require('gulp-sequence');
 const htmlmin = require('gulp-htmlmin');
 const svgmin = require('gulp-svgmin');
+const babel = require('gulp-babel');
 const postcss = require('gulp-postcss');
 const gulpif = require('gulp-if');
 const del = require('del');
@@ -24,7 +25,7 @@ gulp.task('clean', function() {
   return del([distDir]);
 });
 
-gulp.task('js', function(done) {
+gulp.task('js:webpack', function(done) {
   exec('webpack-cli --display-error-details --bail --colors', function(
     err,
     stdout,
@@ -35,6 +36,15 @@ gulp.task('js', function(done) {
     done(err);
   });
 });
+
+gulp.task('js:babel', function() {
+  return gulp
+    .src(['src/content/**/*.js'], {base: '.'})
+    .pipe(babel())
+    .pipe(gulp.dest(distDir));
+});
+
+gulp.task('js', ['js:webpack', 'js:babel']);
 
 gulp.task('html', function() {
   return gulp

@@ -17,7 +17,7 @@ let solverWorking = false;
 
 function setSolverState({working = true} = {}) {
   solverWorking = working;
-  const button = document.querySelector('#buster-button');
+  const button = document.querySelector('#solver-button');
   if (button) {
     if (working) {
       button.classList.add('working');
@@ -27,10 +27,39 @@ function setSolverState({working = true} = {}) {
   }
 }
 
-function setButton() {
-  const infoButton = document.body.querySelector(
-    'button#recaptcha-help-button'
-  );
+function resetCaptcha() {
+  return browser.runtime.sendMessage({
+    id: 'resetCaptcha',
+    challengeUrl: window.location.href
+  });
+}
+
+function syncUI() {
+  if (isBlocked()) {
+    if (!document.querySelector('.solver-controls')) {
+      const div = document.createElement('div');
+      div.classList.add('solver-controls');
+
+      const button = document.createElement('button');
+      button.classList.add('rc-button');
+      button.setAttribute('tabindex', '0');
+      button.setAttribute('title', getText('buttonText_reset'));
+      button.id = 'reset-button';
+
+      button.addEventListener('click', resetCaptcha);
+      button.addEventListener('keydown', e => {
+        if (['Enter', ' '].includes(e.key)) {
+          resetCaptcha();
+        }
+      });
+
+      div.appendChild(button);
+      document.querySelector('.rc-footer').appendChild(div);
+    }
+    return;
+  }
+
+  const infoButton = document.querySelector('#recaptcha-help-button');
   if (infoButton) {
     infoButton.remove();
 
@@ -41,7 +70,7 @@ function setButton() {
     button.classList.add('rc-button', 'goog-inline-block');
     button.setAttribute('tabindex', '0');
     button.setAttribute('title', getText('buttonText_solve'));
-    button.id = 'buster-button';
+    button.id = 'solver-button';
     if (solverWorking) {
       button.classList.add('working');
     }
@@ -58,10 +87,14 @@ function setButton() {
   }
 }
 
-async function isBlocked({timeout = 0} = {}) {
+function isBlocked({timeout = 0} = {}) {
   const selector = '.rc-doscaptcha-body';
   if (timeout) {
-    return Boolean(await waitForElement(selector, {timeout}));
+    return new Promise(resolve => {
+      waitForElement(selector, {timeout}).then(result =>
+        resolve(Boolean(result))
+      );
+    });
   }
 
   return Boolean(document.querySelector(selector));
@@ -194,7 +227,7 @@ async function solve() {
   let audioUrl;
   let solution;
 
-  if (await isBlocked()) {
+  if (isBlocked()) {
     return;
   }
 
@@ -419,13 +452,13 @@ function start(e) {
 }
 
 function init() {
-  const observer = new MutationObserver(setButton);
+  const observer = new MutationObserver(syncUI);
   observer.observe(document.body, {
     childList: true,
     subtree: true
   });
 
-  setButton();
+  syncUI();
 }
 
 init();

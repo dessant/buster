@@ -71,11 +71,57 @@ function arrayBufferToBase64(buffer) {
   return window.btoa(binary);
 }
 
+function executeCode(string, tabId, frameId = 0, runAt = 'document_start') {
+  return browser.tabs.executeScript(tabId, {
+    frameId: frameId,
+    runAt: runAt,
+    code: string
+  });
+}
+
+function executeFile(file, tabId, frameId = 0, runAt = 'document_start') {
+  return browser.tabs.executeScript(tabId, {
+    frameId: frameId,
+    runAt: runAt,
+    file: file
+  });
+}
+
+async function scriptsAllowed(tabId, frameId = 0) {
+  try {
+    await browser.tabs.executeScript(tabId, {
+      frameId: frameId,
+      runAt: 'document_start',
+      code: 'true;'
+    });
+    return true;
+  } catch (e) {}
+}
+
+async function functionInContext(
+  functionName,
+  tabId,
+  frameId = 0,
+  runAt = 'document_start'
+) {
+  const [isFunction] = await executeCode(
+    `typeof ${functionName} === "function"`,
+    tabId,
+    frameId,
+    runAt
+  );
+  return isFunction;
+}
+
 export {
   getText,
   createTab,
   isAndroid,
   getActiveTab,
   waitForElement,
-  arrayBufferToBase64
+  arrayBufferToBase64,
+  executeCode,
+  executeFile,
+  scriptsAllowed,
+  functionInContext
 };

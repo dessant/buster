@@ -2,7 +2,7 @@
   "presets": ["@babel/env"],
   "env": {
     "production": {
-      "plugins": ["lodash"]
+      "presets": [["minify", {"deadcode": false}]]
     }
   }
 }

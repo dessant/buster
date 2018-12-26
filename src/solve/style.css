@@ -1,15 +1,51 @@
-button#buster-button {
+#solver-button {
   background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%20192%20192%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M71.182%20138.872l27.077%2027.077H8.002v-18.051c0-19.947%2032.312-36.103%2072.205-36.103l17.058.993-26.083%2026.084m9.025-117.333c19.939%200%2036.103%2016.164%2036.103%2036.103s-16.164%2036.103-36.103%2036.103S44.105%2077.58%2044.105%2057.641s16.163-36.102%2036.102-36.102z%22%20fill%3D%22%23ff9f43%22%2F%3E%3Cpath%20fill%3D%22%2327ae60%22%20d%3D%22M171.362%2098.256l12.636%2012.726-58.938%2059.479-31.319-31.589%2012.636-12.727%2018.683%2018.774%2046.302-46.663%22%2F%3E%3C%2Fsvg%3E') !important;
   background-color: transparent !important;
   opacity: 0.8 !important;
 }
 
-button#buster-button:focus,
-button#buster-button:hover {
+#solver-button:focus,
+#solver-button:hover {
   opacity: 1 !important;
 }
 
-button#buster-button.working {
+#solver-button.working {
   background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2244%22%20height%3D%2244%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20stroke%3D%22%23727272%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20stroke-width%3D%225%22%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2222%22%20r%3D%221%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%220s%22%20dur%3D%221.8s%22%20values%3D%221%3B%2020%22%20calcMode%3D%22spline%22%20keyTimes%3D%220%3B%201%22%20keySplines%3D%220.165%2C%200.84%2C%200.44%2C%201%22%20repeatCount%3D%22indefinite%22%2F%3E%3Canimate%20attributeName%3D%22stroke-opacity%22%20begin%3D%220s%22%20dur%3D%221.8s%22%20values%3D%221%3B%200%22%20calcMode%3D%22spline%22%20keyTimes%3D%220%3B%201%22%20keySplines%3D%220.3%2C%200.61%2C%200.355%2C%201%22%20repeatCount%3D%22indefinite%22%2F%3E%3C%2Fcircle%3E%3Ccircle%20cx%3D%2222%22%20cy%3D%2222%22%20r%3D%221%22%3E%3Canimate%20attributeName%3D%22r%22%20begin%3D%22-0.9s%22%20dur%3D%221.8s%22%20values%3D%221%3B%2020%22%20calcMode%3D%22spline%22%20keyTimes%3D%220%3B%201%22%20keySplines%3D%220.165%2C%200.84%2C%200.44%2C%201%22%20repeatCount%3D%22indefinite%22%2F%3E%3Canimate%20attributeName%3D%22stroke-opacity%22%20begin%3D%22-0.9s%22%20dur%3D%221.8s%22%20values%3D%221%3B%200%22%20calcMode%3D%22spline%22%20keyTimes%3D%220%3B%201%22%20keySplines%3D%220.3%2C%200.61%2C%200.355%2C%201%22%20repeatCount%3D%22indefinite%22%2F%3E%3C%2Fcircle%3E%3C%2Fg%3E%3C%2Fsvg%3E') !important;
   opacity: 1 !important;
+}
+
+#reset-button {
+  background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M17.65%206.35C16.2%204.9%2014.21%204%2012%204c-4.42%200-7.99%203.58-7.99%208s3.57%208%207.99%208c3.73%200%206.84-2.55%207.73-6h-2.08c-.82%202.33-3.04%204-5.65%204-3.31%200-6-2.69-6-6s2.69-6%206-6c1.66%200%203.14.69%204.22%201.78L13%2011h7V4l-2.35%202.35z%22%2F%3E%3C%2Fsvg%3E') !important;
+  background-color: transparent !important;
+}
+
+.solver-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 58px !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.rc-doscaptcha-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 30px !important;
+}
+
+.rc-doscaptcha-body {
+  height: 120px !important;
+}
+
+.rc-doscaptcha-footer {
+  height: 60px !important;
+  pointer-events: auto !important;
+}
+
+.rc-doscaptcha-footer .rc-controls {
+  display: none !important;
 }

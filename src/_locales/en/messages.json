@@ -430,6 +430,11 @@
     "description": "Text of the button."
   },
 
+  "buttonText_reset": {
+    "message": "Reset the challenge",
+    "description": "Text of the button."
+  },
+
   "pageTitle": {
     "message": "$PAGETITLE$ - $EXTENSIONNAME$",
     "description": "Title of the page.",
@@ -456,20 +461,22 @@
   },
 
   "error_captchaNotSolved": {
-    "message":
-      "Captcha could not be solved. Try again after requesting a new challenge.",
+    "message": "Captcha could not be solved. Try again after requesting a new challenge.",
     "description": "Error message."
   },
 
   "error_missingApiKey": {
-    "message":
-      "API key missing. Visit the options page to configure the service.",
+    "message": "API key missing. Visit the options page to configure the service.",
+    "description": "Error message."
+  },
+
+  "error_scriptsNotAllowed": {
+    "message": "Content scripts are not allowed on this page.",
     "description": "Error message."
   },
 
   "error_internalError": {
-    "message":
-      "Something went wrong. Open the browser console for more details.",
+    "message": "Something went wrong. Open the browser console for more details.",
     "description": "Error message."
   }
 }

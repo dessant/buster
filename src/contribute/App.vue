@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 <template>
 <div id="app">
   <v-contribute :extName="extName" :extSlug="extSlug" :notice="notice">
