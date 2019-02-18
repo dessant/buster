@@ -1,4 +1,5 @@
 import browser from 'webextension-polyfill';
+import Bowser from 'bowser';
 
 import {targetEnv} from 'utils/config';
 
@@ -21,6 +22,40 @@ function createTab(
 async function isAndroid() {
   const {os} = await browser.runtime.getPlatformInfo();
   return os === 'android';
+}
+
+async function getPlatform() {
+  let {os, arch} = await browser.runtime.getPlatformInfo();
+  if (os === 'win') {
+    os = 'windows';
+  } else if (os === 'mac') {
+    os = 'macos';
+  }
+
+  if (arch === 'x86-32') {
+    arch = '386';
+  } else if (arch === 'x86-64') {
+    arch = 'amd64';
+  }
+
+  return {os, arch};
+}
+
+async function getBrowser() {
+  let name, version;
+  try {
+    ({name, version} = await browser.runtime.getBrowserInfo());
+  } catch (e) {}
+
+  if (!name) {
+    ({name, version} = Bowser.getParser(
+      window.navigator.userAgent
+    ).getBrowser());
+  }
+
+  name = name.toLowerCase();
+
+  return {name, version};
 }
 
 async function getActiveTab() {
@@ -113,15 +148,32 @@ async function functionInContext(
   return isFunction;
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomFloat(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => window.setTimeout(resolve, ms));
+}
+
 export {
   getText,
   createTab,
   isAndroid,
+  getPlatform,
+  getBrowser,
   getActiveTab,
   waitForElement,
   arrayBufferToBase64,
   executeCode,
   executeFile,
   scriptsAllowed,
-  functionInContext
+  functionInContext,
+  getRandomInt,
+  getRandomFloat,
+  sleep
 };

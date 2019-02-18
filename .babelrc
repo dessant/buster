@@ -1,5 +1,5 @@
 {
-  "presets": ["@babel/env"],
+  "presets": [["@babel/env", {"useBuiltIns": "usage"}]],
   "env": {
     "production": {
       "plugins": ["lodash"]

@@ -7,8 +7,11 @@ const optionKeys = [
   'microsoftSpeechApiKey',
   'witSpeechApiKeys',
   'loadEnglishChallenge',
-  'tryEnglishSpeechModel'
+  'tryEnglishSpeechModel',
+  'simulateUserInput'
 ];
+
+const clientAppPlatforms = ['windows/amd64', 'linux/amd64', 'macos/amd64'];
 
 // https://developers.google.com/recaptcha/docs/language
 // https://cloud.google.com/speech-to-text/docs/languages
@@ -341,6 +344,7 @@ const microsoftSpeechApiUrls = {
 
 export {
   optionKeys,
+  clientAppPlatforms,
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
   captchaMicrosoftSpeechApiLangCodes,

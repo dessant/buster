@@ -85,11 +85,39 @@
           <v-switch id="lec" v-model="options.loadEnglishChallenge"></v-switch>
         </v-form-field>
       </div>
-      <div class="option">
+
+      <div class="option"
+          v-if="!options.loadEnglishChallenge">
         <v-form-field input-id="esm"
             :label="getText('optionTitle_tryEnglishSpeechModel')">
           <v-switch id="esm" v-model="options.tryEnglishSpeechModel"></v-switch>
         </v-form-field>
+      </div>
+
+      <div class="option">
+        <v-form-field input-id="si"
+            :label="getText('optionTitle_simulateUserInput')">
+          <v-switch id="si" v-model="options.simulateUserInput"></v-switch>
+        </v-form-field>
+      </div>
+      <div class="client-bownload" v-if="showClientAppNotice">
+        <div class="download-desc">
+          {{ getText('pageContent_optionClientAppDownloadDesc') }}
+        </div>
+        <div class="download-error" v-if="!clientAppDownloadUrl">
+          {{ getText('pageContent_optionClientAppOSError') }}
+        </div>
+
+        <v-button class="download-button"
+            :unelevated="true"
+            :disabled="!clientAppDownloadUrl"
+            @click="$refs.dlLink.click()">
+          {{ getText('buttonText_downloadApp') }}
+        </v-button>
+        <a ref="dlLink" class="download-link"
+            target="_blank"
+            rel="noreferrer"
+            :href="clientAppDownloadUrl"></a>
       </div>
     </div>
   </div>
@@ -101,9 +129,13 @@ import browser from 'webextension-polyfill';
 import {Button, Select, Switch, FormField, TextField} from 'ext-components';
 
 import storage from 'storage/storage';
-import {getOptionLabels} from 'utils/app';
-import {getText} from 'utils/common';
-import {optionKeys, captchaWitSpeechApiLangCodes} from 'utils/data';
+import {getOptionLabels, pingClientApp} from 'utils/app';
+import {getText, getPlatform} from 'utils/common';
+import {
+  optionKeys,
+  clientAppPlatforms,
+  captchaWitSpeechApiLangCodes
+} from 'utils/data';
 
 export default {
   components: {
@@ -154,6 +186,9 @@ export default {
       witSpeechApiLang: '',
       witSpeechApis: [],
 
+      showClientAppNotice: false,
+      clientAppDownloadUrl: '',
+
       options: {
         speechService: '',
         googleSpeechApiKey: '',
@@ -163,9 +198,35 @@ export default {
         microsoftSpeechApiKey: '',
         witSpeechApiKeys: {},
         loadEnglishChallenge: false,
-        tryEnglishSpeechModel: false
+        tryEnglishSpeechModel: false,
+        simulateUserInput: false
       }
     };
+  },
+
+  watch: {
+    'options.simulateUserInput': async function(value) {
+      if (value) {
+        try {
+          await pingClientApp();
+        } catch (e) {
+          if (!this.clientAppDownloadUrl) {
+            const {os, arch} = await getPlatform();
+            if (clientAppPlatforms.includes(`${os}/${arch}`)) {
+              this.clientAppDownloadUrl = `https://github.com/dessant/buster-client/releases/download/v0.1.0/buster-client-v0.1.0-${os}-${arch}`;
+              if (os === 'windows') {
+                this.clientAppDownloadUrl += '.exe';
+              }
+            }
+          }
+
+          this.showClientAppNotice = true;
+          return;
+        }
+      }
+
+      this.showClientAppNotice = false;
+    }
   },
 
   methods: {
@@ -224,6 +285,7 @@ $mdc-theme-primary: #1abc9c;
 
 @import '@material/theme/mixins';
 @import '@material/typography/mixins';
+@import '@material/button/mixins';
 
 body {
   @include mdc-typography-base;
@@ -288,5 +350,32 @@ body {
 .wit-add-api > button {
   align-self: end;
   margin-left: 36px;
+}
+
+.client-bownload {
+  margin-left: 48px;
+}
+
+.download-desc,
+.download-error {
+  @include mdc-theme-prop('color', 'text-primary-on-light');
+  @include mdc-typography('body1');
+  min-width: 300px;
+}
+
+.download-error {
+  margin-top: 12px;
+  color: #e74c3c;
+}
+
+.download-link {
+  visibility: hidden;
+}
+
+.download-button {
+  @include mdc-button-ink-color(#fff);
+  width: 200px;
+  height: 48px;
+  margin-top: 24px;
 }
 </style>

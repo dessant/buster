@@ -1,6 +1,13 @@
 import browser from 'webextension-polyfill';
+import uuidV4 from 'uuid/v4';
 
-import {getText, createTab, getActiveTab} from 'utils/common';
+import {
+  getText,
+  createTab,
+  getActiveTab,
+  getRandomInt,
+  sleep
+} from 'utils/common';
 
 function showNotification({message, messageId, title, type = 'info'}) {
   if (!title) {
@@ -40,4 +47,58 @@ async function showContributePage(action = false) {
   await createTab(url, {index: activeTab.index + 1});
 }
 
-export {showNotification, getOptionLabels, showContributePage};
+function meanSleep(ms) {
+  const maxDeviation = (10 / 100) * ms;
+  return sleep(getRandomInt(ms - maxDeviation, ms + maxDeviation));
+}
+
+function sendNativeMessage(port, message, {timeout = 10000} = {}) {
+  return new Promise((resolve, reject) => {
+    const id = uuidV4();
+    message.id = id;
+
+    const messageCallback = function(msg) {
+      if (msg.id !== id) {
+        return;
+      }
+      removeListeners();
+      resolve(msg);
+    };
+    const errorCallback = function() {
+      removeListeners();
+      reject('No response from native app');
+    };
+    const removeListeners = function() {
+      window.clearTimeout(timeoutId);
+      port.onMessage.removeListener(messageCallback);
+      port.onDisconnect.removeListener(errorCallback);
+    };
+
+    const timeoutId = window.setTimeout(function() {
+      errorCallback();
+    }, timeout);
+
+    port.onMessage.addListener(messageCallback);
+    port.onDisconnect.addListener(errorCallback);
+
+    port.postMessage(message);
+  });
+}
+
+async function pingClientApp() {
+  await browser.runtime.sendMessage({id: 'startNativeApp'});
+  await browser.runtime.sendMessage({
+    id: 'sendNativeMessage',
+    message: {command: 'ping'}
+  });
+  await browser.runtime.sendMessage({id: 'stopNativeApp'});
+}
+
+export {
+  showNotification,
+  getOptionLabels,
+  showContributePage,
+  meanSleep,
+  sendNativeMessage,
+  pingClientApp
+};

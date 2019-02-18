@@ -2,7 +2,13 @@ import browser from 'webextension-polyfill';
 import audioBufferToWav from 'audiobuffer-to-wav';
 
 import storage from 'storage/storage';
-import {getText, waitForElement, arrayBufferToBase64} from 'utils/common';
+import {meanSleep} from 'utils/app';
+import {
+  getText,
+  waitForElement,
+  arrayBufferToBase64,
+  getRandomFloat
+} from 'utils/common';
 import {
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
@@ -47,11 +53,6 @@ function syncUI() {
       button.id = 'reset-button';
 
       button.addEventListener('click', resetCaptcha);
-      button.addEventListener('keydown', e => {
-        if (['Enter', ' '].includes(e.key)) {
-          resetCaptcha();
-        }
-      });
 
       div.appendChild(button);
       document.querySelector('.rc-footer').appendChild(div);
@@ -75,12 +76,7 @@ function syncUI() {
       button.classList.add('working');
     }
 
-    button.addEventListener('click', start);
-    button.addEventListener('keydown', e => {
-      if (['Enter', ' '].includes(e.key)) {
-        start(e);
-      }
-    });
+    button.addEventListener('click', solveChallenge);
 
     div.appendChild(button);
     document.querySelector('.rc-buttons').appendChild(div);
@@ -136,6 +132,112 @@ function dispatchEnter(node) {
   node.dispatchEvent(new KeyboardEvent('keydown', keyEvent));
   node.dispatchEvent(new KeyboardEvent('keypress', keyEvent));
   node.click();
+}
+
+async function navigateToElement(node, {forward = true} = {}) {
+  if (document.activeElement === node) {
+    return;
+  }
+
+  if (!forward) {
+    await sendNativeMessage({command: 'pressKey', data: 'shift'});
+    await meanSleep(300);
+  }
+
+  while (document.activeElement !== node) {
+    await sendNativeMessage({command: 'tapKey', data: 'tab'});
+    await meanSleep(300);
+  }
+
+  if (!forward) {
+    await sendNativeMessage({command: 'releaseKey', data: 'shift'});
+    await meanSleep(300);
+  }
+}
+
+async function tapEnter(node, {navigateForward = true} = {}) {
+  await navigateToElement(node, {forward: navigateForward});
+  await meanSleep(200);
+  await sendNativeMessage({command: 'tapKey', data: 'enter'});
+}
+
+async function clickElement(node, browserBorder) {
+  const targetPos = await getClickPos(node, browserBorder);
+  await sendNativeMessage({command: 'moveMouse', ...targetPos});
+  await meanSleep(100);
+  await sendNativeMessage({command: 'clickMouse'});
+}
+
+async function sendNativeMessage(message) {
+  const rsp = await browser.runtime.sendMessage({
+    id: 'sendNativeMessage',
+    message
+  });
+
+  if (!rsp.success) {
+    throw new Error(`Native response: ${rsp.text}`);
+  }
+
+  return rsp;
+}
+
+async function getBrowserBorder(clickEvent) {
+  const framePos = await getFrameClientPos();
+  const scale = window.devicePixelRatio;
+
+  return {
+    left:
+      clickEvent.screenX -
+      clickEvent.clientX * scale -
+      framePos.x -
+      window.screenX * scale,
+    top:
+      clickEvent.screenY -
+      clickEvent.clientY * scale -
+      framePos.y -
+      window.screenY * scale
+  };
+}
+
+async function getFrameClientPos() {
+  if (window !== window.top) {
+    let index;
+    const siblingWindows = window.parent.frames;
+    for (let i = 0; i < siblingWindows.length; i++) {
+      if (siblingWindows[i] === window) {
+        index = i;
+        break;
+      }
+    }
+
+    return await browser.runtime.sendMessage({id: 'getFramePos', index});
+  }
+
+  return {x: 0, y: 0};
+}
+// window.devicePixelRatio
+async function getElementScreenRect(node, browserBorder) {
+  let {left: x, top: y, width, height} = node.getBoundingClientRect();
+
+  const data = await getFrameClientPos();
+  const scale = window.devicePixelRatio;
+
+  x *= scale;
+  y *= scale;
+
+  x += data.x + browserBorder.left + window.screenX * scale;
+  y += data.y + browserBorder.top + window.screenY * scale;
+
+  return {x, y, width: width * scale, height: height * scale};
+}
+
+async function getClickPos(node, browserBorder) {
+  let {x, y, width, height} = await getElementScreenRect(node, browserBorder);
+
+  return {
+    x: Math.round(x + width * getRandomFloat(0.4, 0.6)),
+    y: Math.round(y + height * getRandomFloat(0.4, 0.6))
+  };
 }
 
 async function getWitSpeechApiKey(speechService, language) {
@@ -223,25 +325,42 @@ async function getMicrosoftSpeechApiResult(
   }
 }
 
-async function solve() {
-  let audioUrl;
+async function solve(simulateUserInput, clickEvent) {
   let solution;
 
   if (isBlocked()) {
     return;
   }
 
-  const audioEl = document.querySelector('#audio-source');
-  if (audioEl) {
-    audioUrl = audioEl.src;
-  } else {
-    dispatchEnter(document.querySelector('button#recaptcha-audio-button'));
+  let browserBorder;
+  let useMouse = true;
+  if (simulateUserInput) {
+    if (clickEvent.clientX || clickEvent.clientY) {
+      browserBorder = await getBrowserBorder(clickEvent);
+    } else {
+      useMouse = false;
+    }
+  }
+
+  const audioLinkSelector = 'a.rc-audiochallenge-tdownload-link';
+  let audioEl = document.querySelector(audioLinkSelector);
+  if (!audioEl) {
+    const audioButton = document.querySelector('#recaptcha-audio-button');
+    if (simulateUserInput) {
+      if (useMouse) {
+        await clickElement(audioButton, browserBorder);
+      } else {
+        await tapEnter(audioButton, {navigateForward: false});
+      }
+    } else {
+      dispatchEnter(audioButton);
+    }
 
     const result = await Promise.race([
       new Promise(resolve => {
-        waitForElement('#audio-source', {timeout: 10000}).then(el =>
-          resolve({audioUrl: el && el.src})
-        );
+        waitForElement(audioLinkSelector, {timeout: 10000}).then(el => {
+          meanSleep(500).then(() => resolve({audioEl: el}));
+        });
       }),
       new Promise(resolve => {
         isBlocked({timeout: 10000}).then(blocked => resolve({blocked}));
@@ -252,8 +371,26 @@ async function solve() {
       return;
     }
 
-    audioUrl = result.audioUrl;
+    audioEl = result.audioEl;
   }
+
+  if (simulateUserInput) {
+    if (useMouse) {
+      audioEl.addEventListener('click', e => e.preventDefault(), {
+        capture: true,
+        once: true
+      });
+      await clickElement(audioEl, browserBorder);
+    } else {
+      audioEl.addEventListener('keydown', e => e.preventDefault(), {
+        capture: true,
+        once: true
+      });
+      await tapEnter(audioEl);
+    }
+  }
+
+  const audioUrl = audioEl.href;
 
   const lang = document.documentElement.lang;
   const audioRsp = await fetch(audioUrl, {referrer: ''});
@@ -422,33 +559,79 @@ async function solve() {
     return;
   }
 
-  document.querySelector('#audio-response').value = solution;
-  dispatchEnter(document.querySelector('#recaptcha-verify-button'));
+  const input = document.querySelector('#audio-response');
+  if (simulateUserInput) {
+    if (useMouse) {
+      await clickElement(input, browserBorder);
+    } else {
+      await navigateToElement(input, {forward: false});
+    }
+    await meanSleep(200);
+
+    await sendNativeMessage({command: 'typeText', data: solution});
+  } else {
+    input.value = solution;
+  }
+
+  const submitButton = document.querySelector('#recaptcha-verify-button');
+  if (simulateUserInput) {
+    if (useMouse) {
+      await clickElement(submitButton, browserBorder);
+    } else {
+      await tapEnter(submitButton);
+    }
+  } else {
+    dispatchEnter(submitButton);
+  }
 
   browser.runtime.sendMessage({id: 'captchaSolved'});
 }
 
-function start(e) {
-  e.preventDefault();
-  e.stopImmediatePropagation();
+function solveChallenge(ev) {
+  ev.preventDefault();
+  ev.stopImmediatePropagation();
 
-  if (solverWorking) {
+  if (!ev.isTrusted || solverWorking) {
     return;
   }
   setSolverState({working: true});
 
-  solve()
-    .then(() => {
-      setSolverState({working: false});
-    })
+  runSolver(ev)
     .catch(err => {
-      setSolverState({working: false});
-      console.log(err.toString());
       browser.runtime.sendMessage({
         id: 'notification',
         messageId: 'error_internalError'
       });
+      console.log(err.toString());
+      throw err;
+    })
+    .finally(() => {
+      setSolverState({working: false});
     });
+}
+
+async function runSolver(ev) {
+  const {simulateUserInput} = await storage.get('simulateUserInput', 'sync');
+
+  if (simulateUserInput) {
+    try {
+      await browser.runtime.sendMessage({id: 'startNativeApp'});
+    } catch (err) {
+      browser.runtime.sendMessage({
+        id: 'notification',
+        messageId: 'error_missingNativeApp'
+      });
+      return;
+    }
+  }
+
+  try {
+    await solve(simulateUserInput, ev);
+  } finally {
+    if (simulateUserInput) {
+      await browser.runtime.sendMessage({id: 'stopNativeApp'});
+    }
+  }
 }
 
 function init() {

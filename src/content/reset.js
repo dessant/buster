@@ -1,11 +1,17 @@
 (function() {
   const onMessage = function(e) {
+    e.stopImmediatePropagation();
     window.clearTimeout(timeoutId);
+
     const challengeUrl = e.detail;
-    for (const [k, v] of Object.entries(___grecaptcha_cfg.clients)) {
-      if (v['O'].D.src === challengeUrl) {
-        grecaptcha.reset(k);
-        break;
+    for (const [k, client] of Object.entries(___grecaptcha_cfg.clients)) {
+      for (const [_, items] of Object.entries(client)) {
+        for (const [_, v] of Object.entries(items)) {
+          if (v instanceof Element && v.src === challengeUrl) {
+            grecaptcha.reset(k);
+            break;
+          }
+        }
       }
     }
   };

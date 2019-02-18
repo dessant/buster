@@ -1,5 +1,7 @@
 const targetEnv = process.env.TARGET_ENV;
 
+const clientAppApiVersion = '1';
+
 const witApiKeys = {
   afrikaans: 'T3T7A2WS3TQJVBB4L4CTK2EEUI6N7YGZ',
   arabic: 'AD6RLFYBWRGGJD76SWKALZMUFVGMVCTB',
@@ -55,4 +57,4 @@ const witApiKeys = {
   zulu: 'B6OMGRZUYIJ5WLDQZODKCFCXCTH7PHB3'
 };
 
-export {targetEnv, witApiKeys};
+export {targetEnv, clientAppApiVersion, witApiKeys};

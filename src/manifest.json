@@ -20,14 +20,16 @@
     "storage",
     "tabs",
     "activeTab",
+    "contextMenus",
     "notifications",
     "webRequest",
     "webRequestBlocking",
     "webNavigation",
+    "nativeMessaging",
     "<all_urls>"
   ],
 
-  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src *; object-src 'none';",
+  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src *; object-src 'none'; frame-ancestors http://127.0.0.1:*;",
 
   "icons": {
     "16": "src/icons/app/icon-16.png",
@@ -48,6 +50,11 @@
       "run_at": "document_idle",
       "css": ["src/solve/style.css"],
       "js": ["src/manifest.js", "src/solve/script.js"]
+    },
+    {
+      "matches": ["http://127.0.0.1/buster/install?session=*"],
+      "run_at": "document_idle",
+      "js": ["src/content/install.js"]
     }
   ],
 
@@ -62,5 +69,5 @@
     "page": "src/background/index.html"
   },
 
-  "web_accessible_resources": ["src/content/reset.js"]
+  "web_accessible_resources": ["src/install/index.html", "src/content/reset.js"]
 }

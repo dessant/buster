@@ -139,6 +139,11 @@
     "description": "Title of the option."
   },
 
+  "optionTitle_simulateUserInput": {
+    "message": "Simulate user input",
+    "description": "Title of the option."
+  },
+
   "optionTitle_witSpeechApiLang": {
     "message": "API language",
     "description": "Title of the option."
@@ -420,6 +425,16 @@
     }
   },
 
+  "inputLabel_appLocation": {
+    "message": "App location",
+    "description": "Label of the input."
+  },
+
+  "inputLabel_manifestLocation": {
+    "message": "Manifest location",
+    "description": "Label of the input."
+  },
+
   "buttonText_addApi": {
     "message": "Add API",
     "description": "Text of the button."
@@ -433,6 +448,61 @@
   "buttonText_reset": {
     "message": "Reset the challenge",
     "description": "Text of the button."
+  },
+
+  "buttonText_downloadApp": {
+    "message": "Download app",
+    "description": "Text of the button."
+  },
+
+  "buttonText_installApp": {
+    "message": "Install app",
+    "description": "Text of the button."
+  },
+
+  "buttonText_goBack": {
+    "message": "Go back",
+    "description": "Text of the button."
+  },
+
+  "pageContent_optionClientAppDownloadDesc": {
+    "message": "Download and install the client app for user input simulation.",
+    "description": "Page content."
+  },
+
+  "pageContent_optionClientAppOSError": {
+    "message": "Your operating system is not supported.",
+    "description": "Page content."
+  },
+
+  "pageContent_installTitle": {
+    "message": "Install Buster Client",
+    "description": "Page content."
+  },
+
+  "pageContent_installDesc": {
+    "message": "The client app enables Buster to simulate user input and helps lower the occurrence of difficult challenges and temporary blocks.",
+    "description": "Page content."
+  },
+
+  "pageContent_installSuccessTitle": {
+    "message": "Installation finished",
+    "description": "Page content."
+  },
+
+  "pageContent_installSuccessDesc": {
+    "message": "The client app has been installed for the current browser.",
+    "description": "Page content."
+  },
+
+  "pageContent_installErrorTitle": {
+    "message": "Something went wrong",
+    "description": "Page content."
+  },
+
+  "pageContent_installErrorDesc": {
+    "message": "The installation has failed. Check the browser console for more details, and open an issue on GitHub if this error persists.",
+    "description": "Page content."
   },
 
   "pageTitle": {
@@ -472,6 +542,11 @@
 
   "error_scriptsNotAllowed": {
     "message": "Content scripts are not allowed on this page.",
+    "description": "Error message."
+  },
+
+  "error_missingNativeApp": {
+    "message": "Cannot connect to native app. Finish setting up the application or turn off user input simulation from the options page.",
     "description": "Error message."
   },
 
