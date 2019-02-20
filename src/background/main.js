@@ -149,6 +149,8 @@ async function onMessage(request, sender) {
     await resetCaptcha(sender.tab.id, sender.frameId, request.challengeUrl);
   } else if (request.id === 'getFramePos') {
     return getFramePos(sender.tab.id, sender.frameId, request.index);
+  } else if (request.id === 'getTabZoom') {
+    return browser.tabs.getZoom(sender.tab.id);
   } else if (request.id === 'startNativeApp') {
     nativePort = browser.runtime.connectNative('org.buster.client');
   } else if (request.id === 'stopNativeApp') {

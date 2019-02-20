@@ -184,15 +184,17 @@ async function sendNativeMessage(message) {
 async function getBrowserBorder(clickEvent) {
   const framePos = await getFrameClientPos();
   const scale = window.devicePixelRatio;
+  const zoom = await browser.runtime.sendMessage({id: 'getTabZoom'});
+  const osScale = scale / zoom;
 
   return {
     left:
-      clickEvent.screenX -
+      clickEvent.screenX * osScale -
       clickEvent.clientX * scale -
       framePos.x -
       window.screenX * scale,
     top:
-      clickEvent.screenY -
+      clickEvent.screenY * osScale -
       clickEvent.clientY * scale -
       framePos.y -
       window.screenY * scale
