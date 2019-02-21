@@ -1,19 +1,22 @@
 (function() {
-  const onMessage = function(e) {
-    e.stopImmediatePropagation();
-    window.clearTimeout(timeoutId);
-
-    const challengeUrl = e.detail;
+  const reset = function(challengeUrl) {
     for (const [k, client] of Object.entries(___grecaptcha_cfg.clients)) {
       for (const [_, items] of Object.entries(client)) {
         for (const [_, v] of Object.entries(items)) {
           if (v instanceof Element && v.src === challengeUrl) {
             grecaptcha.reset(k);
-            break;
+            return;
           }
         }
       }
     }
+  };
+
+  const onMessage = function(e) {
+    e.stopImmediatePropagation();
+    window.clearTimeout(timeoutId);
+
+    reset(e.detail);
   };
 
   const timeoutId = window.setTimeout(function() {
