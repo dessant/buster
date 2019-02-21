@@ -5,8 +5,8 @@ about: Suggest an idea for this project
 ---
 
 <!--
-Full automation is outside of scope for this project due to abuse.
-Clicking on the extension button is always required to solve a challenge.
+Full automation is outside of scope for this project due to its potential for misuse.
+The solver must always be manually started from the extension button.
 
 The extension helps solve reCAPTCHA challenges, other challenge types are not
 considered at this time.

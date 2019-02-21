@@ -34,7 +34,7 @@ attach screenshots.
 
 <!--
 If there was an error, open the browser console (Ctrl+Shift+J)
-and share any recent output.
+and share its recent output.
 -->
 Browser:
 ```
@@ -43,7 +43,8 @@ Browser:
 
 <!--
 If you are using the client app, find the `buster-client-log.txt` file
-in the temp folder (e.g. C:\Windows\Temp) and share its contents.
+in the temp folder (e.g. `C:\Users\<user>\AppData\Local\Temp`)
+and share its contents.
 -->
 Client app:
 ```
