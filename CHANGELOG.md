@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/dessant/buster/compare/v0.4.0...v0.4.1) (2019-02-22)
+
+
+### Bug Fixes
+
+* account for OS scaling during mouse movement ([e055850](https://github.com/dessant/buster/commit/e055850)), closes [#27](https://github.com/dessant/buster/issues/27)
+* break early during challenge reset ([baa6581](https://github.com/dessant/buster/commit/baa6581))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/dessant/buster/compare/v0.3.0...v0.4.0) (2019-02-18)
 
