@@ -2,7 +2,7 @@ import browser from 'webextension-polyfill';
 import audioBufferToWav from 'audiobuffer-to-wav';
 
 import storage from 'storage/storage';
-import {meanSleep} from 'utils/app';
+import {meanSleep, pingClientApp} from 'utils/app';
 import {
   getText,
   waitForElement,
@@ -17,7 +17,7 @@ import {
   ibmSpeechApiUrls,
   microsoftSpeechApiUrls
 } from 'utils/data';
-import {witApiKeys} from 'utils/config';
+import {clientAppVersion, witApiKeys} from 'utils/config';
 
 let solverWorking = false;
 
@@ -140,17 +140,17 @@ async function navigateToElement(node, {forward = true} = {}) {
   }
 
   if (!forward) {
-    await sendNativeMessage({command: 'pressKey', data: 'shift'});
+    await messageClientApp({command: 'pressKey', data: 'shift'});
     await meanSleep(300);
   }
 
   while (document.activeElement !== node) {
-    await sendNativeMessage({command: 'tapKey', data: 'tab'});
+    await messageClientApp({command: 'tapKey', data: 'tab'});
     await meanSleep(300);
   }
 
   if (!forward) {
-    await sendNativeMessage({command: 'releaseKey', data: 'shift'});
+    await messageClientApp({command: 'releaseKey', data: 'shift'});
     await meanSleep(300);
   }
 }
@@ -158,24 +158,24 @@ async function navigateToElement(node, {forward = true} = {}) {
 async function tapEnter(node, {navigateForward = true} = {}) {
   await navigateToElement(node, {forward: navigateForward});
   await meanSleep(200);
-  await sendNativeMessage({command: 'tapKey', data: 'enter'});
+  await messageClientApp({command: 'tapKey', data: 'enter'});
 }
 
 async function clickElement(node, browserBorder) {
   const targetPos = await getClickPos(node, browserBorder);
-  await sendNativeMessage({command: 'moveMouse', ...targetPos});
+  await messageClientApp({command: 'moveMouse', ...targetPos});
   await meanSleep(100);
-  await sendNativeMessage({command: 'clickMouse'});
+  await messageClientApp({command: 'clickMouse'});
 }
 
-async function sendNativeMessage(message) {
+async function messageClientApp(message) {
   const rsp = await browser.runtime.sendMessage({
-    id: 'sendNativeMessage',
+    id: 'messageClientApp',
     message
   });
 
   if (!rsp.success) {
-    throw new Error(`Native response: ${rsp.text}`);
+    throw new Error(`Client app response: ${rsp.text}`);
   }
 
   return rsp;
@@ -570,7 +570,7 @@ async function solve(simulateUserInput, clickEvent) {
     }
     await meanSleep(200);
 
-    await sendNativeMessage({command: 'typeText', data: solution});
+    await messageClientApp({command: 'typeText', data: solution});
   } else {
     input.value = solution;
   }
@@ -613,16 +613,67 @@ function solveChallenge(ev) {
 }
 
 async function runSolver(ev) {
-  const {simulateUserInput} = await storage.get('simulateUserInput', 'sync');
+  const {simulateUserInput, autoUpdateClientApp} = await storage.get(
+    ['simulateUserInput', 'autoUpdateClientApp'],
+    'sync'
+  );
 
   if (simulateUserInput) {
     try {
-      await browser.runtime.sendMessage({id: 'startNativeApp'});
+      let pingRsp;
+
+      try {
+        pingRsp = await pingClientApp({stop: false, checkResponse: false});
+      } catch (err) {
+        browser.runtime.sendMessage({
+          id: 'notification',
+          messageId: 'error_missingClientApp'
+        });
+        browser.runtime.sendMessage({id: 'openOptions'});
+        throw err;
+      }
+
+      if (!pingRsp.success) {
+        if (!pingRsp.apiVersion !== clientAppVersion) {
+          if (!autoUpdateClientApp || pingRsp.apiVersion === '1') {
+            browser.runtime.sendMessage({
+              id: 'notification',
+              messageId: 'error_outdatedClientApp'
+            });
+            browser.runtime.sendMessage({id: 'openOptions'});
+            throw new Error('Client app outdated');
+          } else {
+            try {
+              browser.runtime.sendMessage({
+                id: 'notification',
+                messageId: 'info_updatingClientApp'
+              });
+              const rsp = await browser.runtime.sendMessage({
+                id: 'messageClientApp',
+                message: {command: 'installClient', data: clientAppVersion}
+              });
+
+              if (rsp.success) {
+                await browser.runtime.sendMessage({id: 'stopClientApp'});
+
+                await pingClientApp({stop: false});
+              } else {
+                throw new Error(`Client app update failed: ${rsp.data}`);
+              }
+            } catch (err) {
+              browser.runtime.sendMessage({
+                id: 'notification',
+                messageId: 'error_clientAppUpdateFailed'
+              });
+              browser.runtime.sendMessage({id: 'openOptions'});
+              throw err;
+            }
+          }
+        }
+      }
     } catch (err) {
-      browser.runtime.sendMessage({
-        id: 'notification',
-        messageId: 'error_missingNativeApp'
-      });
+      console.log(err.toString());
+      await browser.runtime.sendMessage({id: 'stopClientApp'});
       return;
     }
   }
@@ -631,7 +682,7 @@ async function runSolver(ev) {
     await solve(simulateUserInput, ev);
   } finally {
     if (simulateUserInput) {
-      await browser.runtime.sendMessage({id: 'stopNativeApp'});
+      await browser.runtime.sendMessage({id: 'stopClientApp'});
     }
   }
 }

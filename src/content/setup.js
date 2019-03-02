@@ -1,5 +1,5 @@
-function install() {
-  const url = new URL(chrome.extension.getURL('/src/install/index.html'));
+function setup() {
+  const url = new URL(chrome.extension.getURL('/src/setup/index.html'));
   url.searchParams.set(
     'session',
     new URL(window.location.href).searchParams.get('session')
@@ -11,4 +11,4 @@ function install() {
   document.body.appendChild(frame);
 }
 
-install();
+setup();

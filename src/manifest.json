@@ -52,9 +52,9 @@
       "js": ["src/manifest.js", "src/solve/script.js"]
     },
     {
-      "matches": ["http://127.0.0.1/buster/install?session=*"],
+      "matches": ["http://127.0.0.1/buster/setup?session=*"],
       "run_at": "document_idle",
-      "js": ["src/content/install.js"]
+      "js": ["src/content/setup.js"]
     }
   ],
 
@@ -69,5 +69,5 @@
     "page": "src/background/index.html"
   },
 
-  "web_accessible_resources": ["src/install/index.html", "src/content/reset.js"]
+  "web_accessible_resources": ["src/setup/index.html", "src/content/reset.js"]
 }

@@ -100,6 +100,15 @@
           <v-switch id="si" v-model="options.simulateUserInput"></v-switch>
         </v-form-field>
       </div>
+
+      <div class="option">
+        <v-form-field input-id="auc"
+            v-if="options.simulateUserInput"
+            :label="getText('optionTitle_autoUpdateClientApp')">
+          <v-switch id="auc" v-model="options.autoUpdateClientApp"></v-switch>
+        </v-form-field>
+      </div>
+
       <div class="client-bownload" v-if="showClientAppNotice">
         <div class="download-desc">
           {{ getText('pageContent_optionClientAppDownloadDesc') }}
@@ -131,6 +140,7 @@ import {Button, Select, Switch, FormField, TextField} from 'ext-components';
 import storage from 'storage/storage';
 import {getOptionLabels, pingClientApp} from 'utils/app';
 import {getText, getPlatform} from 'utils/common';
+import {clientAppVersion} from 'utils/config';
 import {
   optionKeys,
   clientAppPlatforms,
@@ -199,7 +209,8 @@ export default {
         witSpeechApiKeys: {},
         loadEnglishChallenge: false,
         tryEnglishSpeechModel: false,
-        simulateUserInput: false
+        simulateUserInput: false,
+        autoUpdateClientApp: false
       }
     };
   },
@@ -213,7 +224,7 @@ export default {
           if (!this.clientAppDownloadUrl) {
             const {os, arch} = await getPlatform();
             if (clientAppPlatforms.includes(`${os}/${arch}`)) {
-              this.clientAppDownloadUrl = `https://github.com/dessant/buster-client/releases/download/v0.1.0/buster-client-v0.1.0-${os}-${arch}`;
+              this.clientAppDownloadUrl = `https://github.com/dessant/buster-client/releases/download/v${clientAppVersion}/buster-client-setup-v${clientAppVersion}-${os}-${arch}`;
               if (os === 'windows') {
                 this.clientAppDownloadUrl += '.exe';
               }

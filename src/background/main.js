@@ -11,9 +11,11 @@ import {
   executeCode,
   executeFile,
   scriptsAllowed,
-  functionInContext
+  functionInContext,
+  getBrowser,
+  getPlatform
 } from 'utils/common';
-import {clientAppApiVersion} from 'utils/config';
+import {clientAppVersion} from 'utils/config';
 
 let nativePort;
 
@@ -151,18 +153,24 @@ async function onMessage(request, sender) {
     return getFramePos(sender.tab.id, sender.frameId, request.index);
   } else if (request.id === 'getTabZoom') {
     return browser.tabs.getZoom(sender.tab.id);
-  } else if (request.id === 'startNativeApp') {
+  } else if (request.id === 'startClientApp') {
     nativePort = browser.runtime.connectNative('org.buster.client');
-  } else if (request.id === 'stopNativeApp') {
+  } else if (request.id === 'stopClientApp') {
     if (nativePort) {
       nativePort.disconnect();
     }
-  } else if (request.id === 'sendNativeMessage') {
+  } else if (request.id === 'messageClientApp') {
     const message = {
-      apiVersion: clientAppApiVersion,
+      apiVersion: clientAppVersion,
       ...request.message
     };
-    return await sendNativeMessage(nativePort, message);
+    return sendNativeMessage(nativePort, message);
+  } else if (request.id === 'openOptions') {
+    browser.runtime.openOptionsPage();
+  } else if (request.id === 'getPlatform') {
+    return getPlatform();
+  } else if (request.id === 'getBrowser') {
+    return getBrowser();
   }
 }
 

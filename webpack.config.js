@@ -30,7 +30,7 @@ module.exports = {
     options: './src/options/main.js',
     contribute: './src/contribute/main.js',
     solve: './src/solve/main.js',
-    install: './src/install/main.js'
+    setup: './src/setup/main.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist', targetEnv, 'src'),
@@ -46,7 +46,7 @@ module.exports = {
         commonsUi: {
           name: 'commons-ui',
           chunks: chunk => {
-            return ['options', 'contribute', 'install'].includes(chunk.name);
+            return ['options', 'contribute', 'setup'].includes(chunk.name);
           },
           minChunks: 2
         }

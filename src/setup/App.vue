@@ -3,7 +3,7 @@
 <div id="app" v-if="dataLoaded">
   <div class="wrap" v-if="!isInstallSuccess && !isInstallError">
     <div class="title">
-      {{ getText('buttonText_installApp') }}
+      {{ getText('pageContent_installTitle') }}
     </div>
     <div class="desc">
       {{ getText('pageContent_installDesc') }}
@@ -13,7 +13,13 @@
         v-model.trim="appDir"
         :label="getText('inputLabel_appLocation')">
     </v-textfield>
+
+    <div class="manifest-desc" v-if="manifestDirEditable">
+      {{ getText('pageContent_manifestLocationDesc') }}
+    </div>
+
     <v-textfield
+        v-if="manifestDirEditable"
         v-model.trim="manifestDir"
         :label="getText('inputLabel_manifestLocation')">
     </v-textfield>
@@ -52,7 +58,7 @@ import {Button, TextField} from 'ext-components';
 
 import storage from 'storage/storage';
 import {pingClientApp} from 'utils/app';
-import {getText, getBrowser} from 'utils/common';
+import {getText} from 'utils/common';
 import {targetEnv} from 'utils/config';
 
 export default {
@@ -73,6 +79,7 @@ export default {
       session: urlParams.get('session'),
       appDir: '',
       manifestDir: '',
+      manifestDirEditable: false,
 
       isInstalling: false,
       isInstallSuccess: false,
@@ -113,15 +120,30 @@ export default {
       } finally {
         this.isInstalling = false;
       }
+
+      if (this.isInstallSuccess) {
+        const data = new FormData();
+        data.append('session', this.session);
+
+        await fetch(`${this.apiUrl}/setup/close`, {
+          referrer: '',
+          mode: 'cors',
+          method: 'POST',
+          body: data
+        });
+      }
     },
 
     location: async function() {
       const data = new FormData();
       data.append('session', this.session);
-      data.append('browser', (await getBrowser()).name);
+      data.append(
+        'browser',
+        (await browser.runtime.sendMessage({id: 'getBrowser'})).name
+      );
       data.append('targetEnv', targetEnv);
 
-      const rsp = await fetch(`${this.apiUrl}/install/location`, {
+      const rsp = await fetch(`${this.apiUrl}/setup/location`, {
         referrer: '',
         mode: 'cors',
         method: 'POST',
@@ -146,7 +168,7 @@ export default {
       data.append('targetEnv', targetEnv);
       data.append('extension', this.getExtensionId());
 
-      const rsp = await fetch(`${this.apiUrl}/install/run`, {
+      const rsp = await fetch(`${this.apiUrl}/setup/install`, {
         referrer: '',
         mode: 'cors',
         method: 'POST',
@@ -166,6 +188,11 @@ export default {
 
   created: async function() {
     await this.setLocation();
+
+    const {os} = await browser.runtime.sendMessage({id: 'getPlatform'});
+    if (os !== 'windows') {
+      this.manifestDirEditable = true;
+    }
 
     this.dataLoaded = true;
   }
@@ -199,7 +226,8 @@ body {
 }
 
 .title,
-.desc {
+.desc,
+.manifest-desc {
   @include mdc-theme-prop('color', 'text-primary-on-light');
 }
 
@@ -218,6 +246,12 @@ body {
   margin-bottom: 24px;
 }
 
+.manifest-desc {
+  @include mdc-typography('caption');
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
 .button {
   @include mdc-button-ink-color(#fff);
   width: 200px;
@@ -225,7 +259,7 @@ body {
 }
 
 .install-button {
-  margin-top: 24px;
+  margin-top: 36px;
 }
 
 .error-button {

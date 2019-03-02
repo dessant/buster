@@ -8,7 +8,8 @@ const optionKeys = [
   'witSpeechApiKeys',
   'loadEnglishChallenge',
   'tryEnglishSpeechModel',
-  'simulateUserInput'
+  'simulateUserInput',
+  'autoUpdateClientApp'
 ];
 
 const clientAppPlatforms = ['windows/amd64', 'linux/amd64', 'macos/amd64'];

@@ -85,13 +85,29 @@ function sendNativeMessage(port, message, {timeout = 10000} = {}) {
   });
 }
 
-async function pingClientApp() {
-  await browser.runtime.sendMessage({id: 'startNativeApp'});
-  await browser.runtime.sendMessage({
-    id: 'sendNativeMessage',
+async function pingClientApp({
+  start = true,
+  stop = true,
+  checkResponse = true
+} = {}) {
+  if (start) {
+    await browser.runtime.sendMessage({id: 'startClientApp'});
+  }
+
+  const rsp = await browser.runtime.sendMessage({
+    id: 'messageClientApp',
     message: {command: 'ping'}
   });
-  await browser.runtime.sendMessage({id: 'stopNativeApp'});
+
+  if (checkResponse && (!rsp.success || rsp.data !== 'pong')) {
+    throw new Error(`Client app response: ${rsp.data}`);
+  }
+
+  if (stop) {
+    await browser.runtime.sendMessage({id: 'stopClientApp'});
+  }
+
+  return rsp;
 }
 
 export {

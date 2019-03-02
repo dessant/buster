@@ -144,6 +144,11 @@
     "description": "Title of the option."
   },
 
+  "optionTitle_autoUpdateClientApp": {
+    "message": "Automatically update client app",
+    "description": "Title of the option."
+  },
+
   "optionTitle_witSpeechApiLang": {
     "message": "API language",
     "description": "Title of the option."
@@ -466,7 +471,7 @@
   },
 
   "pageContent_optionClientAppDownloadDesc": {
-    "message": "Download and install the client app for user input simulation.",
+    "message": "Download and install the client app to enable user input simulation.",
     "description": "Page content."
   },
 
@@ -481,7 +486,7 @@
   },
 
   "pageContent_installDesc": {
-    "message": "The client app enables Buster to simulate user input and helps lower the occurrence of difficult challenges and temporary blocks.",
+    "message": "The client app enables Buster to simulate user input and helps improve the success rate of the extension and lower the occurrence of temporary blocks.",
     "description": "Page content."
   },
 
@@ -502,6 +507,11 @@
 
   "pageContent_installErrorDesc": {
     "message": "The installation has failed. Check the browser console for more details, and open an issue on GitHub if this error persists.",
+    "description": "Page content."
+  },
+
+  "pageContent_manifestLocationDesc": {
+    "message": "The manifest location is browser-dependent, edit the path only if the installation does not succeed.",
     "description": "Page content."
   },
 
@@ -530,6 +540,11 @@
     "description": "Title of the page."
   },
 
+  "info_updatingClientApp": {
+    "message": "Updating client app. This will take a moment.",
+    "description": "Info message."
+  },
+
   "error_captchaNotSolved": {
     "message": "Captcha could not be solved. Try again after requesting a new challenge.",
     "description": "Error message."
@@ -545,8 +560,18 @@
     "description": "Error message."
   },
 
-  "error_missingNativeApp": {
-    "message": "Cannot connect to native app. Finish setting up the application or turn off user input simulation from the options page.",
+  "error_missingClientApp": {
+    "message": "Cannot connect to client app. Finish setting up the app or turn off user input simulation from the extension's options page.",
+    "description": "Error message."
+  },
+
+  "error_outdatedClientApp": {
+    "message": "The client app is outdated. Download and install the latest version from the extension's options page.",
+    "description": "Error message."
+  },
+
+  "error_clientAppUpdateFailed": {
+    "message": "The client app cannot be updated. Download and install the latest version from the extension's options page.",
     "description": "Error message."
   },
 
