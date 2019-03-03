@@ -99,12 +99,12 @@ async function pingClientApp({
     message: {command: 'ping'}
   });
 
-  if (checkResponse && (!rsp.success || rsp.data !== 'pong')) {
-    throw new Error(`Client app response: ${rsp.data}`);
-  }
-
   if (stop) {
     await browser.runtime.sendMessage({id: 'stopClientApp'});
+  }
+
+  if (checkResponse && (!rsp.success || rsp.data !== 'pong')) {
+    throw new Error(`Client app response: ${rsp.data}`);
   }
 
   return rsp;
