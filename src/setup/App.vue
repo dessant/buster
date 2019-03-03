@@ -26,7 +26,7 @@
 
     <v-button class="button install-button"
         :unelevated="true"
-        :disabled="isInstalling || !appDir || !manifestDir"
+        :disabled="isInstalling || !appDir || (manifestDirEditable && !manifestDir)"
         @click="runInstall">
       {{ getText('buttonText_installApp') }}
     </v-button>
