@@ -657,6 +657,11 @@ async function runSolver(ev) {
                 await browser.runtime.sendMessage({id: 'stopClientApp'});
 
                 await pingClientApp({stop: false});
+
+                await browser.runtime.sendMessage({
+                  id: 'messageClientApp',
+                  message: {command: 'installCleanup'}
+                });
               } else {
                 throw new Error(`Client app update failed: ${rsp.data}`);
               }
