@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/dessant/buster/compare/v0.4.1...v0.5.0) (2019-03-04)
+
+
+### Bug Fixes
+
+* allow installation on windows if manifest location is not set ([aebd114](https://github.com/dessant/buster/commit/aebd114))
+* clean up after client app update ([4b4d645](https://github.com/dessant/buster/commit/4b4d645))
+* close client app before checking ping response ([715aab7](https://github.com/dessant/buster/commit/715aab7))
+* wait for client app to close before launching new version ([d9aef00](https://github.com/dessant/buster/commit/d9aef00))
+
+
+### Features
+
+* add option for automatically updating client app ([e17107f](https://github.com/dessant/buster/commit/e17107f))
+* require new client app version ([0879515](https://github.com/dessant/buster/commit/0879515))
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/dessant/buster/compare/v0.4.0...v0.4.1) (2019-02-22)
 
