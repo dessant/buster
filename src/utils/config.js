@@ -1,6 +1,6 @@
 const targetEnv = process.env.TARGET_ENV;
 
-const clientAppVersion = '0.1.0';
+const clientAppVersion = '0.2.0';
 
 const witApiKeys = {
   afrikaans: 'T3T7A2WS3TQJVBB4L4CTK2EEUI6N7YGZ',
