@@ -7,7 +7,8 @@ import {
   getText,
   waitForElement,
   arrayBufferToBase64,
-  getRandomFloat
+  getRandomFloat,
+  sleep
 } from 'utils/common';
 import {
   captchaGoogleSpeechApiLangCodes,
@@ -655,6 +656,7 @@ async function runSolver(ev) {
 
               if (rsp.success) {
                 await browser.runtime.sendMessage({id: 'stopClientApp'});
+                await sleep(10000);
 
                 await pingClientApp({stop: false});
 

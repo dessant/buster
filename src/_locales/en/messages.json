@@ -541,7 +541,7 @@
   },
 
   "info_updatingClientApp": {
-    "message": "Updating client app. This will take a moment.",
+    "message": "Updating client app. Solving will continue in a moment, do not switch away from the current tab.",
     "description": "Info message."
   },
 
