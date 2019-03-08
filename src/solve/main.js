@@ -182,11 +182,15 @@ async function messageClientApp(message) {
   return rsp;
 }
 
+async function getOsScale() {
+  const zoom = await browser.runtime.sendMessage({id: 'getTabZoom'});
+  return window.devicePixelRatio / zoom;
+}
+
 async function getBrowserBorder(clickEvent) {
   const framePos = await getFrameClientPos();
   const scale = window.devicePixelRatio;
-  const zoom = await browser.runtime.sendMessage({id: 'getTabZoom'});
-  const osScale = scale / zoom;
+  const osScale = await getOsScale();
 
   return {
     left:
@@ -218,7 +222,7 @@ async function getFrameClientPos() {
 
   return {x: 0, y: 0};
 }
-// window.devicePixelRatio
+
 async function getElementScreenRect(node, browserBorder) {
   let {left: x, top: y, width, height} = node.getBoundingClientRect();
 
@@ -230,6 +234,13 @@ async function getElementScreenRect(node, browserBorder) {
 
   x += data.x + browserBorder.left + window.screenX * scale;
   y += data.y + browserBorder.top + window.screenY * scale;
+
+  const {os} = await browser.runtime.sendMessage({id: 'getPlatform'});
+  if (os === 'windows') {
+    const osScale = await getOsScale();
+    x /= osScale;
+    y /= osScale;
+  }
 
   return {x, y, width: width * scale, height: height * scale};
 }
