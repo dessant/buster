@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/dessant/buster/compare/v0.5.0...v0.5.1) (2019-03-08)
+
+
+### Bug Fixes
+
+* divide click coordinates by display scale on Windows ([0db060d](https://github.com/dessant/buster/commit/0db060d)), closes [#40](https://github.com/dessant/buster/issues/40)
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/dessant/buster/compare/v0.4.1...v0.5.0) (2019-03-04)
 
