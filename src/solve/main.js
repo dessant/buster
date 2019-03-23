@@ -356,8 +356,8 @@ async function solve(simulateUserInput, clickEvent) {
     }
   }
 
-  const audioLinkSelector = 'a.rc-audiochallenge-tdownload-link';
-  let audioEl = document.querySelector(audioLinkSelector);
+  const audioElSelector = 'audio#audio-source';
+  let audioEl = document.querySelector(audioElSelector);
   if (!audioEl) {
     const audioButton = document.querySelector('#recaptcha-audio-button');
     if (simulateUserInput) {
@@ -372,7 +372,7 @@ async function solve(simulateUserInput, clickEvent) {
 
     const result = await Promise.race([
       new Promise(resolve => {
-        waitForElement(audioLinkSelector, {timeout: 10000}).then(el => {
+        waitForElement(audioElSelector, {timeout: 10000}).then(el => {
           meanSleep(500).then(() => resolve({audioEl: el}));
         });
       }),
@@ -389,22 +389,48 @@ async function solve(simulateUserInput, clickEvent) {
   }
 
   if (simulateUserInput) {
+    const muteAudio = function() {
+      audioEl.muted = true;
+    };
+    const unmuteAudio = function() {
+      removeCallbacks();
+      audioEl.muted = false;
+    };
+
+    audioEl.addEventListener('playing', muteAudio, {
+      capture: true,
+      once: true
+    });
+    audioEl.addEventListener('ended', unmuteAudio, {
+      capture: true,
+      once: true
+    });
+
+    const removeCallbacks = function() {
+      window.clearTimeout(timeoutId);
+      audioEl.removeEventListener('playing', muteAudio, {
+        capture: true,
+        once: true
+      });
+      audioEl.removeEventListener('ended', unmuteAudio, {
+        capture: true,
+        once: true
+      });
+    };
+
+    const timeoutId = window.setTimeout(unmuteAudio, 10000); // 10 seconds
+
+    const playButton = document.querySelector(
+      '.rc-audiochallenge-play-button > button'
+    );
     if (useMouse) {
-      audioEl.addEventListener('click', e => e.preventDefault(), {
-        capture: true,
-        once: true
-      });
-      await clickElement(audioEl, browserBorder);
+      await clickElement(playButton, browserBorder);
     } else {
-      audioEl.addEventListener('keydown', e => e.preventDefault(), {
-        capture: true,
-        once: true
-      });
-      await tapEnter(audioEl);
+      await tapEnter(playButton);
     }
   }
 
-  const audioUrl = audioEl.href;
+  const audioUrl = audioEl.src;
 
   const lang = document.documentElement.lang;
   const audioRsp = await fetch(audioUrl, {referrer: ''});
@@ -578,7 +604,7 @@ async function solve(simulateUserInput, clickEvent) {
     if (useMouse) {
       await clickElement(input, browserBorder);
     } else {
-      await navigateToElement(input, {forward: false});
+      await navigateToElement(input);
     }
     await meanSleep(200);
 

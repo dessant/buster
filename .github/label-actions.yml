@@ -10,13 +10,13 @@ issues:
       close: true
     wontfix-automation:
       comment: >
-        @{issue-author}, full automation and scripting are outside of scope
-        for this project due to their potential for misuse.
+        @{issue-author}, full automation and scripting are not within the scope
+        of this project due to their potential for misuse.
         The solver must always be manually started from the extension button.
       close: true
     wontfix-service:
       comment: >
         @{issue-author}, the extension helps solve reCAPTCHA audio challenges.
-        Other services and challenge types are not supported
-        and are outside of scope for this project.
+        Other services and challenge types are not within the scope
+        of this project.
       close: true
