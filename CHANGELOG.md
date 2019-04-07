@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/dessant/buster/compare/v0.5.1...v0.5.2) (2019-04-07)
+
+
+### Bug Fixes
+
+* get audio URL from audio element ([4a823f9](https://github.com/dessant/buster/commit/4a823f9))
+* remove demo speech service ([f7b9554](https://github.com/dessant/buster/commit/f7b9554))
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/dessant/buster/compare/v0.5.0...v0.5.1) (2019-03-08)
 
