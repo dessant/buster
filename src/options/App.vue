@@ -162,7 +162,6 @@ export default {
 
       selectOptions: getOptionLabels({
         speechService: [
-          'googleSpeechApiDemo',
           'witSpeechApiDemo',
           'googleSpeechApi',
           'witSpeechApi',

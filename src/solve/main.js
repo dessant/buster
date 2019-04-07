@@ -465,27 +465,20 @@ async function solve(simulateUserInput, clickEvent) {
       }
       solution = await getWitSpeechApiResult(apiKey, audioContent);
     }
-  } else if (
-    ['googleSpeechApiDemo', 'googleSpeechApi'].includes(speechService)
-  ) {
-    let apiUrl;
-    if (speechService === 'googleSpeechApiDemo') {
-      apiUrl =
-        'https://cxl-services.appspot.com/proxy?url=https://speech.googleapis.com/v1p1beta1/speech:recognize';
-    } else {
-      const {googleSpeechApiKey: apiKey} = await storage.get(
-        'googleSpeechApiKey',
-        'sync'
-      );
-      if (!apiKey) {
-        browser.runtime.sendMessage({
-          id: 'notification',
-          messageId: 'error_missingApiKey'
-        });
-        return;
-      }
-      apiUrl = `https://speech.googleapis.com/v1p1beta1/speech:recognize?key=${apiKey}`;
+  } else if (speechService === 'googleSpeechApi') {
+    const {googleSpeechApiKey: apiKey} = await storage.get(
+      'googleSpeechApiKey',
+      'sync'
+    );
+    if (!apiKey) {
+      browser.runtime.sendMessage({
+        id: 'notification',
+        messageId: 'error_missingApiKey'
+      });
+      return;
     }
+    const apiUrl = `https://speech.googleapis.com/v1p1beta1/speech:recognize?key=${apiKey}`;
+
     const language = captchaGoogleSpeechApiLangCodes[lang] || 'en-US';
 
     const data = {

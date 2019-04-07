@@ -19,11 +19,6 @@
     "description": "Title of the option."
   },
 
-  "optionValue_speechService_googleSpeechApiDemo": {
-    "message": "Google Cloud Speech API (demo)",
-    "description": "Value of the option."
-  },
-
   "optionValue_speechService_googleSpeechApi": {
     "message": "Google Cloud Speech API",
     "description": "Value of the option."
