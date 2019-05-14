@@ -231,18 +231,22 @@ async function getElementScreenRect(node, browserBorder) {
 
   x *= scale;
   y *= scale;
+  width *= scale;
+  height *= scale;
 
   x += data.x + browserBorder.left + window.screenX * scale;
   y += data.y + browserBorder.top + window.screenY * scale;
 
   const {os} = await browser.runtime.sendMessage({id: 'getPlatform'});
-  if (os === 'windows') {
+  if (['windows','macos'].indexOf(os) > -1) {
     const osScale = await getOsScale();
     x /= osScale;
     y /= osScale;
+    width /= osScale;
+    height /= osScale;
   }
 
-  return {x, y, width: width * scale, height: height * scale};
+  return {x, y, width: width, height: height};
 }
 
 async function getClickPos(node, browserBorder) {
