@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.5.3"></a>
+## [0.5.3](https://github.com/dessant/buster/compare/v0.5.2...v0.5.3) (2019-05-14)
+
+
+### Bug Fixes
+
+* correct the target element width / height for higher density screens ([22edae2](https://github.com/dessant/buster/commit/22edae2)), closes [#71](https://github.com/dessant/buster/issues/71)
+
+
+
 <a name="0.5.2"></a>
 ## [0.5.2](https://github.com/dessant/buster/compare/v0.5.1...v0.5.2) (2019-04-07)
 
