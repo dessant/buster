@@ -238,7 +238,7 @@ async function getElementScreenRect(node, browserBorder) {
   y += data.y + browserBorder.top + window.screenY * scale;
 
   const {os} = await browser.runtime.sendMessage({id: 'getPlatform'});
-  if (['windows','macos'].indexOf(os) > -1) {
+  if (['windows', 'macos'].includes(os)) {
     const osScale = await getOsScale();
     x /= osScale;
     y /= osScale;
@@ -246,7 +246,7 @@ async function getElementScreenRect(node, browserBorder) {
     height /= osScale;
   }
 
-  return {x, y, width: width, height: height};
+return {x, y, width, height};
 }
 
 async function getClickPos(node, browserBorder) {
