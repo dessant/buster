@@ -16,8 +16,10 @@
 
 The continued development of Buster is made possible
 thanks to the support of awesome backers. If you'd like to join them,
-please consider contributing with [Patreon](https://www.patreon.com/dessant),
-[PayPal](https://www.paypal.me/ArminSebastian) or [Bitcoin](https://goo.gl/uJUAaU).
+please consider contributing with
+[Patreon](https://armin.dev/go/patreon?pr=buster&src=repo),
+[PayPal](https://armin.dev/go/paypal?pr=buster&src=repo) or
+[Bitcoin](https://armin.dev/go/bitcoin?pr=buster&src=repo).
 
 ## Description
 
@@ -26,7 +28,7 @@ please consider contributing with [Patreon](https://www.patreon.com/dessant),
 > — <cite>Byron "Buster" Bluth, reading a map</cite>
 
 Buster is a browser extension which helps you to solve difficult captchas
-by completing reCAPTCHA audio challenges using automatic speech recognition.
+by completing reCAPTCHA audio challenges using speech recognition.
 Challenges are solved by clicking on the extension button at the bottom
 of the reCAPTCHA widget.
 
