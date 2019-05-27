@@ -65,7 +65,7 @@
             :label="getText('optionTitle_witSpeechApiLang')">
         </v-select>
         <v-button
-            :stroked="true"
+            :outlined="true"
             :disabled="!witSpeechApiLang"
             @click="addWitSpeechApi">
           {{ getText('buttonText_addApi') }}
@@ -304,11 +304,6 @@ body {
   overflow: visible !important;
 }
 
-.mdc-select__menu {
-  top: 0 !important;
-  left: inherit !important;
-}
-
 .mdc-switch {
   margin-right: 12px;
 }
@@ -321,15 +316,15 @@ body {
 
 .section-title,
 .section-desc {
-  @include mdc-theme-prop('color', 'text-primary-on-light');
+  @include mdc-theme-prop(color, text-primary-on-light);
 }
 
 .section-title {
-  @include mdc-typography('title');
+  @include mdc-typography(headline6);
 }
 
 .section-desc {
-  @include mdc-typography('body1');
+  @include mdc-typography(body2);
   padding-top: 8px;
 }
 
@@ -354,12 +349,11 @@ body {
 .wit-add-api {
   display: flex;
   align-items: center;
-  height: 56px;
 }
 
 .wit-add-api > button {
-  align-self: end;
-  margin-left: 36px;
+  margin-left: 24px;
+  white-space: nowrap;
 }
 
 .client-bownload {
@@ -368,8 +362,8 @@ body {
 
 .download-desc,
 .download-error {
-  @include mdc-theme-prop('color', 'text-primary-on-light');
-  @include mdc-typography('body1');
+  @include mdc-theme-prop(color, text-primary-on-light);
+  @include mdc-typography(body2);
   min-width: 300px;
 }
 

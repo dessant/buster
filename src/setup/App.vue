@@ -228,11 +228,11 @@ body {
 .title,
 .desc,
 .manifest-desc {
-  @include mdc-theme-prop('color', 'text-primary-on-light');
+  @include mdc-theme-prop(color, text-primary-on-light);
 }
 
 .title {
-  @include mdc-typography('title');
+  @include mdc-typography(headline6);
   margin-top: 48px;
 }
 
@@ -241,13 +241,13 @@ body {
 }
 
 .desc {
-  @include mdc-typography('body1');
+  @include mdc-typography(body2);
   margin-top: 24px;
   margin-bottom: 24px;
 }
 
 .manifest-desc {
-  @include mdc-typography('caption');
+  @include mdc-typography(caption);
   margin-top: 12px;
   margin-bottom: 4px;
 }
