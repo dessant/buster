@@ -323,7 +323,7 @@ const ibmSpeechApiUrls = {
     'https://gateway-tok.watsonplatform.net/speech-to-text/api/v1/recognize'
 };
 
-// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-apis#regions-and-endpoints
+// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-speech-to-text
 const microsoftSpeechApiUrls = {
   eastUs:
     'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
