@@ -1,6 +1,16 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [0.6.0](https://github.com/dessant/buster/compare/v0.5.3...v0.6.0) (2019-05-28)
+
+
+### Features
+
+* build with travis ([43f9ce5](https://github.com/dessant/buster/commit/43f9ce5))
+* transcribe audio in background script ([2c89926](https://github.com/dessant/buster/commit/2c89926)), closes [#81](https://github.com/dessant/buster/issues/81)
+
+
 
 <a name="0.5.3"></a>
 ## [0.5.3](https://github.com/dessant/buster/compare/v0.5.2...v0.5.3) (2019-05-14)
