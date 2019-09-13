@@ -465,9 +465,20 @@
     "description": "Text of the button."
   },
 
+  "linkText_installGuide": {
+    "message": "Installation guide",
+    "description": "Text of the link."
+  },
+
   "pageContent_optionClientAppDownloadDesc": {
-    "message": "Download and install the client app to enable user input simulation.",
-    "description": "Page content."
+    "message": "Download and install the client app to enable user input simulation. $INSTALLGUIDE$",
+    "description": "Page content.",
+    "placeholders": {
+      "installGuide": {
+        "content": "$1",
+        "example": "Installation guide"
+      }
+    }
   },
 
   "pageContent_optionClientAppOSError": {

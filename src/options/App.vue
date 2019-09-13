@@ -110,8 +110,9 @@
       </div>
 
       <div class="client-bownload" v-if="showClientAppNotice">
-        <div class="download-desc">
-          {{ getText('pageContent_optionClientAppDownloadDesc') }}
+        <div class="download-desc"
+            v-html="getText('pageContent_optionClientAppDownloadDesc',
+              [`<a target='_blank' rel='noreferrer' href='${installGuideUrl}'>${getText('linkText_installGuide')}</a>`])">
         </div>
         <div class="download-error" v-if="!clientAppDownloadUrl">
           {{ getText('pageContent_optionClientAppOSError') }}
@@ -197,6 +198,7 @@ export default {
 
       showClientAppNotice: false,
       clientAppDownloadUrl: '',
+      installGuideUrl: '',
 
       options: {
         speechService: '',
@@ -223,6 +225,7 @@ export default {
           if (!this.clientAppDownloadUrl) {
             const {os, arch} = await getPlatform();
             if (clientAppPlatforms.includes(`${os}/${arch}`)) {
+              this.installGuideUrl = `https://github.com/dessant/buster-client/wiki/Installing-the-client-app#${os}`;
               this.clientAppDownloadUrl = `https://github.com/dessant/buster-client/releases/download/v${clientAppVersion}/buster-client-setup-v${clientAppVersion}-${os}-${arch}`;
               if (os === 'windows') {
                 this.clientAppDownloadUrl += '.exe';
