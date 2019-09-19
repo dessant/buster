@@ -355,6 +355,11 @@ async function solve(simulateUserInput, clickEvent) {
   }
 
   browser.runtime.sendMessage({id: 'captchaSolved'});
+  
+  setTimeout(function(){
+    if(!document.querySelector("#recaptcha-verify-button").disabled)
+      solveChallenge(clickEvent);
+  }, 500);
 }
 
 function solveChallenge(ev) {
