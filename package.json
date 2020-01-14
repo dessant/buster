@@ -22,8 +22,6 @@
     "build:prod:zip:all": "run-s 'build:prod:zip:@(chrome|firefox|opera)'",
     "start": "web-ext run -s dist/firefox",
     "start:android": "yarn start -t firefox-android",
-    "exec": "run-s build:firefox start",
-    "exec:prod": "run-s build:prod:firefox start",
     "inspect": "cross-env NODE_ENV=production gulp inspect",
     "update": "ncu --upgrade && yarn",
     "push": "git push --follow-tags origin master",
