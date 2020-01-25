@@ -57,10 +57,12 @@ async function getFramePos(tabId, frameId, frameIndex) {
   let y = 0;
 
   while (true) {
-    frameId = (await browser.webNavigation.getFrame({
-      tabId,
-      frameId
-    })).parentFrameId;
+    frameId = (
+      await browser.webNavigation.getFrame({
+        tabId,
+        frameId
+      })
+    ).parentFrameId;
     if (frameId === -1) {
       break;
     }
@@ -80,10 +82,12 @@ async function getFramePos(tabId, frameId, frameIndex) {
 }
 
 async function resetCaptcha(tabId, frameId, challengeUrl) {
-  frameId = (await browser.webNavigation.getFrame({
-    tabId,
-    frameId: frameId
-  })).parentFrameId;
+  frameId = (
+    await browser.webNavigation.getFrame({
+      tabId,
+      frameId: frameId
+    })
+  ).parentFrameId;
 
   if (!(await scriptsAllowed(tabId, frameId))) {
     await showNotification({messageId: 'error_scriptsNotAllowed'});

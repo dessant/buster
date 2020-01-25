@@ -183,7 +183,7 @@ See the LICENSE file for further information.
 
   writeFileSync(`${distDir}/NOTICE`, notice);
   gulp.src(['LICENSE']).pipe(gulp.dest(distDir));
-done();
+  done();
 });
 
 gulp.task('copy', function(done) {

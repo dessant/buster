@@ -1,137 +1,190 @@
-<!-- prettier-ignore -->
 <template>
-<div id="app" v-if="dataLoaded">
-  <div class="section">
-    <div class="section-title" v-once>
-      {{ getText('optionSectionTitle_services') }}
-    </div>
-    <div class="option-wrap">
-      <div class="option select">
-        <v-select :label="getText('optionTitle_speechService')"
+  <div id="app" v-if="dataLoaded">
+    <div class="section">
+      <div class="section-title" v-once>
+        {{ getText('optionSectionTitle_services') }}
+      </div>
+      <div class="option-wrap">
+        <div class="option select">
+          <v-select
+            :label="getText('optionTitle_speechService')"
             v-model="options.speechService"
-            :options="selectOptions.speechService">
-        </v-select>
-      </div>
+            :options="selectOptions.speechService"
+          >
+          </v-select>
+        </div>
 
-      <div class="option text-field"
-          v-if="options.speechService === 'googleSpeechApi'">
-        <v-textfield v-model.trim="options.googleSpeechApiKey"
-            :label="getText('inputLabel_apiKey')">
-        </v-textfield>
-      </div>
+        <div
+          class="option text-field"
+          v-if="options.speechService === 'googleSpeechApi'"
+        >
+          <v-textfield
+            v-model.trim="options.googleSpeechApiKey"
+            :label="getText('inputLabel_apiKey')"
+          >
+          </v-textfield>
+        </div>
 
-      <div class="option select"
-          v-if="options.speechService === 'ibmSpeechApi'">
-        <v-select :label="getText('optionTitle_ibmSpeechApiLoc')"
+        <div
+          class="option select"
+          v-if="options.speechService === 'ibmSpeechApi'"
+        >
+          <v-select
+            :label="getText('optionTitle_ibmSpeechApiLoc')"
             v-model="options.ibmSpeechApiLoc"
-            :options="selectOptions.ibmSpeechApiLoc">
-        </v-select>
-      </div>
-      <div class="option text-field"
-          v-if="options.speechService === 'ibmSpeechApi'">
-        <v-textfield v-model.trim="options.ibmSpeechApiKey"
-            :label="getText('inputLabel_apiKey')">
-        </v-textfield>
-      </div>
+            :options="selectOptions.ibmSpeechApiLoc"
+          >
+          </v-select>
+        </div>
+        <div
+          class="option text-field"
+          v-if="options.speechService === 'ibmSpeechApi'"
+        >
+          <v-textfield
+            v-model.trim="options.ibmSpeechApiKey"
+            :label="getText('inputLabel_apiKey')"
+          >
+          </v-textfield>
+        </div>
 
-      <div class="option select"
-          v-if="options.speechService === 'microsoftSpeechApi'">
-        <v-select :label="getText('optionTitle_microsoftSpeechApiLoc')"
+        <div
+          class="option select"
+          v-if="options.speechService === 'microsoftSpeechApi'"
+        >
+          <v-select
+            :label="getText('optionTitle_microsoftSpeechApiLoc')"
             v-model="options.microsoftSpeechApiLoc"
-            :options="selectOptions.microsoftSpeechApiLoc">
-        </v-select>
-      </div>
-      <div class="option text-field"
-          v-if="options.speechService === 'microsoftSpeechApi'">
-        <v-textfield v-model.trim="options.microsoftSpeechApiKey"
-            :label="getText('inputLabel_apiKey')">
-        </v-textfield>
-      </div>
+            :options="selectOptions.microsoftSpeechApiLoc"
+          >
+          </v-select>
+        </div>
+        <div
+          class="option text-field"
+          v-if="options.speechService === 'microsoftSpeechApi'"
+        >
+          <v-textfield
+            v-model.trim="options.microsoftSpeechApiKey"
+            :label="getText('inputLabel_apiKey')"
+          >
+          </v-textfield>
+        </div>
 
-      <v-textfield
+        <v-textfield
           v-if="options.speechService === 'witSpeechApi'"
           v-for="item in witSpeechApis"
           :key="item.id"
           :value="options.witSpeechApiKeys[item] || ''"
-          :label="getText('inputLabel_apiKeyType',
-            [getText(`optionValue_witSpeechApiLang_${item}`)])"
-          @input="saveWitSpeechApiKey($event.trim(), item)">
-      </v-textfield>
-      <div class="wit-add-api"
-          v-if="options.speechService === 'witSpeechApi'">
-        <v-select
+          :label="
+            getText('inputLabel_apiKeyType', [
+              getText(`optionValue_witSpeechApiLang_${item}`)
+            ])
+          "
+          @input="saveWitSpeechApiKey($event.trim(), item)"
+        >
+        </v-textfield>
+        <div
+          class="wit-add-api"
+          v-if="options.speechService === 'witSpeechApi'"
+        >
+          <v-select
             v-model="witSpeechApiLang"
             :options="selectOptions.witSpeechApiLang"
-            :label="getText('optionTitle_witSpeechApiLang')">
-        </v-select>
-        <v-button
+            :label="getText('optionTitle_witSpeechApiLang')"
+          >
+          </v-select>
+          <v-button
             :outlined="true"
             :disabled="!witSpeechApiLang"
-            @click="addWitSpeechApi">
-          {{ getText('buttonText_addApi') }}
-        </v-button>
+            @click="addWitSpeechApi"
+          >
+            {{ getText('buttonText_addApi') }}
+          </v-button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="section">
-    <div class="section-title" v-once>
-      {{ getText('optionSectionTitle_misc') }}
-    </div>
-    <div class="option-wrap">
-      <div class="option">
-        <v-form-field input-id="lec"
-            :label="getText('optionTitle_loadEnglishChallenge')">
-          <v-switch id="lec" v-model="options.loadEnglishChallenge"></v-switch>
-        </v-form-field>
+    <div class="section">
+      <div class="section-title" v-once>
+        {{ getText('optionSectionTitle_misc') }}
       </div>
+      <div class="option-wrap">
+        <div class="option">
+          <v-form-field
+            input-id="lec"
+            :label="getText('optionTitle_loadEnglishChallenge')"
+          >
+            <v-switch
+              id="lec"
+              v-model="options.loadEnglishChallenge"
+            ></v-switch>
+          </v-form-field>
+        </div>
 
-      <div class="option"
-          v-if="!options.loadEnglishChallenge">
-        <v-form-field input-id="esm"
-            :label="getText('optionTitle_tryEnglishSpeechModel')">
-          <v-switch id="esm" v-model="options.tryEnglishSpeechModel"></v-switch>
-        </v-form-field>
-      </div>
+        <div class="option" v-if="!options.loadEnglishChallenge">
+          <v-form-field
+            input-id="esm"
+            :label="getText('optionTitle_tryEnglishSpeechModel')"
+          >
+            <v-switch
+              id="esm"
+              v-model="options.tryEnglishSpeechModel"
+            ></v-switch>
+          </v-form-field>
+        </div>
 
-      <div class="option">
-        <v-form-field input-id="si"
-            :label="getText('optionTitle_simulateUserInput')">
-          <v-switch id="si" v-model="options.simulateUserInput"></v-switch>
-        </v-form-field>
-      </div>
+        <div class="option">
+          <v-form-field
+            input-id="si"
+            :label="getText('optionTitle_simulateUserInput')"
+          >
+            <v-switch id="si" v-model="options.simulateUserInput"></v-switch>
+          </v-form-field>
+        </div>
 
-      <div class="option">
-        <v-form-field input-id="auc"
+        <div class="option">
+          <v-form-field
+            input-id="auc"
             v-if="options.simulateUserInput"
-            :label="getText('optionTitle_autoUpdateClientApp')">
-          <v-switch id="auc" v-model="options.autoUpdateClientApp"></v-switch>
-        </v-form-field>
-      </div>
-
-      <div class="client-bownload" v-if="showClientAppNotice">
-        <div class="download-desc"
-            v-html="getText('pageContent_optionClientAppDownloadDesc',
-              [`<a target='_blank' rel='noreferrer' href='${installGuideUrl}'>${getText('linkText_installGuide')}</a>`])">
-        </div>
-        <div class="download-error" v-if="!clientAppDownloadUrl">
-          {{ getText('pageContent_optionClientAppOSError') }}
+            :label="getText('optionTitle_autoUpdateClientApp')"
+          >
+            <v-switch id="auc" v-model="options.autoUpdateClientApp"></v-switch>
+          </v-form-field>
         </div>
 
-        <v-button class="download-button"
+        <div class="client-bownload" v-if="showClientAppNotice">
+          <div
+            class="download-desc"
+            v-html="
+              getText('pageContent_optionClientAppDownloadDesc', [
+                `<a target='_blank' rel='noreferrer' href='${installGuideUrl}'>${getText(
+                  'linkText_installGuide'
+                )}</a>`
+              ])
+            "
+          ></div>
+          <div class="download-error" v-if="!clientAppDownloadUrl">
+            {{ getText('pageContent_optionClientAppOSError') }}
+          </div>
+
+          <v-button
+            class="download-button"
             :unelevated="true"
             :disabled="!clientAppDownloadUrl"
-            @click="$refs.dlLink.click()">
-          {{ getText('buttonText_downloadApp') }}
-        </v-button>
-        <a ref="dlLink" class="download-link"
+            @click="$refs.dlLink.click()"
+          >
+            {{ getText('buttonText_downloadApp') }}
+          </v-button>
+          <a
+            ref="dlLink"
+            class="download-link"
             target="_blank"
             rel="noreferrer"
-            :href="clientAppDownloadUrl"></a>
+            :href="clientAppDownloadUrl"
+          ></a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>

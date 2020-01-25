@@ -1,55 +1,64 @@
-<!-- prettier-ignore -->
 <template>
-<div id="app" v-if="dataLoaded">
-  <div class="wrap" v-if="!isInstallSuccess && !isInstallError">
-    <div class="title">
-      {{ getText('pageContent_installTitle') }}
-    </div>
-    <div class="desc">
-      {{ getText('pageContent_installDesc') }}
-    </div>
+  <div id="app" v-if="dataLoaded">
+    <div class="wrap" v-if="!isInstallSuccess && !isInstallError">
+      <div class="title">
+        {{ getText('pageContent_installTitle') }}
+      </div>
+      <div class="desc">
+        {{ getText('pageContent_installDesc') }}
+      </div>
 
-    <v-textfield
+      <v-textfield
         v-model.trim="appDir"
-        :label="getText('inputLabel_appLocation')">
-    </v-textfield>
+        :label="getText('inputLabel_appLocation')"
+      >
+      </v-textfield>
 
-    <div class="manifest-desc" v-if="manifestDirEditable">
-      {{ getText('pageContent_manifestLocationDesc') }}
-    </div>
+      <div class="manifest-desc" v-if="manifestDirEditable">
+        {{ getText('pageContent_manifestLocationDesc') }}
+      </div>
 
-    <v-textfield
+      <v-textfield
         v-if="manifestDirEditable"
         v-model.trim="manifestDir"
-        :label="getText('inputLabel_manifestLocation')">
-    </v-textfield>
+        :label="getText('inputLabel_manifestLocation')"
+      >
+      </v-textfield>
 
-    <v-button class="button install-button"
+      <v-button
+        class="button install-button"
         :unelevated="true"
-        :disabled="isInstalling || !appDir || (manifestDirEditable && !manifestDir)"
-        @click="runInstall">
-      {{ getText('buttonText_installApp') }}
-    </v-button>
-  </div>
+        :disabled="
+          isInstalling || !appDir || (manifestDirEditable && !manifestDir)
+        "
+        @click="runInstall"
+      >
+        {{ getText('buttonText_installApp') }}
+      </v-button>
+    </div>
 
-  <div class="wrap" v-if="isInstallSuccess">
-    <div class="title">{{ getText('pageContent_installSuccessTitle') }}</div>
-    <div class="desc">{{ getText('pageContent_installSuccessDesc') }}</div>
+    <div class="wrap" v-if="isInstallSuccess">
+      <div class="title">{{ getText('pageContent_installSuccessTitle') }}</div>
+      <div class="desc">{{ getText('pageContent_installSuccessDesc') }}</div>
 
-    <div class="success-icon">🎉</div>
-  </div>
+      <div class="success-icon">🎉</div>
+    </div>
 
-  <div class="wrap" v-if="isInstallError">
-    <div class="title error-title">{{ getText('pageContent_installErrorTitle') }}</div>
-    <div class="desc">{{ getText('pageContent_installErrorDesc') }}</div>
+    <div class="wrap" v-if="isInstallError">
+      <div class="title error-title">
+        {{ getText('pageContent_installErrorTitle') }}
+      </div>
+      <div class="desc">{{ getText('pageContent_installErrorDesc') }}</div>
 
-    <v-button class="button error-button"
+      <v-button
+        class="button error-button"
         :unelevated="true"
-        @click="isInstallError = false">
-      {{ getText('buttonText_goBack') }}
-    </v-button>
+        @click="isInstallError = false"
+      >
+        {{ getText('buttonText_goBack') }}
+      </v-button>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
