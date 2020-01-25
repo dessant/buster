@@ -1,4 +1,4 @@
-FROM node:10.15.3-stretch
+FROM node:12.14.1-stretch
 
 RUN set -ex \
     && apt-get update && apt-get install -y build-essential rename \
