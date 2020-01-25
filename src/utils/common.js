@@ -13,7 +13,7 @@ function createTab(
   if (index !== null) {
     props.index = index;
   }
-  if (openerTabId !== null && ['chrome', 'opera'].includes(targetEnv)) {
+  if (openerTabId !== null && ['chrome', 'edge', 'opera'].includes(targetEnv)) {
     props.openerTabId = openerTabId;
   }
   return browser.tabs.create(props);
