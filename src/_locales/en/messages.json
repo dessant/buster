@@ -35,7 +35,7 @@
   },
 
   "optionValue_speechService_witSpeechApiDemo": {
-    "message": "Wit Speech API (demo)",
+    "message": "Wit Speech API (managed)",
     "description": "Value of the option."
   },
 
