@@ -95,9 +95,9 @@
           <v-button
             :outlined="true"
             :disabled="!witSpeechApiLang"
+            :label="getText('buttonText_addApi')"
             @click="addWitSpeechApi"
           >
-            {{ getText('buttonText_addApi') }}
           </v-button>
         </div>
       </div>
@@ -170,9 +170,9 @@
             class="download-button"
             :unelevated="true"
             :disabled="!clientAppDownloadUrl"
+            :label="getText('buttonText_downloadApp')"
             @click="$refs.dlLink.click()"
           >
-            {{ getText('buttonText_downloadApp') }}
           </v-button>
           <a
             ref="dlLink"
@@ -349,25 +349,27 @@ export default {
 <style lang="scss">
 $mdc-theme-primary: #1abc9c;
 
+@import '@material/select/mdc-select';
 @import '@material/theme/mixins';
 @import '@material/typography/mixins';
 @import '@material/button/mixins';
 
 body {
+  margin: 0;
   @include mdc-typography-base;
   font-size: 100%;
   background-color: #ffffff;
   overflow: visible !important;
 }
 
-.mdc-switch {
-  margin-right: 12px;
-}
-
 #app {
   display: grid;
   grid-row-gap: 32px;
-  padding: 12px;
+  padding: 24px;
+}
+
+.mdc-switch {
+  margin-right: 16px;
 }
 
 .section-title,
@@ -386,20 +388,47 @@ body {
 
 .option-wrap {
   display: grid;
-  grid-row-gap: 12px;
-  padding-top: 16px;
+  grid-row-gap: 24px;
+  padding-top: 24px;
   grid-auto-columns: min-content;
 }
 
 .option {
   display: flex;
   align-items: center;
-  height: 36px;
+  height: 24px;
+
+  & .mdc-form-field {
+    max-width: calc(100vw - 48px);
+
+    & label {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
-.option.select,
-.option.text-field {
-  height: 56px;
+.option {
+  &.select,
+  &.text-field {
+    height: 56px;
+  }
+}
+
+.option.select {
+  align-items: start;
+
+  & .mdc-select__anchor,
+  & .mdc-select__menu {
+    max-width: calc(100vw - 48px);
+  }
+
+  & .mdc-select__selected-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .wit-add-api {

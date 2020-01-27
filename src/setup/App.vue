@@ -31,9 +31,9 @@
         :disabled="
           isInstalling || !appDir || (manifestDirEditable && !manifestDir)
         "
+        :label="getText('buttonText_installApp')"
         @click="runInstall"
       >
-        {{ getText('buttonText_installApp') }}
       </v-button>
     </div>
 
@@ -53,9 +53,9 @@
       <v-button
         class="button error-button"
         :unelevated="true"
+        :label="getText('buttonText_goBack')"
         @click="isInstallError = false"
       >
-        {{ getText('buttonText_goBack') }}
       </v-button>
     </div>
   </div>
