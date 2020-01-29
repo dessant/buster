@@ -49,6 +49,11 @@
     "description": "Title of the option."
   },
 
+  "optionValue_ibmSpeechApiLoc_london": {
+    "message": "London",
+    "description": "Value of the option."
+  },
+
   "optionValue_ibmSpeechApiLoc_frankfurt": {
     "message": "Frankfurt",
     "description": "Value of the option."
@@ -77,6 +82,56 @@
   "optionTitle_microsoftSpeechApiLoc": {
     "message": "API location",
     "description": "Title of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_eastAu": {
+    "message": "Australia East",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_centralCa": {
+    "message": "Canada Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_centralUs": {
+    "message": "Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_centralFr": {
+    "message": "France Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_centralIn": {
+    "message": "India Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_eastJp": {
+    "message": "Japan East",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_centralKr": {
+    "message": "Korea Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_northCentralUs": {
+    "message": "North Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_southCentralUs": {
+    "message": "South Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_southUk": {
+    "message": "UK South",
+    "description": "Value of the option."
   },
 
   "optionValue_microsoftSpeechApiLoc_eastUs": {
@@ -149,28 +204,13 @@
     "description": "Title of the option."
   },
 
-  "optionValue_witSpeechApiLang_afrikaans": {
-    "message": "Afrikaans",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_arabic": {
     "message": "Arabic",
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_azerbaijani": {
-    "message": "Azerbaijani",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_bengali": {
     "message": "Bengali",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_bulgarian": {
-    "message": "Bulgarian",
     "description": "Value of the option."
   },
 
@@ -184,21 +224,6 @@
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_croatian": {
-    "message": "Croatian",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_czech": {
-    "message": "Czech",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_danish": {
-    "message": "Danish",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_dutch": {
     "message": "Dutch",
     "description": "Value of the option."
@@ -206,11 +231,6 @@
 
   "optionValue_witSpeechApiLang_english": {
     "message": "English",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_estonian": {
-    "message": "Estonian",
     "description": "Value of the option."
   },
 
@@ -224,38 +244,13 @@
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_georgian": {
-    "message": "Georgian",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_german": {
     "message": "German",
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_greek": {
-    "message": "Greek",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_hebrew": {
-    "message": "Hebrew",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_hindi": {
     "message": "Hindi",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_hungarian": {
-    "message": "Hungarian",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_icelandic": {
-    "message": "Icelandic",
     "description": "Value of the option."
   },
 
@@ -284,38 +279,13 @@
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_laothian": {
-    "message": "Laothian",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_latvian": {
-    "message": "Latvian",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_lithuanian": {
-    "message": "Lithuanian",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_malay": {
     "message": "Malay",
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_mongolian": {
-    "message": "Mongolian",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_norwegian": {
-    "message": "Norwegian",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_persian": {
-    "message": "Persian",
+  "optionValue_witSpeechApiLang_malayalam": {
+    "message": "Malayalam",
     "description": "Value of the option."
   },
 
@@ -329,38 +299,18 @@
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_romanian": {
-    "message": "Romanian",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_russian": {
     "message": "Russian",
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_serbian": {
-    "message": "Serbian",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_slovak": {
-    "message": "Slovak",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_slovenian": {
-    "message": "Slovenian",
+  "optionValue_witSpeechApiLang_sinhala": {
+    "message": "Sinhala",
     "description": "Value of the option."
   },
 
   "optionValue_witSpeechApiLang_spanish": {
     "message": "Spanish",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_swahili": {
-    "message": "Swahili",
     "description": "Value of the option."
   },
 
@@ -389,11 +339,6 @@
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_ukrainian": {
-    "message": "Ukrainian",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_urdu": {
     "message": "Urdu",
     "description": "Value of the option."
@@ -401,11 +346,6 @@
 
   "optionValue_witSpeechApiLang_vietnamese": {
     "message": "Vietnamese",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_zulu": {
-    "message": "Zulu",
     "description": "Value of the option."
   },
 

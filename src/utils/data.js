@@ -89,7 +89,7 @@ const captchaGoogleSpeechApiLangCodes = {
   zu: 'zu-ZA' // Zulu
 };
 
-// https://cloud.ibm.com/apidocs/speech-to-text#recognize-audio
+// https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models
 const captchaIbmSpeechApiLangCodes = {
   ar: 'ar-AR_BroadbandModel', // Arabic
   af: '', // Afrikaans
@@ -106,7 +106,7 @@ const captchaIbmSpeechApiLangCodes = {
   hr: '', // Croatian
   cs: '', // Czech
   da: '', // Danish
-  nl: '', // Dutch
+  nl: 'nl-NL_BroadbandModel', // Dutch
   'en-GB': 'en-GB_BroadbandModel', // English (UK)
   en: 'en-US_BroadbandModel', // English (US)
   et: '', // Estonian
@@ -126,7 +126,7 @@ const captchaIbmSpeechApiLangCodes = {
   hu: '', // Hungarian
   is: '', // Icelandic
   id: '', // Indonesian
-  it: '', // Italian
+  it: 'it-IT_BroadbandModel', // Italian
   ja: 'ja-JP_BroadbandModel', // Japanese
   kn: '', // Kannada
   ko: 'ko-KR_BroadbandModel', // Korean
@@ -194,7 +194,7 @@ const captchaMicrosoftSpeechApiLangCodes = {
   'de-AT': 'de-DE', // German (Austria)
   'de-CH': 'de-DE', // German (Switzerland)
   el: '', // Greek
-  gu: '', // Gujarati
+  gu: 'gu-IN', // Gujarati
   iw: '', // Hebrew
   hi: 'hi-IN', // Hindi
   hu: '', // Hungarian
@@ -209,7 +209,7 @@ const captchaMicrosoftSpeechApiLangCodes = {
   lt: '', // Lithuanian
   ms: '', // Malay
   ml: '', // Malayalam
-  mr: '', // Marathi
+  mr: 'mr-IN', // Marathi
   mn: '', // Mongolian
   no: 'nb-NO', // Norwegian
   fa: '', // Persian
@@ -227,10 +227,10 @@ const captchaMicrosoftSpeechApiLangCodes = {
   'es-419': 'es-MX', // Spanish (Latin America)
   sw: '', // Swahili
   sv: 'sv-SE', // Swedish
-  ta: '', // Tamil
-  te: '', // Telugu
+  ta: 'ta-IN', // Tamil
+  te: 'te-IN', // Telugu
   th: 'th-TH', // Thai
-  tr: '', // Turkish
+  tr: 'tr-TR', // Turkish
   uk: '', // Ukrainian
   ur: '', // Urdu
   vi: '', // Vietnamese
@@ -239,92 +239,112 @@ const captchaMicrosoftSpeechApiLangCodes = {
 
 const captchaWitSpeechApiLangCodes = {
   ar: 'arabic', // Arabic
-  af: 'afrikaans', // Afrikaans
+  af: '', // Afrikaans
   am: '', // Amharic
   hy: '', // Armenian
-  az: 'azerbaijani', // Azerbaijani
+  az: '', // Azerbaijani
   eu: '', // Basque
   bn: 'bengali', // Bengali
-  bg: 'bulgarian', // Bulgarian
+  bg: '', // Bulgarian
   ca: 'catalan', // Catalan
   'zh-HK': '', // Chinese (Hong Kong)
   'zh-CN': 'chinese', // Chinese (Simplified)
   'zh-TW': 'chinese', // Chinese (Traditional)
-  hr: 'croatian', // Croatian
-  cs: 'czech', // Czech
-  da: 'danish', // Danish
+  hr: '', // Croatian
+  cs: '', // Czech
+  da: '', // Danish
   nl: 'dutch', // Dutch
   'en-GB': 'english', // English (UK)
   en: 'english', // English (US)
-  et: 'estonian', // Estonian
+  et: '', // Estonian
   fil: '', // Filipino
   fi: 'finnish', // Finnish
   fr: 'french', // French
   'fr-CA': 'french', // French (Canadian)
   gl: '', // Galician
-  ka: 'georgian', // Georgian
+  ka: '', // Georgian
   de: 'german', // German
   'de-AT': 'german', // German (Austria)
   'de-CH': 'german', // German (Switzerland)
-  el: 'greek', // Greek
+  el: '', // Greek
   gu: '', // Gujarati
-  iw: 'hebrew', // Hebrew
+  iw: '', // Hebrew
   hi: 'hindi', // Hindi
-  hu: 'hungarian', // Hungarian
-  is: 'icelandic', // Icelandic
+  hu: '', // Hungarian
+  is: '', // Icelandic
   id: 'indonesian', // Indonesian
   it: 'italian', // Italian
   ja: 'japanese', // Japanese
   kn: 'kannada', // Kannada
   ko: 'korean', // Korean
-  lo: 'laothian', // Laothian
-  lv: 'latvian', // Latvian
-  lt: 'lithuanian', // Lithuanian
+  lo: '', // Laothian
+  lv: '', // Latvian
+  lt: '', // Lithuanian
   ms: 'malay', // Malay
-  ml: '', // Malayalam
+  ml: 'malayalam', // Malayalam
   mr: '', // Marathi
-  mn: 'mongolian', // Mongolian
-  no: 'norwegian', // Norwegian
-  fa: 'persian', // Persian
+  mn: '', // Mongolian
+  no: '', // Norwegian
+  fa: '', // Persian
   pl: 'polish', // Polish
   pt: 'portuguese', // Portuguese
   'pt-BR': 'portuguese', // Portuguese (Brazil)
   'pt-PT': 'portuguese', // Portuguese (Portugal)
-  ro: 'romanian', // Romanian
+  ro: '', // Romanian
   ru: 'russian', // Russian
-  sr: 'serbian', // Serbian
-  si: '', // Sinhalese
-  sk: 'slovak', // Slovak
-  sl: 'slovenian', // Slovenian
+  sr: '', // Serbian
+  si: 'sinhala', // Sinhalese
+  sk: '', // Slovak
+  sl: '', // Slovenian
   es: 'spanish', // Spanish
   'es-419': 'spanish', // Spanish (Latin America)
-  sw: 'swahili', // Swahili
+  sw: '', // Swahili
   sv: 'swedish', // Swedish
   ta: 'tamil', // Tamil
   te: 'telugu', // Telugu
   th: 'thai', // Thai
   tr: 'turkish', // Turkish
-  uk: 'ukrainian', // Ukrainian
+  uk: '', // Ukrainian
   ur: 'urdu', // Urdu
   vi: 'vietnamese', // Vietnamese
-  zu: 'zulu' // Zulu
+  zu: '' // Zulu
 };
 
 // https://cloud.ibm.com/apidocs/speech-to-text#service-endpoint
 const ibmSpeechApiUrls = {
+  london: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/v1/recognize',
   frankfurt:
-    'https://stream-fra.watsonplatform.net/speech-to-text/api/v1/recognize',
-  dallas: 'https://stream.watsonplatform.net/speech-to-text/api/v1/recognize',
+    'https://api.eu-de.speech-to-text.watson.cloud.ibm.com/v1/recognize',
+  dallas:
+    'https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognize',
   washington:
-    'https://gateway-wdc.watsonplatform.net/speech-to-text/api/v1/recognize',
-  sydney:
-    'https://gateway-syd.watsonplatform.net/speech-to-text/api/v1/recognize',
-  tokyo:
-    'https://gateway-tok.watsonplatform.net/speech-to-text/api/v1/recognize'
+    'https://api.us-east.speech-to-text.watson.cloud.ibm.com/v1/recognize',
+  sydney: 'https://api.au-syd.speech-to-text.watson.cloud.ibm.com/v1/recognize',
+  tokyo: 'https://api.jp-tok.speech-to-text.watson.cloud.ibm.com/v1/recognize'
 };
 
-// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-speech-to-text
+// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-speech-to-text#regions-and-endpoints
 const microsoftSpeechApiUrls = {
+  eastAu:
+    'https://australiaeast.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  centralCa:
+    'https://canadacentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  centralUs:
+    'https://centralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  centralFr:
+    'https://francecentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  centralIn:
+    'https://centralindia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  eastJp:
+    'https://japaneast.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  centralKr:
+    'https://koreacentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  northCentralUs:
+    'https://northcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  southCentralUs:
+    'https://southcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  southUk:
+    'https://uksouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   eastUs:
     'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   eastUs2:

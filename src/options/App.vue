@@ -223,6 +223,7 @@ export default {
           'microsoftSpeechApi'
         ],
         ibmSpeechApiLoc: [
+          'london',
           'frankfurt',
           'dallas',
           'washington',
@@ -230,6 +231,16 @@ export default {
           'tokyo'
         ],
         microsoftSpeechApiLoc: [
+          'eastAu',
+          'centralCa',
+          'centralUs',
+          'centralFr',
+          'centralIn',
+          'eastJp',
+          'centralKr',
+          'northCentralUs',
+          'southCentralUs',
+          'southUk',
           'eastUs',
           'eastUs2',
           'westUs',
