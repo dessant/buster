@@ -15,6 +15,7 @@ import {
   functionInContext,
   getBrowser,
   getPlatform,
+  getRandomInt,
   arrayBufferToBase64
 } from 'utils/common';
 import {
@@ -220,7 +221,11 @@ async function prepareAudio(audio) {
 
 async function getWitSpeechApiKey(speechService, language) {
   if (speechService === 'witSpeechApiDemo') {
-    return witApiKeys[language];
+    if (language === 'english') {
+      return witApiKeys[language][getRandomInt(1, 4) - 1];
+    } else {
+      return witApiKeys[language];
+    }
   } else {
     const {witSpeechApiKeys: apiKeys} = await storage.get(
       'witSpeechApiKeys',
