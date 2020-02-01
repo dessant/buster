@@ -16,7 +16,9 @@ import {
   getBrowser,
   getPlatform,
   getRandomInt,
-  arrayBufferToBase64
+  arrayBufferToBase64,
+  normalizeAudio,
+  sliceAudio
 } from 'utils/common';
 import {
   captchaGoogleSpeechApiLangCodes,
@@ -200,23 +202,15 @@ function removeBackgroundRequestLitener() {
 }
 
 async function prepareAudio(audio) {
-  const ctx = new AudioContext();
-  const data = await ctx.decodeAudioData(audio);
-  await ctx.close();
+  const audioBuffer = await normalizeAudio(audio);
 
-  const offlineCtx = new OfflineAudioContext(
-    // force mono output
-    1,
-    16000 * data.duration,
-    16000
-  );
-  const source = offlineCtx.createBufferSource();
-  source.buffer = data;
-  source.connect(offlineCtx.destination);
-  // discard 1.5 second noise from beginning/end
-  source.start(0, 1.5, data.duration - 3);
+  const audioSlice = await sliceAudio({
+    audioBuffer,
+    start: 1.5,
+    end: audioBuffer.duration - 1.5
+  });
 
-  return audioBufferToWav(await offlineCtx.startRendering());
+  return audioBufferToWav(audioSlice);
 }
 
 async function getWitSpeechApiKey(speechService, language) {

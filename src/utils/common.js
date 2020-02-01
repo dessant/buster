@@ -160,6 +160,45 @@ function sleep(ms) {
   return new Promise(resolve => window.setTimeout(resolve, ms));
 }
 
+async function normalizeAudio(buffer) {
+  const ctx = new AudioContext();
+  const audioBuffer = await ctx.decodeAudioData(buffer);
+  ctx.close();
+
+  const offlineCtx = new OfflineAudioContext(
+    1,
+    audioBuffer.duration * 16000,
+    16000
+  );
+  const source = offlineCtx.createBufferSource();
+  source.connect(offlineCtx.destination);
+  source.buffer = audioBuffer;
+  source.start();
+
+  return offlineCtx.startRendering();
+}
+
+async function sliceAudio({audioBuffer, start, end}) {
+  const sampleRate = audioBuffer.sampleRate;
+  const channels = audioBuffer.numberOfChannels;
+
+  const startOffset = sampleRate * start;
+  const endOffset = sampleRate * end;
+  const frameCount = endOffset - startOffset;
+
+  const ctx = new AudioContext();
+  const audioSlice = ctx.createBuffer(channels, frameCount, sampleRate);
+  ctx.close();
+
+  const tempArray = new Float32Array(frameCount);
+  for (var channel = 0; channel < channels; channel++) {
+    audioBuffer.copyFromChannel(tempArray, channel, startOffset);
+    audioSlice.copyToChannel(tempArray, channel, 0);
+  }
+
+  return audioSlice;
+}
+
 export {
   getText,
   createTab,
@@ -175,5 +214,7 @@ export {
   functionInContext,
   getRandomInt,
   getRandomFloat,
-  sleep
+  sleep,
+  normalizeAudio,
+  sliceAudio
 };
