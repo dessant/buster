@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.1](https://github.com/dessant/buster/compare/v0.6.0...v0.6.1) (2020-02-02)
+
+
+### Bug Fixes
+
+* discard noise from audio challenge ([a57cdb8](https://github.com/dessant/buster/commit/a57cdb839db59909079a44c42af0488648ba5fa0))
+* link client app installation guide from options page ([57611ac](https://github.com/dessant/buster/commit/57611ac664fa436ffbe47525825f5b75591eab5a))
+* remove origin header from background requests ([999ccf9](https://github.com/dessant/buster/commit/999ccf94c7acff1e31fbfaee769e3e84968774c4))
+* rotate Wit.ai API keys for English challenges ([e985b7d](https://github.com/dessant/buster/commit/e985b7d6662c1f168bf504d799cd773ba5e5d8b3)), closes [#130](https://github.com/dessant/buster/issues/130)
+* update available languages and API endpoints ([182a0aa](https://github.com/dessant/buster/commit/182a0aa5cf3d6dab7cbe1cbc9f4220692259ed51))
+* update speech service name ([bb2bff9](https://github.com/dessant/buster/commit/bb2bff913cd11056a0315b0ce0bd6acb5733f5c0))
+* update UI layout ([72aeceb](https://github.com/dessant/buster/commit/72aeceb8e4db927624267062acc343ec6b0cf4e8))
+
 ## [0.6.0](https://github.com/dessant/buster/compare/v0.5.3...v0.6.0) (2019-05-28)
 
 
