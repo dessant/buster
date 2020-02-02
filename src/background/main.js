@@ -28,7 +28,7 @@ import {
   ibmSpeechApiUrls,
   microsoftSpeechApiUrls
 } from 'utils/data';
-import {clientAppVersion, witApiKeys} from 'utils/config';
+import {targetEnv, clientAppVersion, witApiKeys} from 'utils/config';
 
 let nativePort;
 
@@ -170,19 +170,19 @@ function addBackgroundRequestLitener() {
       'https://www.google.com/*',
       'https://api.wit.ai/*',
       'https://speech.googleapis.com/*',
-      'https://stream-fra.watsonplatform.net/*',
-      'https://stream.watsonplatform.net/*',
-      'https://gateway-wdc.watsonplatform.net/*',
-      'https://gateway-syd.watsonplatform.net/*',
-      'https://gateway-tok.watsonplatform.net/*',
-      'https://eastus.stt.speech.microsoft.com/*',
-      'https://westus.stt.speech.microsoft.com/*',
-      'https://westus2.stt.speech.microsoft.com/*',
-      'https://eastasia.stt.speech.microsoft.com/*',
-      'https://southeastasia.stt.speech.microsoft.com/*',
-      'https://westeurope.stt.speech.microsoft.com/*',
-      'https://northeurope.stt.speech.microsoft.com/*'
+      'https://*.speech-to-text.watson.cloud.ibm.com/*',
+      'https://*.stt.speech.microsoft.com/*'
     ];
+
+    const extraInfo = ['blocking', 'requestHeaders'];
+    if (
+      targetEnv !== 'firefox' &&
+      Object.values(browser.webRequest.OnBeforeSendHeadersOptions).includes(
+        'extraHeaders'
+      )
+    ) {
+      extraInfo.push('extraHeaders');
+    }
 
     browser.webRequest.onBeforeSendHeaders.addListener(
       removeRequestOrigin,
@@ -190,7 +190,7 @@ function addBackgroundRequestLitener() {
         urls,
         types: ['xmlhttprequest']
       },
-      ['blocking', 'requestHeaders']
+      extraInfo
     );
   }
 }
@@ -462,7 +462,7 @@ async function onMessage(request, sender) {
   } else if (request.id === 'transcribeAudio') {
     addBackgroundRequestLitener();
     try {
-      return transcribeAudio(request.audioUrl, request.lang);
+      return await transcribeAudio(request.audioUrl, request.lang);
     } finally {
       removeBackgroundRequestLitener();
     }
