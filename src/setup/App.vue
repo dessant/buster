@@ -86,6 +86,7 @@ export default {
 
       apiUrl: apiURL.href,
       session: urlParams.get('session'),
+      browser: '',
       appDir: '',
       manifestDir: '',
       manifestDirEditable: false,
@@ -146,10 +147,7 @@ export default {
     location: async function() {
       const data = new FormData();
       data.append('session', this.session);
-      data.append(
-        'browser',
-        (await browser.runtime.sendMessage({id: 'getBrowser'})).name
-      );
+      data.append('browser', this.browser);
       data.append('targetEnv', targetEnv);
 
       const rsp = await fetch(`${this.apiUrl}/setup/location`, {
@@ -174,6 +172,7 @@ export default {
       data.append('session', this.session);
       data.append('appDir', this.appDir);
       data.append('manifestDir', this.manifestDir);
+      data.append('browser', this.browser);
       data.append('targetEnv', targetEnv);
       data.append('extension', this.getExtensionId());
 
@@ -196,6 +195,8 @@ export default {
   },
 
   created: async function() {
+    this.browser = (await browser.runtime.sendMessage({id: 'getBrowser'})).name;
+
     await this.setLocation();
 
     const {os} = await browser.runtime.sendMessage({id: 'getPlatform'});
