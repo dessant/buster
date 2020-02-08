@@ -151,7 +151,7 @@
           </v-form-field>
         </div>
 
-        <div class="client-bownload" v-if="showClientAppNotice">
+        <div class="client-download" v-if="showClientAppNotice">
           <div
             class="download-desc"
             v-html="
@@ -452,7 +452,7 @@ body {
   white-space: nowrap;
 }
 
-.client-bownload {
+.client-download {
   margin-left: 48px;
 }
 
