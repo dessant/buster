@@ -12,7 +12,12 @@ const optionKeys = [
   'autoUpdateClientApp'
 ];
 
-const clientAppPlatforms = ['windows/amd64', 'linux/amd64', 'macos/amd64'];
+const clientAppPlatforms = [
+  'windows/amd64',
+  'windows/386',
+  'linux/amd64',
+  'macos/amd64'
+];
 
 // https://developers.google.com/recaptcha/docs/language
 // https://cloud.google.com/speech-to-text/docs/languages

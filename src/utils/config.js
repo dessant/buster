@@ -1,6 +1,6 @@
 const targetEnv = process.env.TARGET_ENV;
 
-const clientAppVersion = '0.2.0';
+const clientAppVersion = '0.3.0';
 
 const witApiKeys = {
   arabic: 'AD6RLFYBWRGGJD76SWKALZMUFVGMVCTB',
