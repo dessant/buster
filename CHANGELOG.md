@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/dessant/buster/compare/v0.6.1...v0.7.0) (2020-02-09)
+
+
+### Features
+
+* enable client app installation on Windows 32-bit ([9995f46](https://github.com/dessant/buster/commit/9995f46ed4cb2ac006b335405209a22fe54a1f23))
+
+
+### Bug Fixes
+
+* send browser name to client app installer ([aab8384](https://github.com/dessant/buster/commit/aab8384d35c6d6354d3b9ae6fa5a227fc693105f))
+
 ### [0.6.1](https://github.com/dessant/buster/compare/v0.6.0...v0.6.1) (2020-02-02)
 
 
