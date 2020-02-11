@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.1](https://github.com/dessant/buster/compare/v0.7.0...v0.7.1) (2020-02-11)
+
+
+### Bug Fixes
+
+* include source maps for production builds ([6fb0b04](https://github.com/dessant/buster/commit/6fb0b042be5d853084474ef3f6fd5f6695f451ed))
+
 ## [0.7.0](https://github.com/dessant/buster/compare/v0.6.1...v0.7.0) (2020-02-09)
 
 
