@@ -20,3 +20,9 @@ issues:
         Other services and challenge types are not within the scope
         of this project.
       close: true
+    recaptcha-error:
+      comment: |
+        You may experience a temporary block when trying to solve a reCAPTCHA audio challenge. Visit the wiki to learn more about the issue and the steps you can take to reduce the chance of a temporary block in the future.
+
+        https://github.com/dessant/buster/wiki/Inaccessible-reCAPTCHA-audio-challenge
+      close: true

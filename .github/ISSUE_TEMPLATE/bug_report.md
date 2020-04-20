@@ -4,6 +4,14 @@ about: Create a report if something isn't working as expected
 
 ---
 
+<!--
+You may experience a temporary block when trying to solve a reCAPTCHA audio challenge.
+This error is outside the control of the extension, and should not be reported as a bug.
+Visit the wiki to learn more about the issue.
+
+https://github.com/dessant/buster/wiki/Inaccessible-reCAPTCHA-audio-challenge
+ -->
+
 **System**
 <!-- Fill out the template below with the requested information. -->
 
