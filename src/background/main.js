@@ -230,7 +230,7 @@ async function getWitSpeechApiKey(speechService, language) {
 }
 
 async function getWitSpeechApiResult(apiKey, audioContent) {
-  const rsp = await fetch('https://api.wit.ai/speech', {
+  const rsp = await fetch('https://api.wit.ai/speech?v=20200513', {
     referrer: '',
     mode: 'cors',
     method: 'POST',
@@ -244,7 +244,7 @@ async function getWitSpeechApiResult(apiKey, audioContent) {
     throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
   }
 
-  return (await rsp.json())._text.trim();
+  return (await rsp.json()).text.trim();
 }
 
 async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, language) {
