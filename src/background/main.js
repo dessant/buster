@@ -244,7 +244,11 @@ async function getWitSpeechApiResult(apiKey, audioContent) {
     throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
   }
 
-  return (await rsp.json()).text.trim();
+  const result = (await rsp.json()).text;
+
+  if (result) {
+    return result.trim();
+  }
 }
 
 async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, language) {
