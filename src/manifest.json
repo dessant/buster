@@ -10,11 +10,11 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "{e58d3966-3d76-4cd9-8552-1582fbc800c1}",
-      "strict_min_version": "53.0"
+      "strict_min_version": "68.0"
     }
   },
-  "minimum_chrome_version": "55.0",
-  "minimum_opera_version": "42.0",
+  "minimum_chrome_version": "76.0",
+  "minimum_opera_version": "63.0",
 
   "permissions": [
     "storage",

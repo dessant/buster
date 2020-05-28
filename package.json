@@ -32,10 +32,10 @@
     "release": "standard-version"
   },
   "browserslist": [
-    "Chrome >= 55",
-    "Firefox >= 53",
-    "FirefoxAndroid >= 57",
-    "Opera >= 42"
+    "Chrome >= 76",
+    "Firefox >= 68",
+    "FirefoxAndroid >= 68",
+    "Opera >= 63"
   ],
   "dependencies": {
     "@material/theme": "^4.0.0",
