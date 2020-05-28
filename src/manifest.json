@@ -7,7 +7,7 @@
   "homepage_url": "https://github.com/dessant/buster",
   "default_locale": "en",
 
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "{e58d3966-3d76-4cd9-8552-1582fbc800c1}",
       "strict_min_version": "53.0"
