@@ -19,6 +19,8 @@ const clientAppPlatforms = [
   'macos/amd64'
 ];
 
+const recaptchaChallengeUrlRx = /^https:\/\/www\.google\.com\/recaptcha\/api2\/bframe.*/;
+
 // https://developers.google.com/recaptcha/docs/language
 // https://cloud.google.com/speech-to-text/docs/languages
 const captchaGoogleSpeechApiLangCodes = {
@@ -371,6 +373,7 @@ const microsoftSpeechApiUrls = {
 export {
   optionKeys,
   clientAppPlatforms,
+  recaptchaChallengeUrlRx,
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
   captchaMicrosoftSpeechApiLangCodes,

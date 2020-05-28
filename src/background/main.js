@@ -21,6 +21,7 @@ import {
   sliceAudio
 } from 'utils/common';
 import {
+  recaptchaChallengeUrlRx,
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
   captchaMicrosoftSpeechApiLangCodes,
@@ -509,11 +510,62 @@ function addMessageListener() {
   browser.runtime.onMessage.addListener(onMessage);
 }
 
+async function onInstall(details) {
+  if (
+    ['chrome', 'edge', 'opera'].includes(targetEnv) &&
+    ['install', 'update'].includes(details.reason)
+  ) {
+    const tabs = await browser.tabs.query({
+      url: ['http://*/*', 'https://*/*'],
+      windowType: 'normal'
+    });
+
+    for (const tab of tabs) {
+      const tabId = tab.id;
+
+      const frames = await browser.webNavigation.getAllFrames({tabId});
+      for (const frame of frames) {
+        const frameId = frame.frameId;
+
+        if (frameId && recaptchaChallengeUrlRx.test(frame.url)) {
+          await browser.tabs.insertCSS(tabId, {
+            frameId,
+            runAt: 'document_idle',
+            file: 'src/solve/style.css'
+          });
+
+          await browser.tabs.executeScript(tabId, {
+            frameId,
+            runAt: 'document_idle',
+            file: '/src/manifest.js'
+          });
+          await browser.tabs.executeScript(tabId, {
+            frameId,
+            runAt: 'document_idle',
+            file: '/src/solve/script.js'
+          });
+        }
+      }
+    }
+
+    const setupTabs = await browser.tabs.query({
+      url: 'http://127.0.0.1/buster/setup?session=*',
+      windowType: 'normal'
+    });
+
+    for (const tab of setupTabs) {
+      await browser.tabs.reload(tab.id);
+    }
+  }
+}
+
 async function onLoad() {
   await initStorage('sync');
   await setChallengeLocale();
   addStorageListener();
   addMessageListener();
 }
+
+browser.runtime.onInstalled.addListener(onInstall);
 
 document.addEventListener('DOMContentLoaded', onLoad);
