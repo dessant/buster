@@ -1,6 +1,6 @@
 name: CI
 
-on: [push]
+on: push
 
 jobs:
   build:
@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
+        with:
+          persist-credentials: 'false'
       - name: Get Node.js version
         id: nvm
         run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
@@ -31,7 +33,7 @@ jobs:
         run: sha256sum artifacts/*
         if: startsWith(github.ref, 'refs/tags/v')
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           name: buster
@@ -42,15 +44,13 @@ jobs:
     needs: [build]
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
-      - name: Clone repository
-        uses: actions/checkout@v2
       - name: Get release information
         id: release_info
         run: |
           echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
           echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
       - name: Download artifacts
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: buster
           path: artifacts/
@@ -58,7 +58,7 @@ jobs:
         run: sha256sum artifacts/*
       - name: Create GitHub release
         id: create_release
-        uses: actions/create-release@d9c9ca3
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -70,7 +70,7 @@ jobs:
             Learn more about this release from the [changelog](https://github.com/dessant/buster/blob/master/CHANGELOG.md#changelog).
           draft: true
       - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -79,7 +79,7 @@ jobs:
           asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-chrome.zip
           asset_content_type: application/octet-stream
       - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -88,7 +88,7 @@ jobs:
           asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-edge.zip
           asset_content_type: application/octet-stream
       - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
@@ -97,7 +97,7 @@ jobs:
           asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-firefox.zip
           asset_content_type: application/octet-stream
       - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1.0.1
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
