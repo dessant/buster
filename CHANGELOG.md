@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.3](https://github.com/dessant/buster/compare/v0.7.2...v0.7.3) (2020-05-28)
+
+
+### Bug Fixes
+
+* add button to existing challenge widgets after installation in Chrome ([1b9af9e](https://github.com/dessant/buster/commit/1b9af9e93cfe899a962c3c137ff66be7e020552d))
+* remove unused permissions ([dcacc48](https://github.com/dessant/buster/commit/dcacc489e6f2f858949fb4988c74d9d78704f2bd))
+* trim Wit Speech API result only when it exists ([8a54f1f](https://github.com/dessant/buster/commit/8a54f1fdcec03b2860a60e4f4bb521e80f441b10))
+
 ### [0.7.2](https://github.com/dessant/buster/compare/v0.7.1...v0.7.2) (2020-05-14)
 
 
