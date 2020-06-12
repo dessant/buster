@@ -169,6 +169,7 @@ function addBackgroundRequestLitener() {
   ) {
     const urls = [
       'https://www.google.com/*',
+      'https://www.recaptcha.net/*',
       'https://api.wit.ai/*',
       'https://speech.googleapis.com/*',
       'https://*.speech-to-text.watson.cloud.ibm.com/*',

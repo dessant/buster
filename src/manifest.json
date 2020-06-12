@@ -42,7 +42,10 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.google.com/recaptcha/api2/bframe*"],
+      "matches": [
+        "https://www.google.com/recaptcha/api2/bframe*",
+        "https://www.recaptcha.net/recaptcha/api2/bframe*"
+      ],
       "all_frames": true,
       "run_at": "document_idle",
       "css": ["src/solve/style.css"],
