@@ -136,7 +136,9 @@ async function setChallengeLocale() {
         {
           urls: [
             'https://www.google.com/recaptcha/api2/anchor*',
-            'https://www.google.com/recaptcha/api2/bframe*'
+            'https://www.google.com/recaptcha/api2/bframe*',
+            'https://www.recaptcha.net/recaptcha/api2/anchor*',
+            'https://www.recaptcha.net/recaptcha/api2/bframe*'
           ],
           types: ['sub_frame']
         },
