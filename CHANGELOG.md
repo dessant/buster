@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/dessant/buster/compare/v0.7.3...v1.0.0) (2020-06-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* browser versions before Chrome 76, Firefox 68 and Opera 63
+are no longer supported
+
+### Bug Fixes
+
+* add extension button when challenge assets are loaded from recaptcha.net ([afbde57](https://github.com/dessant/buster/commit/afbde578cfb21f388f8415adbe99997e8a037c3b)), closes [#194](https://github.com/dessant/buster/issues/194)
+
+
+*  fix: remove support for outdated browsers ([ef7514e](https://github.com/dessant/buster/commit/ef7514e9ee0ab059a271b3d7be6142f0ccd58ce6))
+
 ### [0.7.3](https://github.com/dessant/buster/compare/v0.7.2...v0.7.3) (2020-05-28)
 
 
