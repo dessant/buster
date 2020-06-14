@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/dessant/buster/compare/v1.0.0...v1.0.1) (2020-06-14)
+
+
+### Bug Fixes
+
+* set challenge locale when widget is loaded from recaptcha.net ([edb7402](https://github.com/dessant/buster/commit/edb74021ef14cefc5d407cabedb0fe8e813b8711))
+
 ## [1.0.0](https://github.com/dessant/buster/compare/v0.7.3...v1.0.0) (2020-06-14)
 
 
