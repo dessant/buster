@@ -52,6 +52,25 @@ by giving us easy access to solutions already utilized by automated systems.
   <img width="420" src="https://i.imgur.com/o0qqDd5.png">
 </p>
 
+## How to configure personal API key
+
+When using Buster, you may encounter `429 rate-limit` error, because Buster ships with the managed API key, which is shared among all users by default.
+
+In order to get personal API key (for free), follow these intructions:
+1. Go to [wit.ai](https://wit.ai/)
+1. Press "Continue With Facebook" or "Continue With Github" to sign up
+1. Go to [wit.ai/apps/](https://wit.ai/apps/)
+1. Click "+ New App" button
+1. Choose name and language, make it private
+1. Go to "Management" -> "Settings" (`https://wit.ai/apps/YOU_APP_ID/settings`)
+1. Find "Server Access Token", click on it to copy
+1. Open [Buster options](chrome-extension://mpbjkejclgfgadiemmefgebjfooflfhl/src/options/index.html) (paste `chrome-extension://mpbjkejclgfgadiemmefgebjfooflfhl/src/options/index.html` in Chrome's address bar)
+1. In "Speach service" choose "Wit Speech API"
+1. Set "API Language" same as the language you chose when setting up wit.ai app
+1. Click "ADD API" button
+1. In "API key: Your Langage" paste "Server Access Token"  that you copied from wit.ai app settings
+1. You're done, you can close the settings tab and try using Buster with your personal free API key
+
 ## License
 
 Copyright (c) 2018-2020 Armin Sebastian
