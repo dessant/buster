@@ -64,7 +64,7 @@ In order to get personal API key (for free), follow these intructions:
 1. Choose name and language, make it private
 1. Go to "Management" -> "Settings" (`https://wit.ai/apps/YOU_APP_ID/settings`)
 1. Find "Server Access Token", click on it to copy
-1. Open [Buster options](chrome-extension://mpbjkejclgfgadiemmefgebjfooflfhl/src/options/index.html) (paste `chrome-extension://mpbjkejclgfgadiemmefgebjfooflfhl/src/options/index.html` in Chrome's address bar)
+1. Open [Buster options](chrome-extension://mpbjkejclgfgadiemmefgebjfooflfhl/src/options/index.html) (paste `chrome-extension://mpbjkejclgfgadiemmefgebjfooflfhl/src/options/index.html` in Chrome's address bar), or `moz-extension://ea8a7d10-011e-4fe3-85b1-300871758aaa/src/options/index.html` for Firefox
 1. In "Speach service" choose "Wit Speech API"
 1. Set "API Language" same as the language you chose when setting up wit.ai app
 1. Click "ADD API" button
