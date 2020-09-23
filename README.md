@@ -6,7 +6,7 @@
   <a href="https://chrome.google.com/webstore/detail/mpbjkejclgfgadiemmefgebjfooflfhl">
     <img src="https://i.imgur.com/B0i5sn3.png" alt="Chrome Web Store"></a>
   <a href="https://addons.mozilla.org/en-US/firefox/addon/buster-captcha-solver/">
-    <img src="https://i.imgur.com/dvof8rG.png" alt="Firefox add-ons"></a>
+    <img src="https://i.imgur.com/kMH6r1a.png" alt="Firefox add-ons"></a>
   <a href="https://microsoftedge.microsoft.com/addons/detail/admkpobhocmdideidcndkfaeffadipkc">
     <img src="https://i.imgur.com/n49Wiu2.png" alt="Microsoft Store"></a>
   <a href="https://addons.opera.com/en/extensions/details/buster-captcha-solver-for-humans/">
@@ -48,8 +48,8 @@ by giving us easy access to solutions already utilized by automated systems.
 ## Screenshots
 
 <p>
-  <img width="420" src="https://i.imgur.com/hTqeN4z.png">
-  <img width="420" src="https://i.imgur.com/o0qqDd5.png">
+  <img width="414" src="https://i.imgur.com/hTqeN4z.png">
+  <img width="414" src="https://i.imgur.com/o0qqDd5.png">
 </p>
 
 ## License
