@@ -4,7 +4,7 @@
       for (const [_, items] of Object.entries(client)) {
         for (const [_, v] of Object.entries(items)) {
           if (v instanceof Element && v.src === challengeUrl) {
-            grecaptcha.reset(k);
+            (grecaptcha.reset || grecaptcha.enterprise.reset)(k);
             return;
           }
         }

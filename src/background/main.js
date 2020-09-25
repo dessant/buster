@@ -138,7 +138,11 @@ async function setChallengeLocale() {
             'https://www.google.com/recaptcha/api2/anchor*',
             'https://www.google.com/recaptcha/api2/bframe*',
             'https://www.recaptcha.net/recaptcha/api2/anchor*',
-            'https://www.recaptcha.net/recaptcha/api2/bframe*'
+            'https://www.recaptcha.net/recaptcha/api2/bframe*',
+            'https://www.google.com/recaptcha/enterprise/anchor*',
+            'https://www.google.com/recaptcha/enterprise/bframe*',
+            'https://www.recaptcha.net/recaptcha/enterprise/anchor*',
+            'https://www.recaptcha.net/recaptcha/enterprise/bframe*'
           ],
           types: ['sub_frame']
         },
