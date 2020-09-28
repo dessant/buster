@@ -19,7 +19,7 @@ const clientAppPlatforms = [
   'macos/amd64'
 ];
 
-const recaptchaChallengeUrlRx = /^https:\/\/www\.google\.com\/recaptcha\/api2\/bframe.*/;
+const recaptchaChallengeUrlRx = /^https:\/\/www\.(?:google\.com|recaptcha\.net)\/recaptcha\/(?:api2|enterprise)\/bframe.*/;
 
 // https://developers.google.com/recaptcha/docs/language
 // https://cloud.google.com/speech-to-text/docs/languages
