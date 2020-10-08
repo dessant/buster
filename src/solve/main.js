@@ -3,7 +3,7 @@ import browser from 'webextension-polyfill';
 import storage from 'storage/storage';
 import {meanSleep, pingClientApp} from 'utils/app';
 import {getText, waitForElement, getRandomFloat, sleep} from 'utils/common';
-import {clientAppVersion} from 'utils/config';
+import {targetEnv, clientAppVersion} from 'utils/config';
 
 let solverWorking = false;
 
@@ -148,7 +148,15 @@ async function messageClientApp(message) {
 }
 
 async function getOsScale() {
+  // The background script devicePixelRatio is not affected by the default
+  // zoom level in Firefox, while the content script devicePixelRatio
+  // is affected, unless only text is zoomed.
+  if (targetEnv === 'firefox') {
+    return browser.runtime.sendMessage({id: 'getBackgroundScriptScale'});
+  }
+
   const zoom = await browser.runtime.sendMessage({id: 'getTabZoom'});
+
   return window.devicePixelRatio / zoom;
 }
 
@@ -173,16 +181,16 @@ async function getBrowserBorder(clickEvent) {
 
 async function getFrameClientPos() {
   if (window !== window.top) {
-    let index;
+    let frameIndex;
     const siblingWindows = window.parent.frames;
     for (let i = 0; i < siblingWindows.length; i++) {
       if (siblingWindows[i] === window) {
-        index = i;
+        frameIndex = i;
         break;
       }
     }
 
-    return await browser.runtime.sendMessage({id: 'getFramePos', index});
+    return await browser.runtime.sendMessage({id: 'getFramePos', frameIndex});
   }
 
   return {x: 0, y: 0};

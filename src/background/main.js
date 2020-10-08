@@ -481,9 +481,11 @@ async function onMessage(request, sender) {
   } else if (request.id === 'resetCaptcha') {
     await resetCaptcha(sender.tab.id, sender.frameId, request.challengeUrl);
   } else if (request.id === 'getFramePos') {
-    return getFramePos(sender.tab.id, sender.frameId, request.index);
+    return getFramePos(sender.tab.id, sender.frameId, request.frameIndex);
   } else if (request.id === 'getTabZoom') {
     return browser.tabs.getZoom(sender.tab.id);
+  } else if (request.id === 'getBackgroundScriptScale') {
+    return window.devicePixelRatio;
   } else if (request.id === 'startClientApp') {
     nativePort = browser.runtime.connectNative('org.buster.client');
   } else if (request.id === 'stopClientApp') {
