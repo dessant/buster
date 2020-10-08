@@ -19,24 +19,17 @@ jobs:
         with:
           node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
       - name: Install dependencies
-        run: |
-          sudo apt install rename
-          yarn
+        run: yarn
       - name: Build artifacts
         run: yarn build:prod:zip:all
-      - name: Prepare artifacts
-        run: |
-          rename 's|artifacts/(.*)/(.*)\.zip$|artifacts/$2-$1\.zip|' artifacts/*/*.zip
-          rm -rf artifacts/*/
-        if: startsWith(github.ref, 'refs/tags/v')
       - name: Hash artifacts
-        run: sha256sum artifacts/*
+        run: sha256sum artifacts/*/*
         if: startsWith(github.ref, 'refs/tags/v')
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         if: startsWith(github.ref, 'refs/tags/v')
         with:
-          name: buster
+          name: artifacts
           path: artifacts/
   release:
     name: Release on GitHub
@@ -52,10 +45,10 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: buster
+          name: artifacts
           path: artifacts/
       - name: Hash artifacts
-        run: sha256sum artifacts/*
+        run: sha256sum artifacts/*/*
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
@@ -75,7 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-chrome.zip
+          asset_path: artifacts/chrome/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-chrome.zip
           asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-chrome.zip
           asset_content_type: application/octet-stream
       - name: Upload GitHub release assets
@@ -84,7 +77,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-edge.zip
+          asset_path: artifacts/edge/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-edge.zip
           asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-edge.zip
           asset_content_type: application/octet-stream
       - name: Upload GitHub release assets
@@ -93,7 +86,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-firefox.zip
+          asset_path: artifacts/firefox/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-firefox.zip
           asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-firefox.zip
           asset_content_type: application/octet-stream
       - name: Upload GitHub release assets
@@ -102,6 +95,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-opera.zip
+          asset_path: artifacts/opera/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-opera.zip
           asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-opera.zip
           asset_content_type: application/octet-stream

@@ -1,2 +1,4 @@
 singleQuote: true
 bracketSpacing: false
+arrowParens: 'avoid'
+trailingComma: 'none'

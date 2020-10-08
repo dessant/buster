@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import uuidV4 from 'uuid/v4';
+import {v4 as uuidv4} from 'uuid';
 
 import {
   getText,
@@ -48,13 +48,13 @@ async function showContributePage(action = false) {
 }
 
 function meanSleep(ms) {
-  const maxDeviation = (10 / 100) * ms;
+  const maxDeviation = 0.1 * ms;
   return sleep(getRandomInt(ms - maxDeviation, ms + maxDeviation));
 }
 
 function sendNativeMessage(port, message, {timeout = 10000} = {}) {
   return new Promise((resolve, reject) => {
-    const id = uuidV4();
+    const id = uuidv4();
     message.id = id;
 
     const messageCallback = function(msg) {
