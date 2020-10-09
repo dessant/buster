@@ -105,34 +105,19 @@
 
     <div class="section">
       <div class="section-title" v-once>
-        {{ getText('optionSectionTitle_misc') }}
+        {{ getText('optionSectionTitle_client') }}
+      </div>
+      <div class="section-desc" v-once>
+        {{ getText('optionSectionDescription_client') }}
       </div>
       <div class="option-wrap">
-        <div class="option">
-          <v-form-field
-            input-id="lec"
-            :label="getText('optionTitle_loadEnglishChallenge')"
-          >
-            <v-switch
-              id="lec"
-              v-model="options.loadEnglishChallenge"
-            ></v-switch>
-          </v-form-field>
-        </div>
-
-        <div class="option" v-if="!options.loadEnglishChallenge">
-          <v-form-field
-            input-id="esm"
-            :label="getText('optionTitle_tryEnglishSpeechModel')"
-          >
-            <v-switch
-              id="esm"
-              v-model="options.tryEnglishSpeechModel"
-            ></v-switch>
-          </v-form-field>
-        </div>
-
-        <div class="option">
+        <div
+          class="option"
+          v-if="
+            clientAppInstalled ||
+            (clientAppVerified && options.simulateUserInput)
+          "
+        >
           <v-form-field
             input-id="si"
             :label="getText('optionTitle_simulateUserInput')"
@@ -141,17 +126,19 @@
           </v-form-field>
         </div>
 
-        <div class="option">
+        <div class="option" v-if="clientAppInstalled">
           <v-form-field
             input-id="auc"
-            v-if="options.simulateUserInput"
             :label="getText('optionTitle_autoUpdateClientApp')"
           >
             <v-switch id="auc" v-model="options.autoUpdateClientApp"></v-switch>
           </v-form-field>
         </div>
 
-        <div class="client-download" v-if="showClientAppNotice">
+        <div
+          class="client-download"
+          v-if="clientAppVerified && !clientAppInstalled"
+        >
           <div
             class="download-desc"
             v-html="
@@ -184,6 +171,37 @@
         </div>
       </div>
     </div>
+
+    <div class="section">
+      <div class="section-title" v-once>
+        {{ getText('optionSectionTitle_misc') }}
+      </div>
+      <div class="option-wrap">
+        <div class="option">
+          <v-form-field
+            input-id="lec"
+            :label="getText('optionTitle_loadEnglishChallenge')"
+          >
+            <v-switch
+              id="lec"
+              v-model="options.loadEnglishChallenge"
+            ></v-switch>
+          </v-form-field>
+        </div>
+
+        <div class="option" v-if="!options.loadEnglishChallenge">
+          <v-form-field
+            input-id="esm"
+            :label="getText('optionTitle_tryEnglishSpeechModel')"
+          >
+            <v-switch
+              id="esm"
+              v-model="options.tryEnglishSpeechModel"
+            ></v-switch>
+          </v-form-field>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -210,7 +228,7 @@ export default {
     [TextField.name]: TextField
   },
 
-  data: function() {
+  data: function () {
     return {
       dataLoaded: false,
 
@@ -260,7 +278,8 @@ export default {
       witSpeechApiLang: '',
       witSpeechApis: [],
 
-      showClientAppNotice: false,
+      clientAppVerified: false,
+      clientAppInstalled: false,
       clientAppDownloadUrl: '',
       installGuideUrl: '',
 
@@ -280,48 +299,46 @@ export default {
     };
   },
 
-  watch: {
-    'options.simulateUserInput': async function(value) {
-      if (value) {
-        try {
-          await pingClientApp();
-        } catch (e) {
-          if (!this.clientAppDownloadUrl) {
-            const {os, arch} = await getPlatform();
-            if (clientAppPlatforms.includes(`${os}/${arch}`)) {
-              this.installGuideUrl = `https://github.com/dessant/buster-client/wiki/Installing-the-client-app#${os}`;
-              this.clientAppDownloadUrl = `https://github.com/dessant/buster-client/releases/download/v${clientAppVersion}/buster-client-setup-v${clientAppVersion}-${os}-${arch}`;
-              if (os === 'windows') {
-                this.clientAppDownloadUrl += '.exe';
-              }
-            }
-          }
-
-          this.showClientAppNotice = true;
-          return;
-        }
-      }
-
-      this.showClientAppNotice = false;
-    }
-  },
-
   methods: {
     getText,
 
-    setWitSpeechApiLangOptions: function() {
+    verifyClientApp: async function () {
+      try {
+        await pingClientApp();
+        this.clientAppInstalled = true;
+      } catch (e) {
+        if (!this.installGuideUrl) {
+          this.installGuideUrl =
+            'https://github.com/dessant/buster/wiki/Installing-the-client-app';
+          const {os, arch} = await getPlatform();
+          if (clientAppPlatforms.includes(`${os}/${arch}`)) {
+            this.installGuideUrl += `#${os}`;
+            this.clientAppDownloadUrl = `https://github.com/dessant/buster-client/releases/download/v${clientAppVersion}/buster-client-setup-v${clientAppVersion}-${os}-${arch}`;
+            if (os === 'windows') {
+              this.clientAppDownloadUrl += '.exe';
+            }
+          }
+        }
+
+        this.clientAppInstalled = false;
+      }
+
+      this.clientAppVerified = true;
+    },
+
+    setWitSpeechApiLangOptions: function () {
       this.selectOptions.witSpeechApiLang = this.selectOptions.witSpeechApiLang.filter(
         item => !this.witSpeechApis.includes(item.id)
       );
     },
 
-    addWitSpeechApi: function() {
+    addWitSpeechApi: function () {
       this.witSpeechApis.push(this.witSpeechApiLang);
       this.witSpeechApiLang = '';
       this.setWitSpeechApiLangOptions();
     },
 
-    saveWitSpeechApiKey: function(value, lang) {
+    saveWitSpeechApiKey: function (value, lang) {
       const apiKeys = this.options.witSpeechApiKeys;
       if (value) {
         this.options.witSpeechApiKeys = Object.assign({}, apiKeys, {
@@ -334,12 +351,12 @@ export default {
     }
   },
 
-  created: async function() {
+  created: async function () {
     const options = await storage.get(optionKeys, 'sync');
 
     for (const option of Object.keys(this.options)) {
       this.options[option] = options[option];
-      this.$watch(`options.${option}`, async function(value) {
+      this.$watch(`options.${option}`, async function (value) {
         await storage.set({[option]: value}, 'sync');
       });
     }
@@ -351,6 +368,8 @@ export default {
       getText('pageTitle_options'),
       getText('extensionName')
     ]);
+
+    this.verifyClientApp();
 
     this.dataLoaded = true;
   }
@@ -395,6 +414,7 @@ body {
 .section-desc {
   @include mdc-typography(body2);
   padding-top: 8px;
+  max-width: 380px;
 }
 
 .option-wrap {
@@ -453,14 +473,17 @@ body {
 }
 
 .client-download {
-  margin-left: 48px;
+  min-width: 300px;
 }
 
 .download-desc,
 .download-error {
   @include mdc-theme-prop(color, text-primary-on-light);
   @include mdc-typography(body2);
-  min-width: 300px;
+}
+
+.download-desc {
+  max-width: 240px;
 }
 
 .download-error {
