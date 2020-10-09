@@ -189,6 +189,11 @@
     "description": "Title of the option."
   },
 
+  "optionTitle_navigateWithKeyboard": {
+    "message": "Navigate with keyboard",
+    "description": "Title of the option."
+  },
+
   "optionTitle_autoUpdateClientApp": {
     "message": "Auto-update client app",
     "description": "Title of the option."

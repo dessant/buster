@@ -9,7 +9,8 @@ const optionKeys = [
   'loadEnglishChallenge',
   'tryEnglishSpeechModel',
   'simulateUserInput',
-  'autoUpdateClientApp'
+  'autoUpdateClientApp',
+  'navigateWithKeyboard'
 ];
 
 const clientAppPlatforms = [

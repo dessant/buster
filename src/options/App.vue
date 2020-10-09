@@ -126,6 +126,18 @@
           </v-form-field>
         </div>
 
+        <div
+          class="option"
+          v-if="clientAppVerified && options.simulateUserInput"
+        >
+          <v-form-field
+            input-id="nc"
+            :label="getText('optionTitle_navigateWithKeyboard')"
+          >
+            <v-switch id="nc" v-model="options.navigateWithKeyboard"></v-switch>
+          </v-form-field>
+        </div>
+
         <div class="option" v-if="clientAppInstalled">
           <v-form-field
             input-id="auc"
@@ -294,7 +306,8 @@ export default {
         loadEnglishChallenge: false,
         tryEnglishSpeechModel: false,
         simulateUserInput: false,
-        autoUpdateClientApp: false
+        autoUpdateClientApp: false,
+        navigateWithKeyboard: false
       }
     };
   },

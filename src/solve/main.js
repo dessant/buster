@@ -236,10 +236,15 @@ async function solve(simulateUserInput, clickEvent) {
     return;
   }
 
+  const navigateWithKeyboard = await storage.get(
+    'navigateWithKeyboard',
+    'sync'
+  );
+
   let browserBorder;
   let useMouse = true;
   if (simulateUserInput) {
-    if (clickEvent.clientX || clickEvent.clientY) {
+    if (!navigateWithKeyboard && (clickEvent.clientX || clickEvent.clientY)) {
       browserBorder = await getBrowserBorder(clickEvent);
     } else {
       useMouse = false;
