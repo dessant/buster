@@ -71,5 +71,7 @@
     "page": "src/background/index.html"
   },
 
-  "web_accessible_resources": ["src/setup/index.html", "src/content/reset.js"]
+  "web_accessible_resources": ["src/setup/index.html", "src/content/reset.js"],
+
+  "incognito": "split"
 }
