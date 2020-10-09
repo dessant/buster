@@ -76,7 +76,7 @@ export default {
     [TextField.name]: TextField
   },
 
-  data: function() {
+  data: function () {
     const urlParams = new URL(window.location.href).searchParams;
     const apiURL = new URL('http://127.0.0.1/api/v1');
     apiURL.port = urlParams.get('port');
@@ -100,7 +100,7 @@ export default {
   methods: {
     getText,
 
-    getExtensionId: function() {
+    getExtensionId: function () {
       let id = browser.runtime.id;
       if (targetEnv !== 'firefox') {
         const scheme = window.location.protocol;
@@ -110,7 +110,7 @@ export default {
       return id;
     },
 
-    setLocation: async function() {
+    setLocation: async function () {
       try {
         await this.location();
       } catch (err) {
@@ -119,7 +119,7 @@ export default {
       }
     },
 
-    runInstall: async function() {
+    runInstall: async function () {
       this.isInstalling = true;
 
       try {
@@ -144,7 +144,7 @@ export default {
       }
     },
 
-    location: async function() {
+    location: async function () {
       const data = new FormData();
       data.append('session', this.session);
       data.append('browser', this.browser);
@@ -167,7 +167,7 @@ export default {
       }
     },
 
-    install: async function() {
+    install: async function () {
       const data = new FormData();
       data.append('session', this.session);
       data.append('appDir', this.appDir);
@@ -194,7 +194,7 @@ export default {
     }
   },
 
-  created: async function() {
+  created: async function () {
     this.browser = (await browser.runtime.sendMessage({id: 'getBrowser'})).name;
 
     await this.setLocation();

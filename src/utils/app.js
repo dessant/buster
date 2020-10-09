@@ -28,7 +28,7 @@ function getOptionLabels(data, scope = 'optionValue') {
   const labels = {};
   for (const [group, items] of Object.entries(data)) {
     labels[group] = [];
-    items.forEach(function(value) {
+    items.forEach(function (value) {
       labels[group].push({
         id: value,
         label: getText(`${scope}_${group}_${value}`)
@@ -57,24 +57,24 @@ function sendNativeMessage(port, message, {timeout = 10000} = {}) {
     const id = uuidv4();
     message.id = id;
 
-    const messageCallback = function(msg) {
+    const messageCallback = function (msg) {
       if (msg.id !== id) {
         return;
       }
       removeListeners();
       resolve(msg);
     };
-    const errorCallback = function() {
+    const errorCallback = function () {
       removeListeners();
       reject('No response from native app');
     };
-    const removeListeners = function() {
+    const removeListeners = function () {
       window.clearTimeout(timeoutId);
       port.onMessage.removeListener(messageCallback);
       port.onDisconnect.removeListener(errorCallback);
     };
 
-    const timeoutId = window.setTimeout(function() {
+    const timeoutId = window.setTimeout(function () {
       errorCallback();
     }, timeout);
 

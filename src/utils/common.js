@@ -45,7 +45,7 @@ async function getBrowser() {
   let name, version;
   try {
     ({name, version} = await browser.runtime.getBrowserInfo());
-  } catch (e) {}
+  } catch (err) {}
 
   if (!name) {
     ({name, version} = Bowser.getParser(
@@ -74,7 +74,7 @@ function waitForElement(selector, {timeout = 10000} = {}) {
       return;
     }
 
-    const observer = new MutationObserver(function(mutations, obs) {
+    const observer = new MutationObserver(function (mutations, obs) {
       const el = document.querySelector(selector);
       if (el) {
         obs.disconnect();
@@ -88,7 +88,7 @@ function waitForElement(selector, {timeout = 10000} = {}) {
       subtree: true
     });
 
-    const timeoutId = window.setTimeout(function() {
+    const timeoutId = window.setTimeout(function () {
       observer.disconnect();
       resolve();
     }, timeout);
@@ -130,7 +130,7 @@ async function scriptsAllowed(tabId, frameId = 0) {
       code: 'true;'
     });
     return true;
-  } catch (e) {}
+  } catch (err) {}
 }
 
 async function functionInContext(

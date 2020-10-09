@@ -306,7 +306,7 @@ export default {
       try {
         await pingClientApp();
         this.clientAppInstalled = true;
-      } catch (e) {
+      } catch (err) {
         if (!this.installGuideUrl) {
           this.installGuideUrl =
             'https://github.com/dessant/buster/wiki/Installing-the-client-app';

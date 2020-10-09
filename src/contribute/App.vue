@@ -15,7 +15,7 @@ export default {
     [Contribute.name]: Contribute
   },
 
-  data: function() {
+  data: function () {
     return {
       extName: getText('extensionName'),
       extSlug: 'buster',
@@ -23,7 +23,7 @@ export default {
     };
   },
 
-  created: function() {
+  created: function () {
     document.title = getText('pageTitle', [
       getText('pageTitle_contribute'),
       this.extName

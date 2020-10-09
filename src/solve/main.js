@@ -279,10 +279,10 @@ async function solve(simulateUserInput, clickEvent) {
   }
 
   if (simulateUserInput) {
-    const muteAudio = function() {
+    const muteAudio = function () {
       audioEl.muted = true;
     };
-    const unmuteAudio = function() {
+    const unmuteAudio = function () {
       removeCallbacks();
       audioEl.muted = false;
     };
@@ -296,7 +296,7 @@ async function solve(simulateUserInput, clickEvent) {
       once: true
     });
 
-    const removeCallbacks = function() {
+    const removeCallbacks = function () {
       window.clearTimeout(timeoutId);
       audioEl.removeEventListener('playing', muteAudio, {
         capture: true,

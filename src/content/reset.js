@@ -1,5 +1,5 @@
-(function() {
-  const reset = function(challengeUrl) {
+(function () {
+  const reset = function (challengeUrl) {
     for (const [k, client] of Object.entries(___grecaptcha_cfg.clients)) {
       for (const [_, items] of Object.entries(client)) {
         for (const [_, v] of Object.entries(items)) {
@@ -12,14 +12,14 @@
     }
   };
 
-  const onMessage = function(e) {
-    e.stopImmediatePropagation();
+  const onMessage = function (ev) {
+    ev.stopImmediatePropagation();
     window.clearTimeout(timeoutId);
 
-    reset(e.detail);
+    reset(ev.detail);
   };
 
-  const timeoutId = window.setTimeout(function() {
+  const timeoutId = window.setTimeout(function () {
     document.removeEventListener('___resetCaptcha', onMessage, {
       capture: true,
       once: true

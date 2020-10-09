@@ -1,7 +1,7 @@
 function initReset(challengeUrl) {
   const script = document.createElement('script');
-  script.onload = function(e) {
-    e.target.remove();
+  script.onload = function (ev) {
+    ev.target.remove();
     document.dispatchEvent(
       new CustomEvent('___resetCaptcha', {detail: challengeUrl})
     );
@@ -11,14 +11,14 @@ function initReset(challengeUrl) {
 }
 
 function addListener() {
-  const onMessage = function(request) {
+  const onMessage = function (request) {
     if (request.id === 'resetCaptcha') {
       removeCallbacks();
       initReset(request.challengeUrl);
     }
   };
 
-  const removeCallbacks = function() {
+  const removeCallbacks = function () {
     window.clearTimeout(timeoutId);
     chrome.runtime.onMessage.removeListener(onMessage);
   };
