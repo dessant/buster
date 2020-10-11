@@ -50,7 +50,7 @@
       ],
       "all_frames": true,
       "run_at": "document_idle",
-      "css": ["src/solve/style.css"],
+      "css": ["src/solve/reset-button.css"],
       "js": ["src/manifest.js", "src/solve/script.js"]
     },
     {
@@ -71,7 +71,11 @@
     "page": "src/background/index.html"
   },
 
-  "web_accessible_resources": ["src/setup/index.html", "src/content/reset.js"],
+  "web_accessible_resources": [
+    "src/setup/index.html",
+    "src/content/reset.js",
+    "src/solve/solver-button.css"
+  ],
 
   "incognito": "split"
 }

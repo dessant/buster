@@ -49,7 +49,7 @@ function html() {
 }
 
 function css() {
-  return src(['src/solve/style.css'], {
+  return src(['src/solve/*.css'], {
     base: '.'
   })
     .pipe(postcss())

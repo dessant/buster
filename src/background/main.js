@@ -540,7 +540,7 @@ async function onInstall(details) {
           await browser.tabs.insertCSS(tabId, {
             frameId,
             runAt: 'document_idle',
-            file: 'src/solve/style.css'
+            file: 'src/solve/reset-button.css'
           });
 
           await browser.tabs.executeScript(tabId, {

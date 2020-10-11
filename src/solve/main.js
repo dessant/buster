@@ -6,15 +6,15 @@ import {getText, waitForElement, getRandomFloat, sleep} from 'utils/common';
 import {targetEnv, clientAppVersion} from 'utils/config';
 
 let solverWorking = false;
+let solverButton = null;
 
 function setSolverState({working = true} = {}) {
   solverWorking = working;
-  const button = document.querySelector('#solver-button');
-  if (button) {
+  if (solverButton) {
     if (working) {
-      button.classList.add('working');
+      solverButton.classList.add('working');
     } else {
-      button.classList.remove('working');
+      solverButton.classList.remove('working');
     }
   }
 }
@@ -46,26 +46,32 @@ function syncUI() {
     return;
   }
 
-  const infoButton = document.querySelector('#recaptcha-help-button');
-  if (infoButton) {
-    infoButton.remove();
+  const helpButton = document.querySelector('#recaptcha-help-button');
+  if (helpButton) {
+    helpButton.remove();
 
-    const div = document.createElement('div');
-    div.classList.add('button-holder');
+    const helpButtonHolder = document.querySelector('.help-button-holder');
+    const shadow = helpButtonHolder.attachShadow({mode: 'closed'});
 
-    const button = document.createElement('button');
-    button.classList.add('rc-button', 'goog-inline-block');
-    button.setAttribute('tabindex', '0');
-    button.setAttribute('title', getText('buttonText_solve'));
-    button.id = 'solver-button';
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute(
+      'href',
+      browser.extension.getURL('/src/solve/solver-button.css')
+    );
+    shadow.appendChild(link);
+
+    solverButton = document.createElement('button');
+    solverButton.setAttribute('tabindex', '0');
+    solverButton.setAttribute('title', getText('buttonText_solve'));
+    solverButton.id = 'solver-button';
     if (solverWorking) {
-      button.classList.add('working');
+      solverButton.classList.add('working');
     }
 
-    button.addEventListener('click', solveChallenge);
+    solverButton.addEventListener('click', solveChallenge);
 
-    div.appendChild(button);
-    document.querySelector('.rc-buttons').appendChild(div);
+    shadow.appendChild(solverButton);
   }
 }
 
@@ -236,7 +242,7 @@ async function solve(simulateUserInput, clickEvent) {
     return;
   }
 
-  const navigateWithKeyboard = await storage.get(
+  const {navigateWithKeyboard} = await storage.get(
     'navigateWithKeyboard',
     'sync'
   );

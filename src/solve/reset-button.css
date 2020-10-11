@@ -1,0 +1,31 @@
+#reset-button {
+  background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M17.65%206.35C16.2%204.9%2014.21%204%2012%204c-4.42%200-7.99%203.58-7.99%208s3.57%208%207.99%208c3.73%200%206.84-2.55%207.73-6h-2.08c-.82%202.33-3.04%204-5.65%204-3.31%200-6-2.69-6-6s2.69-6%206-6c1.66%200%203.14.69%204.22%201.78L13%2011h7V4l-2.35%202.35z%22%2F%3E%3C%2Fsvg%3E') !important;
+  background-color: transparent !important;
+}
+
+.solver-controls {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 58px !important;
+}
+
+.rc-doscaptcha-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 30px !important;
+}
+
+.rc-doscaptcha-body {
+  height: 120px !important;
+}
+
+.rc-doscaptcha-footer {
+  height: 60px !important;
+  pointer-events: auto !important;
+}
+
+.rc-doscaptcha-footer .rc-controls {
+  display: none !important;
+}
