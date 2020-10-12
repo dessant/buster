@@ -521,6 +521,11 @@
     "description": "Error message."
   },
 
+  "error_apiQuotaExceeded": {
+    "message": "API quota exceeded. Try again later, or visit the extension's options and switch to a different service.",
+    "description": "Error message."
+  },
+
   "error_scriptsNotAllowed": {
     "message": "Content scripts are not allowed on this page.",
     "description": "Error message."

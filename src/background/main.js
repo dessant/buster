@@ -267,6 +267,8 @@ async function getWitSpeechApiKey(speechService, language) {
 }
 
 async function getWitSpeechApiResult(apiKey, audioContent) {
+  const result = {};
+
   const rsp = await fetch('https://api.wit.ai/speech?v=20200513', {
     referrer: '',
     mode: 'cors',
@@ -278,14 +280,19 @@ async function getWitSpeechApiResult(apiKey, audioContent) {
   });
 
   if (rsp.status !== 200) {
-    throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+    if (rsp.status === 429) {
+      result.errorId = 'error_apiQuotaExceeded';
+    } else {
+      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+    }
+  } else {
+    const data = (await rsp.json()).text;
+    if (data) {
+      result.text = data.trim();
+    }
   }
 
-  const result = (await rsp.json()).text;
-
-  if (result) {
-    return result.trim();
-  }
+  return result;
 }
 
 async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, language) {
@@ -363,14 +370,25 @@ async function transcribeAudio(audioUrl, lang) {
       return;
     }
 
-    solution = await getWitSpeechApiResult(apiKey, audioContent);
+    const result = await getWitSpeechApiResult(apiKey, audioContent);
+    if (result.errorId) {
+      showNotification({messageId: result.errorId});
+      return;
+    }
+    solution = result.text;
+
     if (!solution && language !== 'english' && tryEnglishSpeechModel) {
       const apiKey = await getWitSpeechApiKey(speechService, 'english');
       if (!apiKey) {
         showNotification({messageId: 'error_missingApiKey'});
         return;
       }
-      solution = await getWitSpeechApiResult(apiKey, audioContent);
+      const result = await getWitSpeechApiResult(apiKey, audioContent);
+      if (result.errorId) {
+        showNotification({messageId: result.errorId});
+        return;
+      }
+      solution = result.text;
     }
   } else if (speechService === 'googleSpeechApi') {
     const {googleSpeechApiKey: apiKey} = await storage.get(
