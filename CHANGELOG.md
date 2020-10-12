@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/dessant/buster/compare/v1.1.0...v1.1.1) (2020-10-12)
+
+
+### Bug Fixes
+
+* Opera add-ons does not accept the .enc file extension ([317eb95](https://github.com/dessant/buster/commit/317eb95f6c248013e1f296f49f71ca940b0b63e8))
+
 ## [1.1.0](https://github.com/dessant/buster/compare/v1.0.1...v1.1.0) (2020-10-12)
 
 
