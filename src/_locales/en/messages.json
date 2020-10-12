@@ -430,6 +430,11 @@
     "description": "Text of the link."
   },
 
+  "linkText_witSpeechApiGuide": {
+    "message": "How to get an API key?",
+    "description": "Text of the link."
+  },
+
   "pageContent_optionClientAppDownloadDesc": {
     "message": "Download and install the client app to get started. $INSTALLGUIDE$",
     "description": "Page content.",

@@ -100,6 +100,16 @@
           >
           </v-button>
         </div>
+
+        <a
+          class="service-guide"
+          v-if="options.speechService === 'witSpeechApi'"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/dessant/buster/wiki/Configuring-Wit.ai"
+        >
+          {{ getText('linkText_witSpeechApiGuide') }}
+        </a>
       </div>
     </div>
 
@@ -485,6 +495,10 @@ body {
   white-space: nowrap;
 }
 
+.service-guide {
+  @include mdc-typography(body1);
+}
+
 .client-download {
   min-width: 300px;
 }
@@ -492,6 +506,10 @@ body {
 .download-desc,
 .download-error {
   @include mdc-theme-prop(color, text-primary-on-light);
+  @include mdc-typography(body2);
+}
+
+.download-desc a {
   @include mdc-typography(body2);
 }
 
