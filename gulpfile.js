@@ -214,7 +214,7 @@ function secrets(done) {
     writeFileSync(path.join(distDir, 'secrets.json.enc'), ciphertext);
   } catch (err) {
     console.log(
-      'Secrets have not been set, secrets.json.enc will not be included in the extension package.'
+      'Secrets are missing, secrets.json.enc will not be included in the extension package.'
     );
   }
 
