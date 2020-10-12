@@ -341,10 +341,6 @@ async function solve(simulateUserInput, clickEvent) {
   });
 
   if (!solution) {
-    browser.runtime.sendMessage({
-      id: 'notification',
-      messageId: 'error_captchaNotSolved'
-    });
     return;
   }
 

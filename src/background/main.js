@@ -1,5 +1,8 @@
 import browser from 'webextension-polyfill';
 import audioBufferToWav from 'audiobuffer-to-wav';
+import aes from 'crypto-js/aes';
+import sha256 from 'crypto-js/sha256';
+import utf8 from 'crypto-js/enc-utf8';
 
 import {initStorage} from 'storage/init';
 import storage from 'storage/storage';
@@ -29,9 +32,10 @@ import {
   ibmSpeechApiUrls,
   microsoftSpeechApiUrls
 } from 'utils/data';
-import {targetEnv, clientAppVersion, witApiKeys} from 'utils/config';
+import {targetEnv, clientAppVersion} from 'utils/config';
 
 let nativePort;
+let secrets;
 
 function getFrameClientPos(index) {
   let currentIndex = -1;
@@ -221,12 +225,37 @@ async function prepareAudio(audio) {
   return audioBufferToWav(audioSlice);
 }
 
+async function loadSecrets() {
+  try {
+    const ciphertext = await (await fetch('/secrets.json.enc')).text();
+
+    const key = sha256(
+      (await (await fetch('/src/background/script.js')).text()) +
+        (await (await fetch('/src/solve/script.js')).text())
+    ).toString();
+
+    secrets = JSON.parse(aes.decrypt(ciphertext, key).toString(utf8));
+  } catch (err) {
+    secrets = {};
+    const {speechService} = await storage.get('speechService', 'sync');
+    if (speechService === 'witSpeechApiDemo') {
+      await storage.set({speechService: 'witSpeechApi'}, 'sync');
+    }
+  }
+}
+
 async function getWitSpeechApiKey(speechService, language) {
   if (speechService === 'witSpeechApiDemo') {
-    if (language === 'english') {
-      return witApiKeys[language][getRandomInt(1, 4) - 1];
-    } else {
-      return witApiKeys[language];
+    if (!secrets) {
+      await loadSecrets();
+    }
+    const apiKeys = secrets.witApiKeys;
+    if (apiKeys) {
+      const apiKey = apiKeys[language];
+      if (Array.isArray(apiKey)) {
+        return apiKey[getRandomInt(1, apiKey.length) - 1];
+      }
+      return apiKey;
     }
   } else {
     const {witSpeechApiKeys: apiKeys} = await storage.get(
@@ -453,7 +482,11 @@ async function transcribeAudio(audioUrl, lang) {
     }
   }
 
-  return solution;
+  if (!solution) {
+    showNotification({messageId: 'error_captchaNotSolved'});
+  } else {
+    return solution;
+  }
 }
 
 async function onMessage(request, sender) {
@@ -540,7 +573,7 @@ async function onInstall(details) {
           await browser.tabs.insertCSS(tabId, {
             frameId,
             runAt: 'document_idle',
-            file: 'src/solve/reset-button.css'
+            file: '/src/solve/reset-button.css'
           });
 
           await browser.tabs.executeScript(tabId, {

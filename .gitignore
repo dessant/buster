@@ -1,4 +1,5 @@
 .assets/
+secrets.json
 
 node_modules/
 artifacts/

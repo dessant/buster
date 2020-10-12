@@ -11,8 +11,9 @@ const jsonmin = require('gulp-jsonmin');
 const htmlmin = require('gulp-htmlmin');
 const imagemin = require('gulp-imagemin');
 const del = require('del');
-const {ensureDirSync} = require('fs-extra');
+const {ensureDirSync, readJsonSync} = require('fs-extra');
 const sharp = require('sharp');
+const CryptoJS = require('crypto-js');
 
 const targetEnv = process.env.TARGET_ENV || 'firefox';
 const isProduction = process.env.NODE_ENV === 'production';
@@ -193,6 +194,33 @@ See the LICENSE file for further information.
   return src(['LICENSE']).pipe(dest(distDir));
 }
 
+function secrets(done) {
+  try {
+    let data = process.env.BUSTER_SECRETS;
+    if (data) {
+      data = JSON.parse(data);
+    } else {
+      data = readJsonSync('secrets.json');
+    }
+    data = JSON.stringify(data);
+
+    const key = CryptoJS.SHA256(
+      readFileSync(path.join(distDir, 'src/background/script.js')).toString() +
+        readFileSync(path.join(distDir, 'src/solve/script.js')).toString()
+    ).toString();
+
+    const ciphertext = CryptoJS.AES.encrypt(data, key).toString();
+
+    writeFileSync(path.join(distDir, 'secrets.json.enc'), ciphertext);
+  } catch (err) {
+    console.log(
+      'Secrets have not been set, secrets.json.enc will not be included in the extension package.'
+    );
+  }
+
+  done();
+}
+
 function zip(done) {
   exec(
     `web-ext build -s dist/${targetEnv} -a artifacts/${targetEnv} -n '{name}-{version}-${targetEnv}.zip' --overwrite-dest`,
@@ -217,7 +245,9 @@ function inspect(done) {
 
 exports.build = series(
   clean,
-  parallel(js, html, css, images, fonts, locale, manifest, license)
+  parallel(js, html, css, images, fonts, locale, manifest, license),
+  secrets
 );
 exports.zip = zip;
 exports.inspect = inspect;
+exports.secrets = secrets;

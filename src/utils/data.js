@@ -290,7 +290,7 @@ const captchaWitSpeechApiLangCodes = {
   lt: '', // Lithuanian
   ms: 'malay', // Malay
   ml: 'malayalam', // Malayalam
-  mr: '', // Marathi
+  mr: 'marathi', // Marathi
   mn: '', // Mongolian
   no: '', // Norwegian
   fa: '', // Persian

@@ -304,6 +304,11 @@
     "description": "Value of the option."
   },
 
+  "optionValue_witSpeechApiLang_marathi": {
+    "message": "Marathi",
+    "description": "Value of the option."
+  },
+
   "optionValue_witSpeechApiLang_polish": {
     "message": "Polish",
     "description": "Value of the option."
