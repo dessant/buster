@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/dessant/buster/compare/v1.0.1...v1.1.0) (2020-10-12)
+
+
+### Features
+
+* add support for reCAPTCHA Enterprise ([092f3b9](https://github.com/dessant/buster/commit/092f3b9492abf48b92539b4bb5670273bfced88e)), closes [#236](https://github.com/dessant/buster/issues/236)
+* create new section for client app options ([15ae99e](https://github.com/dessant/buster/commit/15ae99ea1395855c8d2db3707661328f1452a0eb))
+* link to guide for configuring Wit.ai ([31f915f](https://github.com/dessant/buster/commit/31f915f517be8e8c70541b059fed2ee5c32af279))
+* navigate with client app using keyboard ([d34f5fa](https://github.com/dessant/buster/commit/d34f5fa8b715e95ae921e0490223817f9accb111)), closes [#168](https://github.com/dessant/buster/issues/168)
+* support Chrome Incognito ([39cf3c0](https://github.com/dessant/buster/commit/39cf3c02efb40bec69e2de4124563120c0b1074d))
+
+
+### Bug Fixes
+
+* increase favicon size ([2df4816](https://github.com/dessant/buster/commit/2df48169e1fca5241595eaa513d27fe68561b5ed))
+* inject assets in challenge frames loaded from alternative URLs ([ce2d942](https://github.com/dessant/buster/commit/ce2d9424f55210c1fe000ef48490317816f27532))
+* move mouse to the correct position when only text is zoomed in Firefox ([692340c](https://github.com/dessant/buster/commit/692340c5aa16425e0d6f762a2f33119257c33ea9)), closes [#133](https://github.com/dessant/buster/issues/133)
+* show actionable error message when API quota is exceeded ([d01968d](https://github.com/dessant/buster/commit/d01968d5b46694ea84ba643a95ba29ce46e52c31))
+
 ### [1.0.1](https://github.com/dessant/buster/compare/v1.0.0...v1.0.1) (2020-06-14)
 
 
