@@ -211,10 +211,10 @@ function secrets(done) {
 
     const ciphertext = CryptoJS.AES.encrypt(data, key).toString();
 
-    writeFileSync(path.join(distDir, 'secrets.json.enc'), ciphertext);
+    writeFileSync(path.join(distDir, 'secrets.txt'), ciphertext);
   } catch (err) {
     console.log(
-      'Secrets are missing, secrets.json.enc will not be included in the extension package.'
+      'Secrets are missing, secrets.txt will not be included in the extension package.'
     );
   }
 

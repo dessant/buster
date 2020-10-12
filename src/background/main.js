@@ -227,7 +227,7 @@ async function prepareAudio(audio) {
 
 async function loadSecrets() {
   try {
-    const ciphertext = await (await fetch('/secrets.json.enc')).text();
+    const ciphertext = await (await fetch('/secrets.txt')).text();
 
     const key = sha256(
       (await (await fetch('/src/background/script.js')).text()) +
