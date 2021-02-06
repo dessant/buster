@@ -34,7 +34,7 @@ async function getPlatform() {
 
   if (arch === 'x86-32') {
     arch = '386';
-  } else if (arch === 'x86-64') {
+  } else if (arch === 'x86-64' || (arch.startsWith('arm') && os === 'macos')) {
     arch = 'amd64';
   }
 
