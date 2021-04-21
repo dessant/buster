@@ -1,2 +1,5 @@
+github: dessant
 patreon: dessant
-custom: https://armin.dev/go/paypal
+custom:
+  - https://armin.dev/go/paypal
+  - https://armin.dev/go/bitcoin
