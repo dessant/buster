@@ -9,19 +9,36 @@ import {
   sleep
 } from 'utils/common';
 
-function showNotification({message, messageId, title, type = 'info'}) {
+async function showNotification({
+  message,
+  messageId,
+  title,
+  type = 'info',
+  timeout = 0
+}) {
   if (!title) {
     title = getText('extensionName');
   }
   if (messageId) {
     message = getText(messageId);
   }
-  return browser.notifications.create(`sbi-notification-${type}`, {
-    type: 'basic',
-    title: title,
-    message: message,
-    iconUrl: '/src/icons/app/icon-48.png'
-  });
+  const notification = await browser.notifications.create(
+    `bc-notification-${type}`,
+    {
+      type: 'basic',
+      title,
+      message,
+      iconUrl: '/src/icons/app/icon-64.png'
+    }
+  );
+
+  if (timeout) {
+    window.setTimeout(() => {
+      browser.notifications.clear(notification);
+    }, timeout);
+  }
+
+  return notification;
 }
 
 function getOptionLabels(data, scope = 'optionValue') {

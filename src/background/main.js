@@ -287,6 +287,7 @@ async function getWitSpeechApiResult(apiKey, audioContent) {
   if (rsp.status !== 200) {
     if (rsp.status === 429) {
       result.errorId = 'error_apiQuotaExceeded';
+      result.errorTimeout = 6000;
     } else {
       throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
     }
@@ -377,7 +378,10 @@ async function transcribeAudio(audioUrl, lang) {
 
     const result = await getWitSpeechApiResult(apiKey, audioContent);
     if (result.errorId) {
-      showNotification({messageId: result.errorId});
+      showNotification({
+        messageId: result.errorId,
+        timeout: result.errorTimeout
+      });
       return;
     }
     solution = result.text;
@@ -390,7 +394,10 @@ async function transcribeAudio(audioUrl, lang) {
       }
       const result = await getWitSpeechApiResult(apiKey, audioContent);
       if (result.errorId) {
-        showNotification({messageId: result.errorId});
+        showNotification({
+          messageId: result.errorId,
+          timeout: result.errorTimeout
+        });
         return;
       }
       solution = result.text;
@@ -506,7 +513,7 @@ async function transcribeAudio(audioUrl, lang) {
   }
 
   if (!solution) {
-    showNotification({messageId: 'error_captchaNotSolved'});
+    showNotification({messageId: 'error_captchaNotSolved', timeout: 6000});
   } else {
     return solution;
   }
@@ -518,7 +525,8 @@ async function onMessage(request, sender) {
       message: request.message,
       messageId: request.messageId,
       title: request.title,
-      type: request.type
+      type: request.type,
+      timeout: request.timeout
     });
   } else if (request.id === 'captchaSolved') {
     let {useCount} = await storage.get('useCount', 'sync');
