@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/dessant/buster/compare/v1.1.1...v1.2.0) (2021-04-29)
+
+
+### Features
+
+* automatically clear non-critical error notifications ([ab03085](https://github.com/dessant/buster/commit/ab03085b0e156aa0bfccf6448222a003f2690386)), closes [#253](https://github.com/dessant/buster/issues/253)
+
+
+### Bug Fixes
+
+* handle new reCAPTCHA host ([9d092c2](https://github.com/dessant/buster/commit/9d092c2c39f2d018455a4333fad417f6d500c360)), closes [#290](https://github.com/dessant/buster/issues/290)
+* serve AMD64 client app installer for ARM macOS devices ([17c0a38](https://github.com/dessant/buster/commit/17c0a383afbb0e54ef9434abc6bd3e9f2d7efd68)), closes [#261](https://github.com/dessant/buster/issues/261)
+
 ### [1.1.1](https://github.com/dessant/buster/compare/v1.1.0...v1.1.1) (2020-10-12)
 
 
