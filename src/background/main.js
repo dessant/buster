@@ -143,10 +143,14 @@ async function setChallengeLocale() {
             'https://www.google.com/recaptcha/api2/bframe*',
             'https://www.recaptcha.net/recaptcha/api2/anchor*',
             'https://www.recaptcha.net/recaptcha/api2/bframe*',
+            'https://recaptcha.net/recaptcha/api2/anchor*',
+            'https://recaptcha.net/recaptcha/api2/bframe*',
             'https://www.google.com/recaptcha/enterprise/anchor*',
             'https://www.google.com/recaptcha/enterprise/bframe*',
             'https://www.recaptcha.net/recaptcha/enterprise/anchor*',
-            'https://www.recaptcha.net/recaptcha/enterprise/bframe*'
+            'https://www.recaptcha.net/recaptcha/enterprise/bframe*',
+            'https://recaptcha.net/recaptcha/enterprise/anchor*',
+            'https://recaptcha.net/recaptcha/enterprise/bframe*'
           ],
           types: ['sub_frame']
         },
@@ -180,6 +184,7 @@ function addBackgroundRequestLitener() {
     const urls = [
       'https://www.google.com/*',
       'https://www.recaptcha.net/*',
+      'https://recaptcha.net/*',
       'https://api.wit.ai/*',
       'https://speech.googleapis.com/*',
       'https://*.speech-to-text.watson.cloud.ibm.com/*',

@@ -45,8 +45,10 @@
       "matches": [
         "https://www.google.com/recaptcha/api2/bframe*",
         "https://www.recaptcha.net/recaptcha/api2/bframe*",
+        "https://recaptcha.net/recaptcha/api2/bframe*",
         "https://www.google.com/recaptcha/enterprise/bframe*",
-        "https://www.recaptcha.net/recaptcha/enterprise/bframe*"
+        "https://www.recaptcha.net/recaptcha/enterprise/bframe*",
+        "https://recaptcha.net/recaptcha/enterprise/bframe*"
       ],
       "all_frames": true,
       "run_at": "document_idle",
