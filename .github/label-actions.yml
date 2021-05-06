@@ -1,28 +1,30 @@
 # Configuration for Label Actions - https://github.com/dessant/label-actions
 
-issues:
-  actions:
-    incomplete:
-      comment: >
-        @{issue-author}, the issue does not contain enough information
-        to reproduce the bug. Please open a new bug report and fill out
-        the issue template with the requested data.
-      close: true
-    wontfix-automation:
-      comment: >
-        @{issue-author}, full automation and scripting are not within the scope
-        of this project due to their potential for misuse.
-        The solver must always be manually started from the extension button.
-      close: true
-    wontfix-service:
-      comment: >
-        @{issue-author}, the extension helps solve reCAPTCHA audio challenges.
-        Other services and challenge types are not within the scope
-        of this project.
-      close: true
-    recaptcha-error:
-      comment: |
-        You may experience a temporary block when trying to solve a reCAPTCHA audio challenge. Visit the wiki to learn more about the issue and the steps you can take to minimize the risk of a temporary block.
+incomplete:
+  issues:
+    comment: >
+      @{issue-author}, the issue does not contain enough information
+      to reproduce the bug. Please open a new bug report and fill out
+      the issue template with the requested data.
+    close: true
+wontfix-automation:
+  issues:
+    comment: >
+      @{issue-author}, full automation and scripting are not within the scope
+      of this project due to their potential for misuse.
+      The solver must always be manually started from the extension button.
+    close: true
+wontfix-service:
+  issues:
+    comment: >
+      @{issue-author}, the extension helps solve reCAPTCHA audio challenges.
+      Other services and challenge types are not within the scope
+      of this project.
+    close: true
+recaptcha-error:
+  issues:
+    comment: |
+      You may experience a temporary block when trying to solve a reCAPTCHA audio challenge. Visit the wiki to learn more about the issue and the steps you can take to minimize the risk of a temporary block.
 
-        https://github.com/dessant/buster/wiki/Inaccessible-reCAPTCHA-audio-challenge
-      close: true
+      https://github.com/dessant/buster/wiki/Inaccessible-reCAPTCHA-audio-challenge
+    close: true
