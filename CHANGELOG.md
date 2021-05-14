@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/dessant/buster/compare/v1.2.0...v1.2.1) (2021-05-14)
+
+
+### Bug Fixes
+
+* do not bundle source maps with Opera package ([187622b](https://github.com/dessant/buster/commit/187622b83a0edaeb1318feb68249bd342fd0951d))
+
 ## [1.2.0](https://github.com/dessant/buster/compare/v1.1.1...v1.2.0) (2021-04-29)
 
 
