@@ -1,16 +1,16 @@
-<p align="center"><img src="https://i.imgur.com/4DvR5ip.png"></p>
+<p align="center"><img width="128" height="128" src="https://i.imgur.com/uVpmR8l.png"></p>
 <h1 align="center">Buster: Captcha Solver for Humans</h1>
 
 <p align="center">
   </br></br>
   <a href="https://chrome.google.com/webstore/detail/mpbjkejclgfgadiemmefgebjfooflfhl">
-    <img src="https://i.imgur.com/B0i5sn3.png" alt="Chrome Web Store"></a>
+    <img height="58" src="https://i.imgur.com/K9Yh8G9.png" alt="Chrome Web Store"></a>
   <a href="https://addons.mozilla.org/en-US/firefox/addon/buster-captcha-solver/">
-    <img src="https://i.imgur.com/kMH6r1a.png" alt="Firefox add-ons"></a>
+    <img height="58" src="https://i.imgur.com/2jJOtTI.png" alt="Firefox add-ons"></a>
   <a href="https://microsoftedge.microsoft.com/addons/detail/admkpobhocmdideidcndkfaeffadipkc">
-    <img src="https://i.imgur.com/n49Wiu2.png" alt="Microsoft Store"></a>
+    <img height="58" src="https://i.imgur.com/es2YFRA.png" alt="Microsoft Store"></a>
   <a href="https://addons.opera.com/en/extensions/details/buster-captcha-solver-for-humans/">
-    <img src="https://i.imgur.com/wK10qEV.png" alt="Opera add-ons"></a>
+    <img height="58" src="https://i.imgur.com/IYYsrwg.png" alt="Opera add-ons"></a>
   </br></br>
 </p>
 
