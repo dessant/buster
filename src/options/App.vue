@@ -47,6 +47,16 @@
           </v-textfield>
         </div>
 
+        <a
+          class="service-guide"
+          v-if="options.speechService === 'ibmSpeechApi'"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/dessant/buster/wiki/Configuring-IBM-Watson-Speech-to-Text"
+        >
+          {{ getText('linkText_apiGuide') }}
+        </a>
+
         <div
           class="option select"
           v-if="options.speechService === 'microsoftSpeechApi'"
@@ -108,7 +118,7 @@
           rel="noreferrer"
           href="https://github.com/dessant/buster/wiki/Configuring-Wit.ai"
         >
-          {{ getText('linkText_witSpeechApiGuide') }}
+          {{ getText('linkText_apiGuide') }}
         </a>
       </div>
     </div>

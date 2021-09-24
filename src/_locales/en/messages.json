@@ -430,7 +430,7 @@
     "description": "Text of the link."
   },
 
-  "linkText_witSpeechApiGuide": {
+  "linkText_apiGuide": {
     "message": "How to get an API key?",
     "description": "Text of the link."
   },
