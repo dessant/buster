@@ -273,6 +273,7 @@ export default {
           'microsoftSpeechApi'
         ],
         ibmSpeechApiLoc: [
+          'seoul',
           'london',
           'frankfurt',
           'dallas',

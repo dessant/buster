@@ -320,6 +320,7 @@ const captchaWitSpeechApiLangCodes = {
 
 // https://cloud.ibm.com/apidocs/speech-to-text#service-endpoint
 const ibmSpeechApiUrls = {
+  seoul: 'https://api.kr-seo.speech-to-text.watson.cloud.ibm.com/v1/recognize',
   london: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/v1/recognize',
   frankfurt:
     'https://api.eu-de.speech-to-text.watson.cloud.ibm.com/v1/recognize',

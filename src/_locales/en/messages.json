@@ -49,6 +49,11 @@
     "description": "Title of the option."
   },
 
+  "optionValue_ibmSpeechApiLoc_seoul": {
+    "message": "Seoul",
+    "description": "Value of the option."
+  },
+
   "optionValue_ibmSpeechApiLoc_london": {
     "message": "London",
     "description": "Value of the option."
