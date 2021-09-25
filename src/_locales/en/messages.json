@@ -20,27 +20,27 @@
   },
 
   "optionValue_speechService_googleSpeechApi": {
-    "message": "Google Cloud Speech API",
+    "message": "Google Cloud Speech-to-Text",
     "description": "Value of the option."
   },
 
   "optionValue_speechService_ibmSpeechApi": {
-    "message": "IBM Watson Speech to Text API",
+    "message": "IBM Watson Speech to Text",
     "description": "Value of the option."
   },
 
   "optionValue_speechService_microsoftSpeechApi": {
-    "message": "Microsoft Azure Speech to Text API",
+    "message": "Microsoft Azure Speech to Text",
     "description": "Value of the option."
   },
 
   "optionValue_speechService_witSpeechApiDemo": {
-    "message": "Wit Speech API (managed)",
+    "message": "Wit.ai (managed)",
     "description": "Value of the option."
   },
 
   "optionValue_speechService_witSpeechApi": {
-    "message": "Wit Speech API",
+    "message": "Wit.ai",
     "description": "Value of the option."
   },
 
