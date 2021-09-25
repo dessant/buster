@@ -346,12 +346,20 @@ const microsoftSpeechApiUrls = {
     'https://centralindia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   eastJp:
     'https://japaneast.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  westJp:
+    'https://japanwest.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  southBr:
+    'https://brazilsouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   centralKr:
     'https://koreacentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  northCh:
+    'https://switzerlandnorth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   northCentralUs:
     'https://northcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   southCentralUs:
     'https://southcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
+  westCentralUs:
+    'https://westcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   southUk:
     'https://uksouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
   eastUs:

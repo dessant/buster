@@ -110,7 +110,7 @@
   },
 
   "optionValue_microsoftSpeechApiLoc_centralIn": {
-    "message": "India Central",
+    "message": "Central India",
     "description": "Value of the option."
   },
 
@@ -119,8 +119,23 @@
     "description": "Value of the option."
   },
 
+  "optionValue_microsoftSpeechApiLoc_westJp": {
+    "message": "Japan West",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_southBr": {
+    "message": "Brazil South",
+    "description": "Value of the option."
+  },
+
   "optionValue_microsoftSpeechApiLoc_centralKr": {
     "message": "Korea Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_northCh": {
+    "message": "Switzerland North",
     "description": "Value of the option."
   },
 
@@ -131,6 +146,11 @@
 
   "optionValue_microsoftSpeechApiLoc_southCentralUs": {
     "message": "South Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westCentralUs": {
+    "message": "West Central US",
     "description": "Value of the option."
   },
 
