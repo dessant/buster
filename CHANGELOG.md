@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/dessant/buster/compare/v1.2.2...v1.3.0) (2021-09-25)
+
+
+### Features
+
+* link to guide for configuring Google Cloud Speech to Text ([8930b1c](https://github.com/dessant/buster/commit/8930b1cf51447bc656d528f83a209075fa07e121))
+* link to guide for configuring IBM Watson Speech to Text ([ead4292](https://github.com/dessant/buster/commit/ead4292c7c208f9730e6a54e85dec6701fa9b7ed))
+* link to guide for configuring Microsoft Azure Speech to Text ([36afd65](https://github.com/dessant/buster/commit/36afd655feed3f62760c257adf9a4a72f711bec5))
+
+
+### Bug Fixes
+
+* add new API location for IBM Watson ([da8266b](https://github.com/dessant/buster/commit/da8266bf739905de9d2522625cca625852e8952c))
+* add new API locations for Microsoft Azure ([bce1cbb](https://github.com/dessant/buster/commit/bce1cbb36c25763b1c01e263a67f5079c510b654))
+* update speech service names ([10cf778](https://github.com/dessant/buster/commit/10cf778ce69bff0a184d8a28d0d06aff752d0354))
+
 ### [1.2.2](https://github.com/dessant/buster/compare/v1.2.1...v1.2.2) (2021-07-23)
 
 ### [1.2.1](https://github.com/dessant/buster/compare/v1.2.0...v1.2.1) (2021-05-14)
