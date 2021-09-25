@@ -25,6 +25,16 @@
           </v-textfield>
         </div>
 
+        <a
+          class="service-guide"
+          v-if="options.speechService === 'googleSpeechApi'"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/dessant/buster/wiki/Configuring-Google-Cloud-Speech-to-Text"
+        >
+          {{ getText('linkText_apiGuide') }}
+        </a>
+
         <div
           class="option select"
           v-if="options.speechService === 'ibmSpeechApi'"
