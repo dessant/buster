@@ -89,6 +89,16 @@
           </v-textfield>
         </div>
 
+        <a
+          class="service-guide"
+          v-if="options.speechService === 'microsoftSpeechApi'"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/dessant/buster/wiki/Configuring-Microsoft-Azure-Speech-to-Text"
+        >
+          {{ getText('linkText_apiGuide') }}
+        </a>
+
         <v-textfield
           v-if="options.speechService === 'witSpeechApi'"
           v-for="item in witSpeechApis"
