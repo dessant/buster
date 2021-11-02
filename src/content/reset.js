@@ -1,11 +1,13 @@
 (function () {
   const reset = function (challengeUrl) {
-    for (const [k, client] of Object.entries(___grecaptcha_cfg.clients)) {
+    for (const [id, client] of Object.entries(___grecaptcha_cfg.clients)) {
       for (const [_, items] of Object.entries(client)) {
-        for (const [_, v] of Object.entries(items)) {
-          if (v instanceof Element && v.src === challengeUrl) {
-            (grecaptcha.reset || grecaptcha.enterprise.reset)(k);
-            return;
+        if (items instanceof Object) {
+          for (const [_, v] of Object.entries(items)) {
+            if (v instanceof Element && v.src === challengeUrl) {
+              (grecaptcha.reset || grecaptcha.enterprise.reset)(id);
+              return;
+            }
           }
         }
       }
