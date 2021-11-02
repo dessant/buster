@@ -177,7 +177,7 @@ function removeRequestOrigin(details) {
   return {requestHeaders: headers};
 }
 
-function addBackgroundRequestLitener() {
+function addBackgroundRequestListener() {
   if (
     !browser.webRequest.onBeforeSendHeaders.hasListener(removeRequestOrigin)
   ) {
@@ -212,7 +212,7 @@ function addBackgroundRequestLitener() {
   }
 }
 
-function removeBackgroundRequestLitener() {
+function removeBackgroundRequestListener() {
   if (browser.webRequest.onBeforeSendHeaders.hasListener(removeRequestOrigin)) {
     browser.webRequest.onBeforeSendHeaders.removeListener(removeRequestOrigin);
   }
@@ -536,11 +536,11 @@ async function onMessage(request, sender) {
       await showContributePage('use');
     }
   } else if (request.id === 'transcribeAudio') {
-    addBackgroundRequestLitener();
+    addBackgroundRequestListener();
     try {
       return await transcribeAudio(request.audioUrl, request.lang);
     } finally {
-      removeBackgroundRequestLitener();
+      removeBackgroundRequestListener();
     }
   } else if (request.id === 'resetCaptcha') {
     await resetCaptcha(sender.tab.id, sender.frameId, request.challengeUrl);
