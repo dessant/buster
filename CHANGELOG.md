@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/dessant/buster/compare/v1.3.0...v1.3.1) (2021-11-02)
+
+
+### Bug Fixes
+
+* update challenge reset ([3d0fb37](https://github.com/dessant/buster/commit/3d0fb3768b05138fc0b6766b5ed107bffac4a380))
+
 ## [1.3.0](https://github.com/dessant/buster/compare/v1.2.2...v1.3.0) (2021-09-25)
 
 
