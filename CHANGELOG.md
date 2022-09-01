@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/dessant/buster/compare/v1.3.1...v1.3.2) (2022-09-01)
+
+
+### Bug Fixes
+
+* set correct tabindex for extension button ([d68ce72](https://github.com/dessant/buster/commit/d68ce72e8d3664939cac5ce677c2dfd988ea732a))
+* update client app navigation ([3fae62e](https://github.com/dessant/buster/commit/3fae62ee4adde746ab46299732df7535c81592bd)), closes [#360](https://github.com/dessant/buster/issues/360)
+
 ### [1.3.1](https://github.com/dessant/buster/compare/v1.3.0...v1.3.1) (2021-11-02)
 
 
