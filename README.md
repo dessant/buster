@@ -48,13 +48,13 @@ by giving us easy access to solutions already utilized by automated systems.
 ## Screenshots
 
 <p>
-  <img width="414" src="https://i.imgur.com/hTqeN4z.png">
-  <img width="414" src="https://i.imgur.com/o0qqDd5.png">
+  <img width="380" src="https://i.imgur.com/hTqeN4z.png">
+  <img width="380" src="https://i.imgur.com/o0qqDd5.png">
 </p>
 
 ## License
 
-Copyright (c) 2018-2021 Armin Sebastian
+Copyright (c) 2018-2022 Armin Sebastian
 
 This software is released under the terms of the GNU General Public License v3.0.
 See the [LICENSE](LICENSE) file for further information.
