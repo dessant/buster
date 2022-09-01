@@ -1,5 +1,5 @@
 function setup() {
-  const url = new URL(chrome.extension.getURL('/src/setup/index.html'));
+  const url = new URL(chrome.runtime.getURL('/src/setup/index.html'));
   url.searchParams.set(
     'session',
     new URL(window.location.href).searchParams.get('session')

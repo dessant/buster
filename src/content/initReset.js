@@ -6,7 +6,7 @@ function initReset(challengeUrl) {
       new CustomEvent('___resetCaptcha', {detail: challengeUrl})
     );
   };
-  script.src = chrome.extension.getURL('/src/content/reset.js');
+  script.src = chrome.runtime.getURL('/src/content/reset.js');
   document.documentElement.appendChild(script);
 }
 

@@ -2,7 +2,13 @@ import browser from 'webextension-polyfill';
 
 import storage from 'storage/storage';
 import {meanSleep, pingClientApp} from 'utils/app';
-import {getText, waitForElement, getRandomFloat, sleep} from 'utils/common';
+import {
+  getText,
+  waitForElement,
+  getRandomFloat,
+  sleep,
+  getBrowser
+} from 'utils/common';
 import {targetEnv, clientAppVersion} from 'utils/config';
 
 let solverWorking = false;
@@ -51,13 +57,18 @@ function syncUI() {
     helpButton.remove();
 
     const helpButtonHolder = document.querySelector('.help-button-holder');
-    const shadow = helpButtonHolder.attachShadow({mode: 'closed'});
+    helpButtonHolder.tabIndex = 2;
+
+    const shadow = helpButtonHolder.attachShadow({
+      mode: 'closed',
+      delegatesFocus: true
+    });
 
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute(
       'href',
-      browser.extension.getURL('/src/solve/solver-button.css')
+      browser.runtime.getURL('/src/solve/solver-button.css')
     );
     shadow.appendChild(link);
 
@@ -133,8 +144,8 @@ async function tapEnter(node, {navigateForward = true} = {}) {
   await messageClientApp({command: 'tapKey', data: 'enter'});
 }
 
-async function clickElement(node, browserBorder) {
-  const targetPos = await getClickPos(node, browserBorder);
+async function clickElement(node, browserBorder, osScale) {
+  const targetPos = await getClickPos(node, browserBorder, osScale);
   await messageClientApp({command: 'moveMouse', ...targetPos});
   await meanSleep(100);
   await messageClientApp({command: 'clickMouse'});
@@ -154,31 +165,31 @@ async function messageClientApp(message) {
 }
 
 async function getOsScale() {
-  // The background script devicePixelRatio is not affected by the default
-  // zoom level in Firefox, while the content script devicePixelRatio
-  // is affected, unless only text is zoomed.
-  if (targetEnv === 'firefox') {
-    return browser.runtime.sendMessage({id: 'getBackgroundScriptScale'});
-  }
-
-  const zoom = await browser.runtime.sendMessage({id: 'getTabZoom'});
-
-  return window.devicePixelRatio / zoom;
+  return browser.runtime.sendMessage({id: 'getOsScale'});
 }
 
-async function getBrowserBorder(clickEvent) {
+async function getBrowserBorder(clickEvent, osScale) {
   const framePos = await getFrameClientPos();
   const scale = window.devicePixelRatio;
-  const osScale = await getOsScale();
+
+  let evScreenPropScale = osScale;
+  if (
+    targetEnv === 'firefox' &&
+    parseInt((await getBrowser()).version.split('.')[0], 10) >= 99
+  ) {
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=1753836
+
+    evScreenPropScale = scale;
+  }
 
   return {
     left:
-      clickEvent.screenX * osScale -
+      clickEvent.screenX * evScreenPropScale -
       clickEvent.clientX * scale -
       framePos.x -
       window.screenX * scale,
     top:
-      clickEvent.screenY * osScale -
+      clickEvent.screenY * evScreenPropScale -
       clickEvent.clientY * scale -
       framePos.y -
       window.screenY * scale
@@ -202,7 +213,7 @@ async function getFrameClientPos() {
   return {x: 0, y: 0};
 }
 
-async function getElementScreenRect(node, browserBorder) {
+async function getElementScreenRect(node, browserBorder, osScale) {
   let {left: x, top: y, width, height} = node.getBoundingClientRect();
 
   const data = await getFrameClientPos();
@@ -218,7 +229,6 @@ async function getElementScreenRect(node, browserBorder) {
 
   const {os} = await browser.runtime.sendMessage({id: 'getPlatform'});
   if (['windows', 'macos'].includes(os)) {
-    const osScale = await getOsScale();
     x /= osScale;
     y /= osScale;
     width /= osScale;
@@ -228,8 +238,12 @@ async function getElementScreenRect(node, browserBorder) {
   return {x, y, width, height};
 }
 
-async function getClickPos(node, browserBorder) {
-  let {x, y, width, height} = await getElementScreenRect(node, browserBorder);
+async function getClickPos(node, browserBorder, osScale) {
+  let {x, y, width, height} = await getElementScreenRect(
+    node,
+    browserBorder,
+    osScale
+  );
 
   return {
     x: Math.round(x + width * getRandomFloat(0.4, 0.6)),
@@ -248,10 +262,12 @@ async function solve(simulateUserInput, clickEvent) {
   );
 
   let browserBorder;
+  let osScale;
   let useMouse = true;
   if (simulateUserInput) {
     if (!navigateWithKeyboard && (clickEvent.clientX || clickEvent.clientY)) {
-      browserBorder = await getBrowserBorder(clickEvent);
+      osScale = await getOsScale();
+      browserBorder = await getBrowserBorder(clickEvent, osScale);
     } else {
       useMouse = false;
     }
@@ -263,9 +279,10 @@ async function solve(simulateUserInput, clickEvent) {
     const audioButton = document.querySelector('#recaptcha-audio-button');
     if (simulateUserInput) {
       if (useMouse) {
-        await clickElement(audioButton, browserBorder);
+        await clickElement(audioButton, browserBorder, osScale);
       } else {
-        await tapEnter(audioButton, {navigateForward: false});
+        audioButton.focus();
+        await tapEnter(audioButton);
       }
     } else {
       dispatchEnter(audioButton);
@@ -325,7 +342,7 @@ async function solve(simulateUserInput, clickEvent) {
       '.rc-audiochallenge-play-button > button'
     );
     if (useMouse) {
-      await clickElement(playButton, browserBorder);
+      await clickElement(playButton, browserBorder, osScale);
     } else {
       await tapEnter(playButton);
     }
@@ -347,7 +364,7 @@ async function solve(simulateUserInput, clickEvent) {
   const input = document.querySelector('#audio-response');
   if (simulateUserInput) {
     if (useMouse) {
-      await clickElement(input, browserBorder);
+      await clickElement(input, browserBorder, osScale);
     } else {
       await navigateToElement(input);
     }
@@ -361,7 +378,7 @@ async function solve(simulateUserInput, clickEvent) {
   const submitButton = document.querySelector('#recaptcha-verify-button');
   if (simulateUserInput) {
     if (useMouse) {
-      await clickElement(submitButton, browserBorder);
+      await clickElement(submitButton, browserBorder, osScale);
     } else {
       await tapEnter(submitButton);
     }

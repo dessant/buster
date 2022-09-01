@@ -546,10 +546,51 @@ async function onMessage(request, sender) {
     await resetCaptcha(sender.tab.id, sender.frameId, request.challengeUrl);
   } else if (request.id === 'getFramePos') {
     return getFramePos(sender.tab.id, sender.frameId, request.frameIndex);
-  } else if (request.id === 'getTabZoom') {
-    return browser.tabs.getZoom(sender.tab.id);
-  } else if (request.id === 'getBackgroundScriptScale') {
-    return window.devicePixelRatio;
+  } else if (request.id === 'getOsScale') {
+    let zoom = await browser.tabs.getZoom(sender.tab.id);
+
+    const [[scale, windowWidth]] = await browser.tabs.executeScript(
+      sender.tab.id,
+      {
+        code: `[window.devicePixelRatio, window.innerWidth];`,
+        runAt: 'document_start'
+      }
+    );
+
+    if (targetEnv === 'firefox') {
+      // https://bugzilla.mozilla.org/show_bug.cgi?id=1787649
+
+      function getImageElement(url) {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.onload = () => {
+            resolve(img);
+          };
+          img.onerror = () => {
+            resolve();
+          };
+          img.onabort = () => {
+            resolve();
+          };
+          img.src = url;
+        });
+      }
+
+      const screenshotWidth = (
+        await getImageElement(
+          await browser.tabs.captureVisibleTab({
+            format: 'jpeg',
+            quality: 10
+          })
+        )
+      ).naturalWidth;
+
+      if (Math.abs(screenshotWidth / windowWidth - scale * zoom) < 0.005) {
+        zoom = 1;
+      }
+    }
+
+    return scale / zoom;
   } else if (request.id === 'startClientApp') {
     nativePort = browser.runtime.connectNative('org.buster.client');
   } else if (request.id === 'stopClientApp') {
