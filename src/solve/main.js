@@ -57,7 +57,9 @@ function syncUI() {
     helpButton.remove();
 
     const helpButtonHolder = document.querySelector('.help-button-holder');
-    helpButtonHolder.tabIndex = 2;
+    helpButtonHolder.tabIndex = document.querySelector('audio#audio-source')
+      ? 0
+      : 2;
 
     const shadow = helpButtonHolder.attachShadow({
       mode: 'closed',
