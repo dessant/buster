@@ -11,7 +11,7 @@ jobs:
   action:
     runs-on: ubuntu-latest
     steps:
-      - uses: dessant/repo-lockdown@v2
+      - uses: dessant/repo-lockdown@v3
         with:
           exclude-pr-created-before: '2021-11-02T00:00:00Z'
           pr-comment: 'This project does not accept pull requests. Please use issues to report bugs or suggest new features.'
