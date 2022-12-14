@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-if="dataLoaded">
+  <v-app id="app" v-if="dataLoaded">
     <div class="wrap" v-if="!isInstallSuccess && !isInstallError">
       <div class="title">
         {{ getText('pageContent_installTitle') }}
@@ -8,33 +8,34 @@
         {{ getText('pageContent_installDesc') }}
       </div>
 
-      <v-textfield
-        v-model.trim="appDir"
+      <vn-text-field
         :label="getText('inputLabel_appLocation')"
+        v-model.trim="appDir"
       >
-      </v-textfield>
+      </vn-text-field>
+
+      <vn-text-field
+        class="manifest-location"
+        v-if="manifestDirEditable"
+        :label="getText('inputLabel_manifestLocation')"
+        v-model.trim="manifestDir"
+      >
+      </vn-text-field>
 
       <div class="manifest-desc" v-if="manifestDirEditable">
         {{ getText('pageContent_manifestLocationDesc') }}
       </div>
 
-      <v-textfield
-        v-if="manifestDirEditable"
-        v-model.trim="manifestDir"
-        :label="getText('inputLabel_manifestLocation')"
-      >
-      </v-textfield>
-
-      <v-button
+      <vn-button
         class="button install-button"
-        :unelevated="true"
         :disabled="
           isInstalling || !appDir || (manifestDirEditable && !manifestDir)
         "
-        :label="getText('buttonText_installApp')"
         @click="runInstall"
+        variant="elevated"
       >
-      </v-button>
+        {{ getText('buttonLabel_installApp') }}
+      </vn-button>
     </div>
 
     <div class="wrap" v-if="isInstallSuccess">
@@ -50,25 +51,23 @@
       </div>
       <div class="desc">{{ getText('pageContent_installErrorDesc') }}</div>
 
-      <v-button
+      <vn-button
         class="button error-button"
-        :unelevated="true"
-        :label="getText('buttonText_goBack')"
         @click="isInstallError = false"
+        variant="elevated"
       >
-      </v-button>
+        {{ getText('buttonLabel_goBack') }}
+      </vn-button>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
-import browser from 'webextension-polyfill';
-import {Button, TextField} from 'ext-components';
+import {Button, TextField} from 'vueton';
 
 import storage from 'storage/storage';
 import {pingClientApp} from 'utils/app';
 import {getText} from 'utils/common';
-import {targetEnv} from 'utils/config';
 
 export default {
   components: {
@@ -102,7 +101,7 @@ export default {
 
     getExtensionId: function () {
       let id = browser.runtime.id;
-      if (targetEnv !== 'firefox') {
+      if (!this.$env.isFirefox) {
         const scheme = window.location.protocol;
         id = `${scheme}//${id}/`;
       }
@@ -148,7 +147,7 @@ export default {
       const data = new FormData();
       data.append('session', this.session);
       data.append('browser', this.browser);
-      data.append('targetEnv', targetEnv);
+      data.append('targetEnv', this.$env.targetEnv);
 
       const rsp = await fetch(`${this.apiUrl}/setup/location`, {
         referrer: '',
@@ -173,7 +172,7 @@ export default {
       data.append('appDir', this.appDir);
       data.append('manifestDir', this.manifestDir);
       data.append('browser', this.browser);
-      data.append('targetEnv', targetEnv);
+      data.append('targetEnv', this.$env.targetEnv);
       data.append('extension', this.getExtensionId());
 
       const rsp = await fetch(`${this.apiUrl}/setup/install`, {
@@ -185,7 +184,7 @@ export default {
 
       if (rsp.status === 200) {
         await pingClientApp();
-        await storage.set({simulateUserInput: true}, 'sync');
+        await storage.set({simulateUserInput: true});
 
         this.isInstallSuccess = true;
       } else {
@@ -199,8 +198,7 @@ export default {
 
     await this.setLocation();
 
-    const {os} = await browser.runtime.sendMessage({id: 'getPlatform'});
-    if (os !== 'windows') {
+    if (!this.$env.isWindows) {
       this.manifestDirEditable = true;
     }
 
@@ -210,23 +208,14 @@ export default {
 </script>
 
 <style lang="scss">
-$mdc-theme-primary: #1abc9c;
+@use 'vueton/styles' as vueton;
 
-@import '@material/theme/mixins';
-@import '@material/typography/mixins';
-@import '@material/button/mixins';
+@include vueton.theme-base;
 
-body {
-  @include mdc-typography-base;
-  font-size: 100%;
-  background-color: #ecf0f1;
-  margin: 0;
-}
-
-#app {
+.v-application__wrap {
   display: flex;
-  justify-content: center;
-  padding: 12px;
+  align-items: center;
+  padding: 24px;
 }
 
 .wrap {
@@ -235,49 +224,64 @@ body {
   max-width: 400px;
 }
 
-.title,
-.desc,
-.manifest-desc {
-  @include mdc-theme-prop(color, text-primary-on-light);
-}
-
 .title {
-  @include mdc-typography(headline6);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  line-height: 32px;
+
   margin-top: 48px;
+  align-self: center;
 }
 
 .error-title {
-  color: #e74c3c;
+  @include vueton.theme-prop(color, error);
 }
 
 .desc {
-  @include mdc-typography(body2);
-  margin-top: 24px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 20px;
+
+  margin-top: 32px;
   margin-bottom: 24px;
 }
 
+.manifest-location {
+  margin-top: 24px;
+}
+
 .manifest-desc {
-  @include mdc-typography(caption);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  line-height: 20px;
+
   margin-top: 12px;
-  margin-bottom: 4px;
 }
 
 .button {
-  @include mdc-button-ink-color(#fff);
-  width: 200px;
-  height: 48px;
+  @include vueton.theme-prop(background-color, primary);
+
+  & .v-btn__content {
+    @include vueton.theme-prop(color, on-primary);
+  }
 }
 
 .install-button {
-  margin-top: 36px;
+  margin-top: 32px;
+  align-self: center;
 }
 
 .error-button {
-  margin-top: 12px;
+  margin-top: 8px;
+  align-self: center;
 }
 
 .success-icon {
   font-size: 72px;
-  margin-top: 36px;
+  margin-top: 48px;
+  align-self: center;
 }
 </style>

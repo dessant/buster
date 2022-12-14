@@ -1,0 +1,91 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "version": "0.1.0",
+  "author": "Armin Sebastian",
+  "homepage_url": "https://github.com/dessant/buster",
+  "default_locale": "en",
+
+  "minimum_opera_version": "78.0",
+
+  "permissions": [
+    "storage",
+    "notifications",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "nativeMessaging",
+    "<all_urls>"
+  ],
+
+  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src *; object-src 'none'; frame-ancestors http://127.0.0.1:*;",
+
+  "icons": {
+    "16": "src/assets/icons/app/icon-16.png",
+    "19": "src/assets/icons/app/icon-19.png",
+    "24": "src/assets/icons/app/icon-24.png",
+    "32": "src/assets/icons/app/icon-32.png",
+    "38": "src/assets/icons/app/icon-38.png",
+    "48": "src/assets/icons/app/icon-48.png",
+    "64": "src/assets/icons/app/icon-64.png",
+    "96": "src/assets/icons/app/icon-96.png",
+    "128": "src/assets/icons/app/icon-128.png"
+  },
+
+  "browser_action": {
+    "default_icon": {
+      "16": "src/assets/icons/app/icon-16.png",
+      "19": "src/assets/icons/app/icon-19.png",
+      "24": "src/assets/icons/app/icon-24.png",
+      "32": "src/assets/icons/app/icon-32.png",
+      "38": "src/assets/icons/app/icon-38.png",
+      "48": "src/assets/icons/app/icon-48.png",
+      "64": "src/assets/icons/app/icon-64.png",
+      "96": "src/assets/icons/app/icon-96.png",
+      "128": "src/assets/icons/app/icon-128.png"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://google.com/recaptcha/api2/bframe*",
+        "https://www.google.com/recaptcha/api2/bframe*",
+        "https://google.com/recaptcha/enterprise/bframe*",
+        "https://www.google.com/recaptcha/enterprise/bframe*",
+        "https://recaptcha.net/recaptcha/api2/bframe*",
+        "https://www.recaptcha.net/recaptcha/api2/bframe*",
+        "https://recaptcha.net/recaptcha/enterprise/bframe*",
+        "https://www.recaptcha.net/recaptcha/enterprise/bframe*"
+      ],
+      "all_frames": true,
+      "run_at": "document_idle",
+      "css": ["src/solve/style.css"],
+      "js": ["src/solve/script.js"]
+    },
+    {
+      "matches": ["http://127.0.0.1/buster/setup?session=*"],
+      "run_at": "document_idle",
+      "js": ["src/scripts/init-setup.js"]
+    }
+  ],
+
+  "options_ui": {
+    "page": "src/options/index.html",
+    "chrome_style": false,
+    "open_in_tab": true
+  },
+
+  "background": {
+    "page": "src/background/index.html"
+  },
+
+  "web_accessible_resources": [
+    "src/setup/index.html",
+    "src/scripts/reset.js",
+    "src/solve/solver-button.css"
+  ],
+
+  "incognito": "split"
+}

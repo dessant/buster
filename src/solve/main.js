@@ -1,10 +1,8 @@
-import browser from 'webextension-polyfill';
-
 import storage from 'storage/storage';
 import {meanSleep, pingClientApp} from 'utils/app';
 import {
   getText,
-  waitForElement,
+  findNode,
   getRandomFloat,
   sleep,
   getBrowser
@@ -41,7 +39,7 @@ function syncUI() {
       const button = document.createElement('button');
       button.classList.add('rc-button');
       button.setAttribute('tabindex', '0');
-      button.setAttribute('title', getText('buttonText_reset'));
+      button.setAttribute('title', getText('buttonLabel_reset'));
       button.id = 'reset-button';
 
       button.addEventListener('click', resetCaptcha);
@@ -76,7 +74,7 @@ function syncUI() {
 
     solverButton = document.createElement('button');
     solverButton.setAttribute('tabindex', '0');
-    solverButton.setAttribute('title', getText('buttonText_solve'));
+    solverButton.setAttribute('title', getText('buttonLabel_solve'));
     solverButton.id = 'solver-button';
     if (solverWorking) {
       solverButton.classList.add('working');
@@ -92,7 +90,7 @@ function isBlocked({timeout = 0} = {}) {
   const selector = '.rc-doscaptcha-body';
   if (timeout) {
     return new Promise(resolve => {
-      waitForElement(selector, {timeout}).then(result =>
+      findNode(selector, {timeout, throwError: false}).then(result =>
         resolve(Boolean(result))
       );
     });
@@ -258,10 +256,7 @@ async function solve(simulateUserInput, clickEvent) {
     return;
   }
 
-  const {navigateWithKeyboard} = await storage.get(
-    'navigateWithKeyboard',
-    'sync'
-  );
+  const {navigateWithKeyboard} = await storage.get('navigateWithKeyboard');
 
   let browserBorder;
   let osScale;
@@ -292,9 +287,11 @@ async function solve(simulateUserInput, clickEvent) {
 
     const result = await Promise.race([
       new Promise(resolve => {
-        waitForElement(audioElSelector, {timeout: 10000}).then(el => {
-          meanSleep(500).then(() => resolve({audioEl: el}));
-        });
+        findNode(audioElSelector, {timeout: 10000, throwError: false}).then(
+          el => {
+            meanSleep(500).then(() => resolve({audioEl: el}));
+          }
+        );
       }),
       new Promise(resolve => {
         isBlocked({timeout: 10000}).then(blocked => resolve({blocked}));
@@ -415,10 +412,10 @@ function solveChallenge(ev) {
 }
 
 async function runSolver(ev) {
-  const {simulateUserInput, autoUpdateClientApp} = await storage.get(
-    ['simulateUserInput', 'autoUpdateClientApp'],
-    'sync'
-  );
+  const {simulateUserInput, autoUpdateClientApp} = await storage.get([
+    'simulateUserInput',
+    'autoUpdateClientApp'
+  ]);
 
   if (simulateUserInput) {
     try {
@@ -497,7 +494,7 @@ async function runSolver(ev) {
 
 function init() {
   const observer = new MutationObserver(syncUI);
-  observer.observe(document.body, {
+  observer.observe(document, {
     childList: true,
     subtree: true
   });

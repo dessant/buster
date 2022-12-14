@@ -1,17 +1,18 @@
-import Vue from 'vue';
+import {createApp} from 'vue';
 
+import {configApp, loadFonts} from 'utils/app';
+import {configVuetify} from 'utils/vuetify';
 import App from './App';
 
 async function init() {
-  try {
-    await document.fonts.load('400 14px Roboto');
-    await document.fonts.load('500 14px Roboto');
-  } catch (err) {}
+  await loadFonts(['400 14px Roboto', '500 14px Roboto']);
 
-  new Vue({
-    el: '#app',
-    render: h => h(App)
-  });
+  const app = createApp(App);
+
+  await configApp(app);
+  await configVuetify(app);
+
+  app.mount('body');
 }
 
 // only run in a frame

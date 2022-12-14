@@ -1,15 +1,15 @@
-.assets/
-secrets.json
+/.assets/
+/secrets.json
 
 node_modules/
-artifacts/
-dist/
+/artifacts/
+/dist/
 
-web-ext-config.js
+/.vscode
 
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-.yarn-integrity
+/web-ext-config.js
 
-report.json
+/npm-debug.log
+
+/report.json
+/report.html

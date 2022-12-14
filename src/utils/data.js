@@ -10,7 +10,9 @@ const optionKeys = [
   'tryEnglishSpeechModel',
   'simulateUserInput',
   'autoUpdateClientApp',
-  'navigateWithKeyboard'
+  'navigateWithKeyboard',
+  'appTheme',
+  'showContribPage'
 ];
 
 const clientAppPlatforms = [
@@ -20,7 +22,8 @@ const clientAppPlatforms = [
   'macos/amd64'
 ];
 
-const recaptchaChallengeUrlRx = /^https:\/\/www\.(?:google\.com|recaptcha\.net)\/recaptcha\/(?:api2|enterprise)\/bframe.*/;
+const recaptchaChallengeUrlRx =
+  /^https:\/\/(?:www\.)?(?:google\.com|recaptcha\.net)\/recaptcha\/(?:api2|enterprise)\/bframe.*/;
 
 // https://developers.google.com/recaptcha/docs/language
 // https://cloud.google.com/speech-to-text/docs/languages
@@ -245,6 +248,7 @@ const captchaMicrosoftSpeechApiLangCodes = {
   zu: '' // Zulu
 };
 
+// https://wit.ai/faq
 const captchaWitSpeechApiLangCodes = {
   ar: 'arabic', // Arabic
   af: '', // Afrikaans

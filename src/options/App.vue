@@ -1,28 +1,28 @@
 <template>
-  <div id="app" v-if="dataLoaded">
+  <v-app id="app" v-if="dataLoaded">
     <div class="section">
       <div class="section-title" v-once>
         {{ getText('optionSectionTitle_services') }}
       </div>
       <div class="option-wrap">
         <div class="option select">
-          <v-select
+          <vn-select
             :label="getText('optionTitle_speechService')"
+            :items="listItems.speechService"
             v-model="options.speechService"
-            :options="selectOptions.speechService"
           >
-          </v-select>
+          </vn-select>
         </div>
 
         <div
           class="option text-field"
           v-if="options.speechService === 'googleSpeechApi'"
         >
-          <v-textfield
-            v-model.trim="options.googleSpeechApiKey"
+          <vn-text-field
             :label="getText('inputLabel_apiKey')"
+            v-model.trim="options.googleSpeechApiKey"
           >
-          </v-textfield>
+          </vn-text-field>
         </div>
 
         <a
@@ -39,22 +39,22 @@
           class="option select"
           v-if="options.speechService === 'ibmSpeechApi'"
         >
-          <v-select
+          <vn-select
             :label="getText('optionTitle_ibmSpeechApiLoc')"
+            :items="listItems.ibmSpeechApiLoc"
             v-model="options.ibmSpeechApiLoc"
-            :options="selectOptions.ibmSpeechApiLoc"
           >
-          </v-select>
+          </vn-select>
         </div>
         <div
           class="option text-field"
           v-if="options.speechService === 'ibmSpeechApi'"
         >
-          <v-textfield
+          <vn-text-field
             v-model.trim="options.ibmSpeechApiKey"
             :label="getText('inputLabel_apiKey')"
           >
-          </v-textfield>
+          </vn-text-field>
         </div>
 
         <a
@@ -71,22 +71,22 @@
           class="option select"
           v-if="options.speechService === 'microsoftSpeechApi'"
         >
-          <v-select
+          <vn-select
             :label="getText('optionTitle_microsoftSpeechApiLoc')"
+            :items="listItems.microsoftSpeechApiLoc"
             v-model="options.microsoftSpeechApiLoc"
-            :options="selectOptions.microsoftSpeechApiLoc"
           >
-          </v-select>
+          </vn-select>
         </div>
         <div
           class="option text-field"
           v-if="options.speechService === 'microsoftSpeechApi'"
         >
-          <v-textfield
+          <vn-text-field
             v-model.trim="options.microsoftSpeechApiKey"
             :label="getText('inputLabel_apiKey')"
           >
-          </v-textfield>
+          </vn-text-field>
         </div>
 
         <a
@@ -99,36 +99,34 @@
           {{ getText('linkText_apiGuide') }}
         </a>
 
-        <v-textfield
+        <vn-text-field
+          class="text-field"
           v-if="options.speechService === 'witSpeechApi'"
           v-for="item in witSpeechApis"
           :key="item.id"
-          :value="options.witSpeechApiKeys[item] || ''"
+          :model-value="options.witSpeechApiKeys[item] || ''"
           :label="
             getText('inputLabel_apiKeyType', [
               getText(`optionValue_witSpeechApiLang_${item}`)
             ])
           "
-          @input="saveWitSpeechApiKey($event.trim(), item)"
+          @update:modelValue="saveWitSpeechApiKey($event.trim(), item)"
         >
-        </v-textfield>
+        </vn-text-field>
         <div
           class="wit-add-api"
           v-if="options.speechService === 'witSpeechApi'"
         >
-          <v-select
-            v-model="witSpeechApiLang"
-            :options="selectOptions.witSpeechApiLang"
+          <vn-select
             :label="getText('optionTitle_witSpeechApiLang')"
+            :items="listItems.witSpeechApiLang"
+            v-model="witSpeechApiLang"
           >
-          </v-select>
-          <v-button
-            :outlined="true"
-            :disabled="!witSpeechApiLang"
-            :label="getText('buttonText_addApi')"
-            @click="addWitSpeechApi"
-          >
-          </v-button>
+          </vn-select>
+
+          <vn-button :disabled="!witSpeechApiLang" @click="addWitSpeechApi">
+            {{ getText('buttonLabel_addApi') }}
+          </vn-button>
         </div>
 
         <a
@@ -143,7 +141,7 @@
       </div>
     </div>
 
-    <div class="section">
+    <div class="section section-client">
       <div class="section-title" v-once>
         {{ getText('optionSectionTitle_client') }}
       </div>
@@ -158,33 +156,27 @@
             (clientAppVerified && options.simulateUserInput)
           "
         >
-          <v-form-field
-            input-id="si"
+          <vn-switch
             :label="getText('optionTitle_simulateUserInput')"
-          >
-            <v-switch id="si" v-model="options.simulateUserInput"></v-switch>
-          </v-form-field>
+            v-model="options.simulateUserInput"
+          ></vn-switch>
         </div>
 
         <div
           class="option"
           v-if="clientAppVerified && options.simulateUserInput"
         >
-          <v-form-field
-            input-id="nc"
+          <vn-switch
             :label="getText('optionTitle_navigateWithKeyboard')"
-          >
-            <v-switch id="nc" v-model="options.navigateWithKeyboard"></v-switch>
-          </v-form-field>
+            v-model="options.navigateWithKeyboard"
+          ></vn-switch>
         </div>
 
         <div class="option" v-if="clientAppInstalled">
-          <v-form-field
-            input-id="auc"
+          <vn-switch
             :label="getText('optionTitle_autoUpdateClientApp')"
-          >
-            <v-switch id="auc" v-model="options.autoUpdateClientApp"></v-switch>
-          </v-form-field>
+            v-model="options.autoUpdateClientApp"
+          ></vn-switch>
         </div>
 
         <div
@@ -205,14 +197,14 @@
             {{ getText('pageContent_optionClientAppOSError') }}
           </div>
 
-          <v-button
+          <vn-button
             class="download-button"
-            :unelevated="true"
             :disabled="!clientAppDownloadUrl"
-            :label="getText('buttonText_downloadApp')"
             @click="$refs.dlLink.click()"
+            variant="elevated"
           >
-          </v-button>
+            {{ getText('buttonLabel_downloadApp') }}
+          </vn-button>
           <a
             ref="dlLink"
             class="download-link"
@@ -229,42 +221,53 @@
         {{ getText('optionSectionTitle_misc') }}
       </div>
       <div class="option-wrap">
-        <div class="option">
-          <v-form-field
-            input-id="lec"
-            :label="getText('optionTitle_loadEnglishChallenge')"
+        <div class="option select">
+          <vn-select
+            :label="getText('optionTitle_appTheme')"
+            :items="listItems.appTheme"
+            v-model="options.appTheme"
           >
-            <v-switch
-              id="lec"
-              v-model="options.loadEnglishChallenge"
-            ></v-switch>
-          </v-form-field>
+          </vn-select>
         </div>
-
+        <div class="option">
+          <vn-switch
+            :label="getText('optionTitle_loadEnglishChallenge')"
+            v-model="options.loadEnglishChallenge"
+          ></vn-switch>
+        </div>
         <div class="option" v-if="!options.loadEnglishChallenge">
-          <v-form-field
-            input-id="esm"
+          <vn-switch
             :label="getText('optionTitle_tryEnglishSpeechModel')"
-          >
-            <v-switch
-              id="esm"
-              v-model="options.tryEnglishSpeechModel"
-            ></v-switch>
-          </v-form-field>
+            v-model="options.tryEnglishSpeechModel"
+          ></vn-switch>
+        </div>
+        <div class="option" v-if="enableContributions">
+          <vn-switch
+            :label="getText('optionTitle_showContribPage')"
+            v-model="options.showContribPage"
+          ></vn-switch>
+        </div>
+        <div class="option button" v-if="enableContributions">
+          <vn-button
+            class="contribute-button vn-icon--start"
+            @click="showContribute"
+            ><vn-icon src="/src/contribute/assets/heart.svg"></vn-icon>
+            {{ getText('buttonLabel_contribute') }}
+          </vn-button>
         </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
-import browser from 'webextension-polyfill';
-import {Button, Select, Switch, FormField, TextField} from 'ext-components';
+import {toRaw} from 'vue';
+import {Button, Icon, Select, Switch, TextField} from 'vueton';
 
 import storage from 'storage/storage';
-import {getOptionLabels, pingClientApp} from 'utils/app';
-import {getText, getPlatform} from 'utils/common';
-import {clientAppVersion} from 'utils/config';
+import {getListItems, showContributePage, pingClientApp} from 'utils/app';
+import {getText} from 'utils/common';
+import {enableContributions, clientAppVersion} from 'utils/config';
 import {
   optionKeys,
   clientAppPlatforms,
@@ -274,9 +277,9 @@ import {
 export default {
   components: {
     [Button.name]: Button,
+    [Icon.name]: Icon,
     [Select.name]: Select,
     [Switch.name]: Switch,
-    [FormField.name]: FormField,
     [TextField.name]: TextField
   },
 
@@ -284,55 +287,81 @@ export default {
     return {
       dataLoaded: false,
 
-      selectOptions: getOptionLabels({
-        speechService: [
-          'witSpeechApiDemo',
-          'googleSpeechApi',
-          'witSpeechApi',
-          'ibmSpeechApi',
-          'microsoftSpeechApi'
-        ],
-        ibmSpeechApiLoc: [
-          'seoul',
-          'london',
-          'frankfurt',
-          'dallas',
-          'washington',
-          'sydney',
-          'tokyo'
-        ],
-        microsoftSpeechApiLoc: [
-          'eastAu',
-          'centralCa',
-          'centralUs',
-          'centralFr',
-          'centralIn',
-          'eastJp',
-          'westJp',
-          'southBr',
-          'centralKr',
-          'northCh',
-          'northCentralUs',
-          'southCentralUs',
-          'westCentralUs',
-          'southUk',
-          'eastUs',
-          'eastUs2',
-          'westUs',
-          'westUs2',
-          'eastAsia',
-          'southeastAsia',
-          'westEu',
-          'northEu'
-        ],
-        witSpeechApiLang: [
-          ...new Set(
-            Object.values(captchaWitSpeechApiLangCodes).filter(Boolean)
-          )
-        ].sort()
-      }),
+      listItems: {
+        ...getListItems(
+          {
+            speechService: [
+              'witSpeechApiDemo',
+              'googleSpeechApi',
+              'witSpeechApi',
+              'ibmSpeechApi',
+              'microsoftSpeechApi'
+            ]
+          },
+          {scope: 'optionValue_speechService'}
+        ),
+        ...getListItems(
+          {
+            ibmSpeechApiLoc: [
+              'seoul',
+              'london',
+              'frankfurt',
+              'dallas',
+              'washington',
+              'sydney',
+              'tokyo'
+            ]
+          },
+          {scope: 'optionValue_ibmSpeechApiLoc'}
+        ),
+        ...getListItems(
+          {
+            microsoftSpeechApiLoc: [
+              'eastAu',
+              'centralCa',
+              'centralUs',
+              'centralFr',
+              'centralIn',
+              'eastJp',
+              'westJp',
+              'southBr',
+              'centralKr',
+              'northCh',
+              'northCentralUs',
+              'southCentralUs',
+              'westCentralUs',
+              'southUk',
+              'eastUs',
+              'eastUs2',
+              'westUs',
+              'westUs2',
+              'eastAsia',
+              'southeastAsia',
+              'westEu',
+              'northEu'
+            ]
+          },
+          {scope: 'optionValue_microsoftSpeechApiLoc'}
+        ),
+        ...getListItems(
+          {
+            witSpeechApiLang: [
+              ...new Set(
+                Object.values(captchaWitSpeechApiLangCodes).filter(Boolean)
+              )
+            ].sort()
+          },
+          {scope: 'optionValue_witSpeechApiLang'}
+        ),
+        ...getListItems(
+          {appTheme: ['auto', 'light', 'dark']},
+          {scope: 'optionValue_appTheme'}
+        )
+      },
 
-      witSpeechApiLang: '',
+      enableContributions,
+
+      witSpeechApiLang: null,
       witSpeechApis: [],
 
       clientAppVerified: false,
@@ -352,7 +381,9 @@ export default {
         tryEnglishSpeechModel: false,
         simulateUserInput: false,
         autoUpdateClientApp: false,
-        navigateWithKeyboard: false
+        navigateWithKeyboard: false,
+        appTheme: '',
+        showContribPage: false
       }
     };
   },
@@ -368,7 +399,7 @@ export default {
         if (!this.installGuideUrl) {
           this.installGuideUrl =
             'https://github.com/dessant/buster/wiki/Installing-the-client-app';
-          const {os, arch} = await getPlatform();
+          const {os, arch} = this.$env;
           if (clientAppPlatforms.includes(`${os}/${arch}`)) {
             this.installGuideUrl += `#${os}`;
             this.clientAppDownloadUrl = `https://github.com/dessant/buster-client/releases/download/v${clientAppVersion}/buster-client-setup-v${clientAppVersion}-${os}-${arch}`;
@@ -385,14 +416,14 @@ export default {
     },
 
     setWitSpeechApiLangOptions: function () {
-      this.selectOptions.witSpeechApiLang = this.selectOptions.witSpeechApiLang.filter(
-        item => !this.witSpeechApis.includes(item.id)
+      this.listItems.witSpeechApiLang = this.listItems.witSpeechApiLang.filter(
+        item => !this.witSpeechApis.includes(item.value)
       );
     },
 
     addWitSpeechApi: function () {
       this.witSpeechApis.push(this.witSpeechApiLang);
-      this.witSpeechApiLang = '';
+      this.witSpeechApiLang = null;
       this.setWitSpeechApiLangOptions();
     },
 
@@ -406,17 +437,27 @@ export default {
         delete apiKeys[lang];
         this.options.witSpeechApiKeys = Object.assign({}, apiKeys);
       }
+    },
+
+    showContribute: async function () {
+      await showContributePage();
     }
   },
 
   created: async function () {
-    const options = await storage.get(optionKeys, 'sync');
+    const options = await storage.get(optionKeys);
 
     for (const option of Object.keys(this.options)) {
       this.options[option] = options[option];
-      this.$watch(`options.${option}`, async function (value) {
-        await storage.set({[option]: value}, 'sync');
-      });
+
+      this.$watch(
+        `options.${option}`,
+        async function (value) {
+          await storage.set({[option]: toRaw(value)});
+          await browser.runtime.sendMessage({id: 'optionChange'});
+        },
+        {deep: true}
+      );
     }
 
     this.witSpeechApis = Object.keys(options.witSpeechApiKeys);
@@ -435,42 +476,32 @@ export default {
 </script>
 
 <style lang="scss">
-$mdc-theme-primary: #1abc9c;
+@use 'vueton/styles' as vueton;
 
-@import '@material/select/mdc-select';
-@import '@material/theme/mixins';
-@import '@material/typography/mixins';
-@import '@material/button/mixins';
+@include vueton.theme-base;
 
-body {
-  margin: 0;
-  @include mdc-typography-base;
-  font-size: 100%;
-  background-color: #ffffff;
-  overflow: visible !important;
-}
-
-#app {
+.v-application__wrap {
   display: grid;
   grid-row-gap: 32px;
+  grid-column-gap: 48px;
   padding: 24px;
-}
-
-.mdc-switch {
-  margin-right: 16px;
-}
-
-.section-title,
-.section-desc {
-  @include mdc-theme-prop(color, text-primary-on-light);
+  grid-auto-rows: min-content;
+  grid-auto-columns: min-content;
 }
 
 .section-title {
-  @include mdc-typography(headline6);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  line-height: 32px;
 }
 
 .section-desc {
-  @include mdc-typography(body2);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 20px;
+
   padding-top: 8px;
   max-width: 380px;
 }
@@ -479,73 +510,80 @@ body {
   display: grid;
   grid-row-gap: 24px;
   padding-top: 24px;
-  grid-auto-columns: min-content;
 }
 
 .option {
   display: flex;
   align-items: center;
-  height: 24px;
+  height: 20px;
 
-  & .mdc-form-field {
-    max-width: calc(100vw - 48px);
-
-    & label {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
+  &.button {
+    height: 40px;
   }
-}
 
-.option {
   &.select,
   &.text-field {
     height: 56px;
   }
+
+  & .contribute-button {
+    @include vueton.theme-prop(color, primary);
+
+    & .vn-icon {
+      @include vueton.theme-prop(background-color, cta);
+    }
+  }
 }
 
-.option.select {
-  align-items: start;
+.text-field .v-input__control {
+  width: 326px;
+}
 
-  & .mdc-select__anchor,
-  & .mdc-select__menu {
-    max-width: calc(100vw - 48px);
-  }
-
-  & .mdc-select__selected-text {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
+.section-client .section-desc {
+  width: 272px;
 }
 
 .wit-add-api {
   display: flex;
   align-items: center;
-}
 
-.wit-add-api > button {
-  margin-left: 24px;
-  white-space: nowrap;
+  & .vn-select {
+    & .v-input__control,
+    & .v-input__details {
+      max-width: calc(100vw - 48px - 124px) !important;
+    }
+  }
+
+  & .vn-button {
+    margin-left: 24px;
+    @include vueton.theme-prop(color, primary);
+  }
 }
 
 .service-guide {
-  @include mdc-typography(body1);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  line-height: 24px;
 }
 
 .client-download {
-  min-width: 300px;
+  width: 272px;
 }
 
 .download-desc,
 .download-error {
-  @include mdc-theme-prop(color, text-primary-on-light);
-  @include mdc-typography(body2);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 20px;
 }
 
 .download-desc a {
-  @include mdc-typography(body2);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  line-height: 20px;
 }
 
 .download-desc {
@@ -554,7 +592,7 @@ body {
 
 .download-error {
   margin-top: 12px;
-  color: #e74c3c;
+  @include vueton.theme-prop(color, error);
 }
 
 .download-link {
@@ -562,9 +600,11 @@ body {
 }
 
 .download-button {
-  @include mdc-button-ink-color(#fff);
-  width: 200px;
-  height: 48px;
   margin-top: 24px;
+  @include vueton.theme-prop(background-color, primary);
+
+  & .v-btn__content {
+    @include vueton.theme-prop(color, on-primary);
+  }
 }
 </style>

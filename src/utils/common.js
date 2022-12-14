@@ -1,44 +1,92 @@
-import browser from 'webextension-polyfill';
 import Bowser from 'bowser';
 
 import {targetEnv} from 'utils/config';
 
-const getText = browser.i18n.getMessage;
-
-function createTab(
-  url,
-  {index = null, active = true, openerTabId = null} = {}
-) {
-  const props = {url, active};
-  if (index !== null) {
-    props.index = index;
-  }
-  if (openerTabId !== null && ['chrome', 'edge', 'opera'].includes(targetEnv)) {
-    props.openerTabId = openerTabId;
-  }
-  return browser.tabs.create(props);
+function getText(messageName, substitutions) {
+  return browser.i18n.getMessage(messageName, substitutions);
 }
 
-async function isAndroid() {
-  const {os} = await browser.runtime.getPlatformInfo();
-  return os === 'android';
-}
+async function getPlatform({fallback = true} = {}) {
+  let os, arch;
 
-async function getPlatform() {
-  let {os, arch} = await browser.runtime.getPlatformInfo();
+  if (targetEnv === 'samsung') {
+    // Samsung Internet 13: runtime.getPlatformInfo fails.
+    os = 'android';
+    arch = '';
+  } else {
+    try {
+      ({os, arch} = await browser.runtime.getPlatformInfo());
+    } catch (err) {
+      if (fallback) {
+        ({os, arch} = await browser.runtime.sendMessage({id: 'getPlatform'}));
+      } else {
+        throw err;
+      }
+    }
+  }
+
   if (os === 'win') {
     os = 'windows';
   } else if (os === 'mac') {
     os = 'macos';
   }
 
+  if (
+    navigator.platform === 'MacIntel' &&
+    (os === 'ios' || typeof navigator.standalone !== 'undefined')
+  ) {
+    os = 'ipados';
+  }
+
   if (arch === 'x86-32') {
     arch = '386';
-  } else if (arch === 'x86-64' || (arch.startsWith('arm') && os === 'macos')) {
+  } else if (arch === 'x86-64') {
+    arch = 'amd64';
+  } else if (arch.startsWith('arm')) {
+    arch = 'arm';
+  }
+
+  // Client app supports ARM with Rosetta 2
+  if (arch === 'arm' && os === 'macos') {
     arch = 'amd64';
   }
 
-  return {os, arch};
+  const isWindows = os === 'windows';
+  const isMacos = os === 'macos';
+  const isLinux = os === 'linux';
+  const isAndroid = os === 'android';
+  const isIos = os === 'ios';
+  const isIpados = os === 'ipados';
+
+  const isMobile = ['android', 'ios', 'ipados'].includes(os);
+
+  const isChrome = targetEnv === 'chrome';
+  const isEdge = targetEnv === 'edge';
+  const isFirefox = targetEnv === 'firefox';
+  const isOpera =
+    ['chrome', 'opera'].includes(targetEnv) &&
+    / opr\//i.test(navigator.userAgent);
+  const isSafari = targetEnv === 'safari';
+  const isSamsung = targetEnv === 'samsung';
+
+  return {
+    os,
+    arch,
+    targetEnv,
+    isWindows,
+    isMacos,
+    isLinux,
+    isAndroid,
+    isIos,
+    isIpados,
+    isMobile,
+    isChrome,
+    isEdge,
+    isFirefox,
+    isOpera,
+    isSafari,
+    isSamsung
+  };
 }
 
 async function getBrowser() {
@@ -58,6 +106,11 @@ async function getBrowser() {
   return {name, version};
 }
 
+async function isAndroid() {
+  const {os} = await getPlatform();
+  return os === 'android';
+}
+
 async function getActiveTab() {
   const [tab] = await browser.tabs.query({
     lastFocusedWindow: true,
@@ -66,16 +119,26 @@ async function getActiveTab() {
   return tab;
 }
 
-function waitForElement(selector, {timeout = 10000} = {}) {
-  return new Promise(resolve => {
-    const el = document.querySelector(selector);
+function findNode(
+  selector,
+  {
+    timeout = 60000,
+    throwError = true,
+    observerOptions = null,
+    rootNode = null
+  } = {}
+) {
+  return new Promise((resolve, reject) => {
+    rootNode = rootNode || document;
+
+    const el = rootNode.querySelector(selector);
     if (el) {
       resolve(el);
       return;
     }
 
     const observer = new MutationObserver(function (mutations, obs) {
-      const el = document.querySelector(selector);
+      const el = rootNode.querySelector(selector);
       if (el) {
         obs.disconnect();
         window.clearTimeout(timeoutId);
@@ -83,14 +146,24 @@ function waitForElement(selector, {timeout = 10000} = {}) {
       }
     });
 
-    observer.observe(document, {
+    const options = {
       childList: true,
       subtree: true
-    });
+    };
+    if (observerOptions) {
+      Object.assign(options, observerOptions);
+    }
+
+    observer.observe(rootNode, options);
 
     const timeoutId = window.setTimeout(function () {
       observer.disconnect();
-      resolve();
+
+      if (throwError) {
+        reject(new Error(`DOM node not found: ${selector}`));
+      } else {
+        resolve();
+      }
     }, timeout);
   });
 }
@@ -148,6 +221,18 @@ async function functionInContext(
   return isFunction;
 }
 
+function getDarkColorSchemeQuery() {
+  return window.matchMedia('(prefers-color-scheme: dark)');
+}
+
+function getDayPrecisionEpoch(epoch) {
+  if (!epoch) {
+    epoch = Date.now();
+  }
+
+  return epoch - (epoch % 86400000);
+}
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -201,17 +286,18 @@ async function sliceAudio({audioBuffer, start, end}) {
 
 export {
   getText,
-  createTab,
   isAndroid,
   getPlatform,
   getBrowser,
   getActiveTab,
-  waitForElement,
+  findNode,
   arrayBufferToBase64,
   executeCode,
   executeFile,
   scriptsAllowed,
   functionInContext,
+  getDarkColorSchemeQuery,
+  getDayPrecisionEpoch,
   getRandomInt,
   getRandomFloat,
   sleep,

@@ -5,30 +5,34 @@ on: push
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
     steps:
       - name: Clone repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: 'false'
-      - name: Get Node.js version
-        id: nvm
-        run: echo ::set-output name=NODE_VERSION::$(cat .nvmrc)
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: ${{ steps.nvm.outputs.NODE_VERSION }}
+          node-version-file: '.nvmrc'
+          cache: 'npm'
       - name: Install dependencies
-        run: yarn
+        run: npm install --legacy-peer-deps
       - name: Build artifacts
-        run: yarn build:prod:zip:all
+        run: |
+          npm run build:prod:zip:chrome
+          npm run build:prod:zip:edge
+          npm run build:prod:zip:firefox
+          npm run build:prod:zip:opera
         env:
           BUSTER_SECRETS: ${{ secrets.BUSTER_SECRETS }}
       - name: Hash artifacts
         run: sha256sum artifacts/*/*
         if: startsWith(github.ref, 'refs/tags/v')
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           name: artifacts
@@ -36,68 +40,28 @@ jobs:
           retention-days: 1
   release:
     name: Release on GitHub
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     needs: [build]
     if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
     steps:
-      - name: Get release information
-        id: release_info
-        run: |
-          echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
-          echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\/v/}
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: artifacts
           path: artifacts/
       - name: Hash artifacts
         run: sha256sum artifacts/*/*
       - name: Create GitHub release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.release_info.outputs.TAG }}
-          release_name: ${{ steps.release_info.outputs.TAG }}
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           body: |
             Download and install the extension from the [extension store](https://github.com/dessant/buster#readme) of your browser.
 
             Learn more about this release from the [changelog](https://github.com/dessant/buster/blob/master/CHANGELOG.md#changelog).
+          files: artifacts/*/*
+          fail_on_unmatched_files: true
           draft: true
-      - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/chrome/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-chrome.zip
-          asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-chrome.zip
-          asset_content_type: application/octet-stream
-      - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/edge/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-edge.zip
-          asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-edge.zip
-          asset_content_type: application/octet-stream
-      - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/firefox/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-firefox.zip
-          asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-firefox.zip
-          asset_content_type: application/octet-stream
-      - name: Upload GitHub release assets
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: artifacts/opera/buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-opera.zip
-          asset_name: buster_captcha_solver_for_humans-${{ steps.release_info.outputs.VERSION }}-opera.zip
-          asset_content_type: application/octet-stream

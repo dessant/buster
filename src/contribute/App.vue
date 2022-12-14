@@ -1,14 +1,19 @@
 <template>
-  <div id="app">
-    <v-contribute :extName="extName" :extSlug="extSlug" :notice="notice">
-    </v-contribute>
-  </div>
+  <v-app id="app">
+    <vn-contribute
+      :extName="extName"
+      :extSlug="extSlug"
+      :notice="notice"
+      @open="contribute"
+    >
+    </vn-contribute>
+  </v-app>
 </template>
 
 <script>
-import {Contribute} from 'ext-contribute';
+import {Contribute} from 'vueton/components/contribute';
 
-import {getText} from 'utils/common';
+import {getText, getActiveTab} from 'utils/common';
 
 export default {
   components: {
@@ -23,6 +28,14 @@ export default {
     };
   },
 
+  methods: {
+    contribute: async function ({url} = {}) {
+      const activeTab = await getActiveTab();
+
+      await browser.tabs.create({url, index: activeTab.index + 1});
+    }
+  },
+
   created: function () {
     document.title = getText('pageTitle', [
       getText('pageTitle_contribute'),
@@ -30,24 +43,20 @@ export default {
     ]);
 
     const query = new URL(window.location.href).searchParams;
-    if (query.get('action') === 'use') {
-      this.notice = `This page is shown during your 30th and 100th use
-        of the extension.`;
+    if (query.get('action') === 'auto') {
+      this.notice = 'This page is shown once a year while using the extension.';
     }
   }
 };
 </script>
 
 <style lang="scss">
-@import '@material/typography/mixins';
+@use 'vueton/styles' as vueton;
 
-body {
+@include vueton.theme-base;
+
+.v-application__wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 0;
-  @include mdc-typography-base;
-  font-size: 100%;
-  background-color: #ffffff;
 }
 </style>

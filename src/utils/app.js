@@ -1,13 +1,15 @@
-import browser from 'webextension-polyfill';
 import {v4 as uuidv4} from 'uuid';
 
+import storage from 'storage/storage';
 import {
   getText,
-  createTab,
   getActiveTab,
+  getPlatform,
+  getDayPrecisionEpoch,
   getRandomInt,
   sleep
 } from 'utils/common';
+import {targetEnv, enableContributions} from 'utils/config';
 
 async function showNotification({
   message,
@@ -28,7 +30,7 @@ async function showNotification({
       type: 'basic',
       title,
       message,
-      iconUrl: '/src/icons/app/icon-64.png'
+      iconUrl: '/src/assets/icons/app/icon-64.png'
     }
   );
 
@@ -41,27 +43,163 @@ async function showNotification({
   return notification;
 }
 
-function getOptionLabels(data, scope = 'optionValue') {
+function getListItems(data, {scope = ''} = {}) {
   const labels = {};
   for (const [group, items] of Object.entries(data)) {
     labels[group] = [];
     items.forEach(function (value) {
-      labels[group].push({
-        id: value,
-        label: getText(`${scope}_${group}_${value}`)
-      });
+      const item = {
+        value,
+        title: getText(`${scope ? scope + '_' : ''}${value}`)
+      };
+
+      labels[group].push(item);
     });
   }
   return labels;
 }
 
-async function showContributePage(action = false) {
-  const activeTab = await getActiveTab();
+async function configApp(app) {
+  const platform = await getPlatform();
+
+  document.documentElement.classList.add(platform.targetEnv, platform.os);
+
+  if (app) {
+    app.config.globalProperties.$env = platform;
+  }
+}
+
+async function loadFonts(fonts) {
+  await Promise.allSettled(fonts.map(font => document.fonts.load(font)));
+}
+
+function processMessageResponse(response, sendResponse) {
+  if (targetEnv === 'safari') {
+    response.then(function (result) {
+      // Safari 15: undefined response will cause sendMessage to never resolve.
+      if (result === undefined) {
+        result = null;
+      }
+      sendResponse(result);
+    });
+
+    return true;
+  } else {
+    return response;
+  }
+}
+
+async function showContributePage({
+  action = '',
+  activeTab = null,
+  setOpenerTab = true,
+  updateStats = true
+} = {}) {
+  if (updateStats) {
+    await storage.set({contribPageLastOpen: getDayPrecisionEpoch()});
+  }
+
+  if (!activeTab) {
+    activeTab = await getActiveTab();
+  }
   let url = browser.runtime.getURL('/src/contribute/index.html');
   if (action) {
     url = `${url}?action=${action}`;
   }
-  await createTab(url, {index: activeTab.index + 1});
+
+  const props = {url, index: activeTab.index + 1, active: true};
+
+  if (
+    setOpenerTab &&
+    activeTab.id !== browser.tabs.TAB_ID_NONE &&
+    (await getPlatform()).os !== 'android'
+  ) {
+    props.openerTabId = activeTab.id;
+  }
+
+  return browser.tabs.create(props);
+}
+
+async function autoShowContributePage({
+  minUseCount = 0, // 0-1000
+  minInstallDays = 0,
+  minLastOpenDays = 0,
+  minLastAutoOpenDays = 0,
+  activeTab = null,
+  setOpenerTab = true,
+  action = 'auto'
+} = {}) {
+  if (enableContributions) {
+    const options = await storage.get([
+      'showContribPage',
+      'useCount',
+      'installTime',
+      'contribPageLastOpen',
+      'contribPageLastAutoOpen'
+    ]);
+
+    const epoch = getDayPrecisionEpoch();
+
+    if (
+      options.showContribPage &&
+      options.useCount >= minUseCount &&
+      epoch - options.installTime >= minInstallDays * 86400000 &&
+      epoch - options.contribPageLastOpen >= minLastOpenDays * 86400000 &&
+      epoch - options.contribPageLastAutoOpen >= minLastAutoOpenDays * 86400000
+    ) {
+      await storage.set({
+        contribPageLastOpen: epoch,
+        contribPageLastAutoOpen: epoch
+      });
+
+      return showContributePage({
+        action,
+        activeTab,
+        setOpenerTab,
+        updateStats: false
+      });
+    }
+  }
+}
+
+let useCountLastUpdate = 0;
+async function updateUseCount({
+  valueChange = 1,
+  maxUseCount = Infinity,
+  minInterval = 0
+} = {}) {
+  if (Date.now() - useCountLastUpdate >= minInterval) {
+    useCountLastUpdate = Date.now();
+
+    const {useCount} = await storage.get('useCount');
+
+    if (useCount < maxUseCount) {
+      await storage.set({useCount: useCount + valueChange});
+    } else if (useCount > maxUseCount) {
+      await storage.set({useCount: maxUseCount});
+    }
+  }
+}
+
+async function processAppUse({
+  activeTab = null,
+  setOpenerTab = true,
+  action = 'auto'
+} = {}) {
+  await updateUseCount({
+    valueChange: 1,
+    maxUseCount: 1000
+  });
+
+  return autoShowContributePage({
+    minUseCount: 10,
+    minInstallDays: 14,
+    minLastOpenDays: 14,
+    minLastAutoOpenDays: 365,
+    activeTab,
+    setOpenerTab,
+    action
+  });
 }
 
 function meanSleep(ms) {
@@ -129,8 +267,14 @@ async function pingClientApp({
 
 export {
   showNotification,
-  getOptionLabels,
+  getListItems,
+  configApp,
+  loadFonts,
+  processMessageResponse,
   showContributePage,
+  autoShowContributePage,
+  updateUseCount,
+  processAppUse,
   meanSleep,
   sendNativeMessage,
   pingClientApp
