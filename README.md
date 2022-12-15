@@ -25,14 +25,16 @@ please consider contributing with
 
 ## Description
 
-> Obviously, this blue part here is the land.
->
-> — <cite>Byron "Buster" Bluth, reading a map</cite>
-
 Buster is a browser extension which helps you to solve difficult captchas
 by completing reCAPTCHA audio challenges using speech recognition.
 Challenges are solved by clicking on the extension button at the bottom
 of the reCAPTCHA widget.
+
+> Obviously, this blue part here is the land.
+>
+> — <cite>Byron "Buster" Bluth, reading a map</cite>
+
+## Motivation
 
 reCAPTCHA challenges remain a considerable burden on the web,
 delaying and often blocking our access to services and information
@@ -42,8 +44,16 @@ and cultural background, and the devices or networks we connect from.
 The difficulty of captchas can be so out of balance,
 that sometimes they seem friendlier to bots than they are to humans.
 
-The goal of this project is to improve our experience with captchas,
-by giving us easy access to solutions already utilized by automated systems.
+The goal of this project is to improve our experience on the web,
+by giving us easy access to solutions utilized by automated systems.
+
+## Client App
+
+The client app enables you to simulate user interactions and improves
+the success rate of the extension. Follow the instructions
+from the extension's options to download and install the client app
+on Windows, Linux and macOS, or get the app
+from [this](https://github.com/dessant/buster-client#readme) repository.
 
 ## Screenshots
 

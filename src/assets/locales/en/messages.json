@@ -44,158 +44,148 @@
     "description": "Value of the option."
   },
 
-  "optionTitle_ibmSpeechApiLoc": {
-    "message": "API location",
-    "description": "Title of the option."
-  },
-
-  "optionValue_ibmSpeechApiLoc_seoul": {
-    "message": "Seoul",
-    "description": "Value of the option."
-  },
-
-  "optionValue_ibmSpeechApiLoc_london": {
-    "message": "London",
-    "description": "Value of the option."
-  },
-
-  "optionValue_ibmSpeechApiLoc_frankfurt": {
-    "message": "Frankfurt",
-    "description": "Value of the option."
-  },
-
-  "optionValue_ibmSpeechApiLoc_dallas": {
-    "message": "Dallas",
-    "description": "Value of the option."
-  },
-
-  "optionValue_ibmSpeechApiLoc_washington": {
-    "message": "Washington DC",
-    "description": "Value of the option."
-  },
-
-  "optionValue_ibmSpeechApiLoc_sydney": {
-    "message": "Sydney",
-    "description": "Value of the option."
-  },
-
-  "optionValue_ibmSpeechApiLoc_tokyo": {
-    "message": "Tokyo",
-    "description": "Value of the option."
-  },
-
   "optionTitle_microsoftSpeechApiLoc": {
     "message": "API location",
     "description": "Title of the option."
   },
 
-  "optionValue_microsoftSpeechApiLoc_eastAu": {
-    "message": "Australia East",
+  "optionValue_microsoftSpeechApiLoc_southafricanorth": {
+    "message": "South Africa North",
     "description": "Value of the option."
   },
 
-  "optionValue_microsoftSpeechApiLoc_centralCa": {
-    "message": "Canada Central",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_centralUs": {
-    "message": "Central US",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_centralFr": {
-    "message": "France Central",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_centralIn": {
-    "message": "Central India",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_eastJp": {
-    "message": "Japan East",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_westJp": {
-    "message": "Japan West",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_southBr": {
-    "message": "Brazil South",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_centralKr": {
-    "message": "Korea Central",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_northCh": {
-    "message": "Switzerland North",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_northCentralUs": {
-    "message": "North Central US",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_southCentralUs": {
-    "message": "South Central US",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_westCentralUs": {
-    "message": "West Central US",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_southUk": {
-    "message": "UK South",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_eastUs": {
-    "message": "East US",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_eastUs2": {
-    "message": "East US 2",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_westUs": {
-    "message": "West US",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_westUs2": {
-    "message": "West US 2",
-    "description": "Value of the option."
-  },
-
-  "optionValue_microsoftSpeechApiLoc_eastAsia": {
+  "optionValue_microsoftSpeechApiLoc_eastasia": {
     "message": "East Asia",
     "description": "Value of the option."
   },
 
-  "optionValue_microsoftSpeechApiLoc_southeastAsia": {
+  "optionValue_microsoftSpeechApiLoc_southeastasia": {
     "message": "Southeast Asia",
     "description": "Value of the option."
   },
 
-  "optionValue_microsoftSpeechApiLoc_westEu": {
+  "optionValue_microsoftSpeechApiLoc_australiaeast": {
+    "message": "Australia East",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_centralindia": {
+    "message": "Central India",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_japaneast": {
+    "message": "Japan East",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_japanwest": {
+    "message": "Japan West",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_koreacentral": {
+    "message": "Korea Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_canadacentral": {
+    "message": "Canada Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_northeurope": {
+    "message": "North Europe",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westeurope": {
     "message": "West Europe",
     "description": "Value of the option."
   },
 
-  "optionValue_microsoftSpeechApiLoc_northEu": {
-    "message": "North Europe",
+  "optionValue_microsoftSpeechApiLoc_francecentral": {
+    "message": "France Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_germanywestcentral": {
+    "message": "Germany West Central",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_norwayeast": {
+    "message": "Norway East",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_switzerlandnorth": {
+    "message": "Switzerland North",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_switzerlandwest": {
+    "message": "Switzerland West",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_uksouth": {
+    "message": "UK South",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_uaenorth": {
+    "message": "UAE North",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_brazilsouth": {
+    "message": "Brazil South",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_centralus": {
+    "message": "Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_eastus": {
+    "message": "East US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_eastus2": {
+    "message": "East US 2",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_northcentralus": {
+    "message": "North Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_southcentralus": {
+    "message": "South Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westcentralus": {
+    "message": "West Central US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westus": {
+    "message": "West US",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westus2": {
+    "message": "West US 2",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_westus3": {
+    "message": "West US 3",
     "description": "Value of the option."
   },
 
@@ -276,11 +266,6 @@
 
   "optionValue_witSpeechApiLang_bengali": {
     "message": "Bengali",
-    "description": "Value of the option."
-  },
-
-  "optionValue_witSpeechApiLang_catalan": {
-    "message": "Catalan",
     "description": "Value of the option."
   },
 
@@ -394,11 +379,6 @@
     "description": "Value of the option."
   },
 
-  "optionValue_witSpeechApiLang_telugu": {
-    "message": "Telugu",
-    "description": "Value of the option."
-  },
-
   "optionValue_witSpeechApiLang_thai": {
     "message": "Thai",
     "description": "Value of the option."
@@ -417,6 +397,11 @@
   "optionValue_witSpeechApiLang_vietnamese": {
     "message": "Vietnamese",
     "description": "Value of the option."
+  },
+
+  "inputLabel_apiUrl": {
+    "message": "API endpoint",
+    "description": "Label of the input."
   },
 
   "inputLabel_apiKey": {
@@ -573,6 +558,16 @@
 
   "error_captchaNotSolved": {
     "message": "Captcha could not be solved. Try again after requesting a new challenge.",
+    "description": "Error message."
+  },
+
+  "error_captchaNotSolvedWitai": {
+    "message": "Wit.ai could not detect any speech. Try a new challenge, or switch to a more reliable service from the extension's options, such as IBM Watson.",
+    "description": "Error message."
+  },
+
+  "error_missingApiUrl": {
+    "message": "API endpoint missing. Visit the extension's options to configure the service.",
     "description": "Error message."
   },
 

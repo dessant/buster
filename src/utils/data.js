@@ -1,7 +1,7 @@
 const optionKeys = [
   'speechService',
   'googleSpeechApiKey',
-  'ibmSpeechApiLoc',
+  'ibmSpeechApiUrl',
   'ibmSpeechApiKey',
   'microsoftSpeechApiLoc',
   'microsoftSpeechApiKey',
@@ -26,7 +26,7 @@ const recaptchaChallengeUrlRx =
   /^https:\/\/(?:www\.)?(?:google\.com|recaptcha\.net)\/recaptcha\/(?:api2|enterprise)\/bframe.*/;
 
 // https://developers.google.com/recaptcha/docs/language
-// https://cloud.google.com/speech-to-text/docs/languages
+// https://cloud.google.com/speech-to-text/docs/speech-to-text-supported-languages
 const captchaGoogleSpeechApiLangCodes = {
   ar: 'ar-SA', // Arabic
   af: 'af-ZA', // Afrikaans
@@ -46,7 +46,7 @@ const captchaGoogleSpeechApiLangCodes = {
   nl: 'nl-NL', // Dutch
   'en-GB': 'en-GB', // English (UK)
   en: 'en-US', // English (US)
-  et: '', // Estonian
+  et: 'et-EE', // Estonian
   fil: 'fil-PH', // Filipino
   fi: 'fi-FI', // Finnish
   fr: 'fr-FR', // French
@@ -73,7 +73,7 @@ const captchaGoogleSpeechApiLangCodes = {
   ms: 'ms-MY', // Malay
   ml: 'ml-IN', // Malayalam
   mr: 'mr-IN', // Marathi
-  mn: '', // Mongolian
+  mn: 'mn-MN', // Mongolian
   no: 'nb-NO', // Norwegian
   fa: 'fa-IR', // Persian
   pl: 'pl-PL', // Polish
@@ -100,9 +100,9 @@ const captchaGoogleSpeechApiLangCodes = {
   zu: 'zu-ZA' // Zulu
 };
 
-// https://cloud.ibm.com/docs/services/speech-to-text?topic=speech-to-text-models#models
+// https://cloud.ibm.com/docs/speech-to-text?topic=speech-to-text-models-ng#models-ng-supported
 const captchaIbmSpeechApiLangCodes = {
-  ar: 'ar-AR_BroadbandModel', // Arabic
+  ar: 'ar-MS_Telephony', // Arabic
   af: '', // Afrikaans
   am: '', // Amharic
   hy: '', // Armenian
@@ -112,35 +112,35 @@ const captchaIbmSpeechApiLangCodes = {
   bg: '', // Bulgarian
   ca: '', // Catalan
   'zh-HK': '', // Chinese (Hong Kong)
-  'zh-CN': 'zh-CN_BroadbandModel', // Chinese (Simplified)
-  'zh-TW': 'zh-CN_BroadbandModel', // Chinese (Traditional)
+  'zh-CN': 'zh-CN_Telephony', // Chinese (Simplified)
+  'zh-TW': 'zh-CN_Telephony', // Chinese (Traditional)
   hr: '', // Croatian
-  cs: '', // Czech
+  cs: 'cs-CZ_Telephony', // Czech
   da: '', // Danish
-  nl: 'nl-NL_BroadbandModel', // Dutch
-  'en-GB': 'en-GB_BroadbandModel', // English (UK)
-  en: 'en-US_BroadbandModel', // English (US)
+  nl: 'nl-NL_Multimedia', // Dutch
+  'en-GB': 'en-GB_Multimedia', // English (UK)
+  en: 'en-US_Multimedia', // English (US)
   et: '', // Estonian
   fil: '', // Filipino
   fi: '', // Finnish
-  fr: 'fr-FR_BroadbandModel', // French
-  'fr-CA': 'fr-FR_BroadbandModel', // French (Canadian)
+  fr: 'fr-FR_Multimedia', // French
+  'fr-CA': 'fr-CA_Multimedia', // French (Canadian)
   gl: '', // Galician
   ka: '', // Georgian
-  de: 'de-DE_BroadbandModel', // German
-  'de-AT': 'de-DE_BroadbandModel', // German (Austria)
-  'de-CH': 'de-DE_BroadbandModel', // German (Switzerland)
+  de: 'de-DE_Multimedia', // German
+  'de-AT': 'de-DE_Multimedia', // German (Austria)
+  'de-CH': 'de-DE_Multimedia', // German (Switzerland)
   el: '', // Greek
   gu: '', // Gujarati
   iw: '', // Hebrew
-  hi: '', // Hindi
+  hi: 'hi-IN_Telephony', // Hindi
   hu: '', // Hungarian
   is: '', // Icelandic
   id: '', // Indonesian
-  it: 'it-IT_BroadbandModel', // Italian
-  ja: 'ja-JP_BroadbandModel', // Japanese
+  it: 'it-IT_Multimedia', // Italian
+  ja: 'ja-JP_Multimedia', // Japanese
   kn: '', // Kannada
-  ko: 'ko-KR_BroadbandModel', // Korean
+  ko: 'ko-KR_Multimedia', // Korean
   lo: '', // Laothian
   lv: '', // Latvian
   lt: '', // Lithuanian
@@ -151,19 +151,19 @@ const captchaIbmSpeechApiLangCodes = {
   no: '', // Norwegian
   fa: '', // Persian
   pl: '', // Polish
-  pt: 'pt-BR_BroadbandModel', // Portuguese
-  'pt-BR': 'pt-BR_BroadbandModel', // Portuguese (Brazil)
-  'pt-PT': 'pt-BR_BroadbandModel', // Portuguese (Portugal)
+  pt: 'pt-BR_Multimedia', // Portuguese
+  'pt-BR': 'pt-BR_Multimedia', // Portuguese (Brazil)
+  'pt-PT': 'pt-BR_Multimedia', // Portuguese (Portugal)
   ro: '', // Romanian
   ru: '', // Russian
   sr: '', // Serbian
   si: '', // Sinhalese
   sk: '', // Slovak
   sl: '', // Slovenian
-  es: 'es-ES_BroadbandModel', // Spanish
-  'es-419': 'es-ES_BroadbandModel', // Spanish (Latin America)
+  es: 'es-ES_Multimedia', // Spanish
+  'es-419': 'es-LA_Telephony', // Spanish (Latin America)
   sw: '', // Swahili
-  sv: '', // Swedish
+  sv: 'sv-SE_Telephony', // Swedish
   ta: '', // Tamil
   te: '', // Telugu
   th: '', // Thai
@@ -174,78 +174,78 @@ const captchaIbmSpeechApiLangCodes = {
   zu: '' // Zulu
 };
 
-// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support#speech-to-text
+// https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts
 const captchaMicrosoftSpeechApiLangCodes = {
   ar: 'ar-EG', // Arabic
-  af: '', // Afrikaans
-  am: '', // Amharic
-  hy: '', // Armenian
-  az: '', // Azerbaijani
-  eu: '', // Basque
-  bn: '', // Bengali
-  bg: '', // Bulgarian
+  af: 'af-ZA', // Afrikaans
+  am: 'am-ET', // Amharic
+  hy: 'hy-AM', // Armenian
+  az: 'az-AZ', // Azerbaijani
+  eu: 'eu-ES', // Basque
+  bn: 'bn-IN', // Bengali
+  bg: 'bg-BG', // Bulgarian
   ca: 'ca-ES', // Catalan
   'zh-HK': 'zh-HK', // Chinese (Hong Kong)
   'zh-CN': 'zh-CN', // Chinese (Simplified)
   'zh-TW': 'zh-TW', // Chinese (Traditional)
-  hr: '', // Croatian
-  cs: '', // Czech
+  hr: 'hr-HR', // Croatian
+  cs: 'cs-CZ', // Czech
   da: 'da-DK', // Danish
   nl: 'nl-NL', // Dutch
   'en-GB': 'en-GB', // English (UK)
   en: 'en-US', // English (US)
-  et: '', // Estonian
-  fil: '', // Filipino
+  et: 'et-EE', // Estonian
+  fil: 'fil-PH', // Filipino
   fi: 'fi-FI', // Finnish
   fr: 'fr-FR', // French
   'fr-CA': 'fr-CA', // French (Canadian)
-  gl: '', // Galician
-  ka: '', // Georgian
+  gl: 'gl-ES', // Galician
+  ka: 'ka-GE', // Georgian
   de: 'de-DE', // German
-  'de-AT': 'de-DE', // German (Austria)
-  'de-CH': 'de-DE', // German (Switzerland)
-  el: '', // Greek
+  'de-AT': 'de-AT', // German (Austria)
+  'de-CH': 'de-CH', // German (Switzerland)
+  el: 'el-GR', // Greek
   gu: 'gu-IN', // Gujarati
-  iw: '', // Hebrew
+  iw: 'he-IL', // Hebrew
   hi: 'hi-IN', // Hindi
-  hu: '', // Hungarian
-  is: '', // Icelandic
-  id: '', // Indonesian
+  hu: 'hu-HU', // Hungarian
+  is: 'is-IS', // Icelandic
+  id: 'id-ID', // Indonesian
   it: 'it-IT', // Italian
   ja: 'ja-JP', // Japanese
-  kn: '', // Kannada
+  kn: 'kn-IN', // Kannada
   ko: 'ko-KR', // Korean
-  lo: '', // Laothian
-  lv: '', // Latvian
-  lt: '', // Lithuanian
-  ms: '', // Malay
-  ml: '', // Malayalam
+  lo: 'lo-LA', // Laothian
+  lv: 'lv-LV', // Latvian
+  lt: 'lt-LT', // Lithuanian
+  ms: 'ms-MY', // Malay
+  ml: 'ml-IN', // Malayalam
   mr: 'mr-IN', // Marathi
-  mn: '', // Mongolian
+  mn: 'mn-MN', // Mongolian
   no: 'nb-NO', // Norwegian
-  fa: '', // Persian
+  fa: 'fa-IR', // Persian
   pl: 'pl-PL', // Polish
   pt: 'pt-PT', // Portuguese
   'pt-BR': 'pt-BR', // Portuguese (Brazil)
   'pt-PT': 'pt-PT', // Portuguese (Portugal)
-  ro: '', // Romanian
+  ro: 'ro-RO', // Romanian
   ru: 'ru-RU', // Russian
-  sr: '', // Serbian
-  si: '', // Sinhalese
-  sk: '', // Slovak
-  sl: '', // Slovenian
+  sr: 'sr-RS', // Serbian
+  si: 'si-LK', // Sinhalese
+  sk: 'sk-SK', // Slovak
+  sl: 'sl-SI', // Slovenian
   es: 'es-ES', // Spanish
   'es-419': 'es-MX', // Spanish (Latin America)
-  sw: '', // Swahili
+  sw: 'sw-TZ', // Swahili
   sv: 'sv-SE', // Swedish
   ta: 'ta-IN', // Tamil
   te: 'te-IN', // Telugu
   th: 'th-TH', // Thai
   tr: 'tr-TR', // Turkish
-  uk: '', // Ukrainian
+  uk: 'uk-UA', // Ukrainian
   ur: '', // Urdu
-  vi: '', // Vietnamese
-  zu: '' // Zulu
+  vi: 'vi-VN', // Vietnamese
+  zu: 'zu-ZA' // Zulu
 };
 
 // https://wit.ai/faq
@@ -258,7 +258,7 @@ const captchaWitSpeechApiLangCodes = {
   eu: '', // Basque
   bn: 'bengali', // Bengali
   bg: '', // Bulgarian
-  ca: 'catalan', // Catalan
+  ca: '', // Catalan
   'zh-HK': '', // Chinese (Hong Kong)
   'zh-CN': 'chinese', // Chinese (Simplified)
   'zh-TW': 'chinese', // Chinese (Traditional)
@@ -313,7 +313,7 @@ const captchaWitSpeechApiLangCodes = {
   sw: '', // Swahili
   sv: 'swedish', // Swedish
   ta: 'tamil', // Tamil
-  te: 'telugu', // Telugu
+  te: '', // Telugu
   th: 'thai', // Thai
   tr: 'turkish', // Turkish
   uk: '', // Ukrainian
@@ -322,67 +322,37 @@ const captchaWitSpeechApiLangCodes = {
   zu: '' // Zulu
 };
 
-// https://cloud.ibm.com/apidocs/speech-to-text#service-endpoint
-const ibmSpeechApiUrls = {
-  seoul: 'https://api.kr-seo.speech-to-text.watson.cloud.ibm.com/v1/recognize',
-  london: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com/v1/recognize',
-  frankfurt:
-    'https://api.eu-de.speech-to-text.watson.cloud.ibm.com/v1/recognize',
-  dallas:
-    'https://api.us-south.speech-to-text.watson.cloud.ibm.com/v1/recognize',
-  washington:
-    'https://api.us-east.speech-to-text.watson.cloud.ibm.com/v1/recognize',
-  sydney: 'https://api.au-syd.speech-to-text.watson.cloud.ibm.com/v1/recognize',
-  tokyo: 'https://api.jp-tok.speech-to-text.watson.cloud.ibm.com/v1/recognize'
-};
-
-// https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/rest-speech-to-text#regions-and-endpoints
-const microsoftSpeechApiUrls = {
-  eastAu:
-    'https://australiaeast.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  centralCa:
-    'https://canadacentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  centralUs:
-    'https://centralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  centralFr:
-    'https://francecentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  centralIn:
-    'https://centralindia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  eastJp:
-    'https://japaneast.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  westJp:
-    'https://japanwest.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  southBr:
-    'https://brazilsouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  centralKr:
-    'https://koreacentral.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  northCh:
-    'https://switzerlandnorth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  northCentralUs:
-    'https://northcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  southCentralUs:
-    'https://southcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  westCentralUs:
-    'https://westcentralus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  southUk:
-    'https://uksouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  eastUs:
-    'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  eastUs2:
-    'https://eastus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  westUs:
-    'https://westus.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  westUs2:
-    'https://westus2.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  eastAsia:
-    'https://eastasia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  southeastAsia:
-    'https://southeastasia.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  westEu:
-    'https://westeurope.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1',
-  northEu:
-    'https://northeurope.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1'
-};
+// https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/regions#speech-service
+const microsoftSpeechApiRegions = [
+  'southafricanorth',
+  'eastasia',
+  'southeastasia',
+  'australiaeast',
+  'centralindia',
+  'japaneast',
+  'japanwest',
+  'koreacentral',
+  'canadacentral',
+  'northeurope',
+  'westeurope',
+  'francecentral',
+  'germanywestcentral',
+  'norwayeast',
+  'switzerlandnorth',
+  'switzerlandwest',
+  'uksouth',
+  'uaenorth',
+  'brazilsouth',
+  'centralus',
+  'eastus',
+  'eastus2',
+  'northcentralus',
+  'southcentralus',
+  'westcentralus',
+  'westus',
+  'westus2',
+  'westus3'
+];
 
 export {
   optionKeys,
@@ -392,6 +362,5 @@ export {
   captchaIbmSpeechApiLangCodes,
   captchaMicrosoftSpeechApiLangCodes,
   captchaWitSpeechApiLangCodes,
-  ibmSpeechApiUrls,
-  microsoftSpeechApiUrls
+  microsoftSpeechApiRegions
 };

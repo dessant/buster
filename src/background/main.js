@@ -27,9 +27,7 @@ import {
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,
   captchaMicrosoftSpeechApiLangCodes,
-  captchaWitSpeechApiLangCodes,
-  ibmSpeechApiUrls,
-  microsoftSpeechApiUrls
+  captchaWitSpeechApiLangCodes
 } from 'utils/data';
 import {targetEnv, clientAppVersion} from 'utils/config';
 
@@ -298,8 +296,7 @@ async function getWitSpeechApiKey(speechService, language) {
 async function getWitSpeechApiResult(apiKey, audioContent) {
   const result = {};
 
-  const rsp = await fetch('https://api.wit.ai/speech?v=20200513', {
-    referrer: '',
+  const rsp = await fetch('https://api.wit.ai/speech?v=20221114', {
     mode: 'cors',
     method: 'POST',
     headers: {
@@ -316,7 +313,7 @@ async function getWitSpeechApiResult(apiKey, audioContent) {
       throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
     }
   } else {
-    const data = (await rsp.json()).text;
+    const data = JSON.parse((await rsp.text()).split('\r\n').at(-1)).text;
     if (data) {
       result.text = data.trim();
     }
@@ -325,15 +322,56 @@ async function getWitSpeechApiResult(apiKey, audioContent) {
   return result;
 }
 
-async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, language) {
+async function getGoogleSpeechApiResult(
+  apiKey,
+  audioContent,
+  language,
+  detectAltLanguages
+) {
+  const data = {
+    audio: {
+      content: arrayBufferToBase64(audioContent)
+    },
+    config: {
+      encoding: 'LINEAR16',
+      languageCode: language,
+      model: 'video',
+      sampleRateHertz: 16000
+    }
+  };
+
+  if (!['en-US', 'en-GB'].includes(language) && detectAltLanguages) {
+    data.config.model = 'default';
+    data.config.alternativeLanguageCodes = ['en-US'];
+  }
+
   const rsp = await fetch(
-    `${apiUrl}?model=${language}&profanity_filter=false`,
+    `https://speech.googleapis.com/v1p1beta1/speech:recognize?key=${apiKey}`,
     {
-      referrer: '',
+      mode: 'cors',
+      method: 'POST',
+      body: JSON.stringify(data)
+    }
+  );
+
+  if (rsp.status !== 200) {
+    throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+  }
+
+  const results = (await rsp.json()).results;
+  if (results) {
+    return results[0].alternatives[0].transcript.trim();
+  }
+}
+
+async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, model) {
+  const rsp = await fetch(
+    `${apiUrl}/v1/recognize?model=${model}&profanity_filter=false`,
+    {
       mode: 'cors',
       method: 'POST',
       headers: {
-        Authorization: 'Basic ' + window.btoa('apiKey:' + apiKey),
+        Authorization: 'Basic ' + window.btoa('apikey:' + apiKey),
         'X-Watson-Learning-Opt-Out': 'true'
       },
       body: new Blob([audioContent], {type: 'audio/wav'})
@@ -351,15 +389,14 @@ async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, language) {
 }
 
 async function getMicrosoftSpeechApiResult(
-  apiUrl,
+  apiLocation,
   apiKey,
   audioContent,
   language
 ) {
   const rsp = await fetch(
-    `${apiUrl}?language=${language}&format=detailed&profanity=raw`,
+    `https://${apiLocation}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}&format=detailed&profanity=raw`,
     {
-      referrer: '',
       mode: 'cors',
       method: 'POST',
       headers: {
@@ -383,7 +420,7 @@ async function getMicrosoftSpeechApiResult(
 async function transcribeAudio(audioUrl, lang) {
   let solution;
 
-  const audioRsp = await fetch(audioUrl, {referrer: ''});
+  const audioRsp = await fetch(audioUrl);
   const audioContent = await prepareAudio(await audioRsp.arrayBuffer());
 
   const {speechService, tryEnglishSpeechModel} = await storage.get([
@@ -395,6 +432,7 @@ async function transcribeAudio(audioUrl, lang) {
     const language = captchaWitSpeechApiLangCodes[lang] || 'english';
 
     const apiKey = await getWitSpeechApiKey(speechService, language);
+
     if (!apiKey) {
       showNotification({messageId: 'error_missingApiKey'});
       return;
@@ -412,10 +450,12 @@ async function transcribeAudio(audioUrl, lang) {
 
     if (!solution && language !== 'english' && tryEnglishSpeechModel) {
       const apiKey = await getWitSpeechApiKey(speechService, 'english');
+
       if (!apiKey) {
         showNotification({messageId: 'error_missingApiKey'});
         return;
       }
+
       const result = await getWitSpeechApiResult(apiKey, audioContent);
       if (result.errorId) {
         showNotification({
@@ -430,86 +470,62 @@ async function transcribeAudio(audioUrl, lang) {
     const {googleSpeechApiKey: apiKey} = await storage.get(
       'googleSpeechApiKey'
     );
+
     if (!apiKey) {
       showNotification({messageId: 'error_missingApiKey'});
       return;
     }
-    const apiUrl = `https://speech.googleapis.com/v1p1beta1/speech:recognize?key=${apiKey}`;
 
     const language = captchaGoogleSpeechApiLangCodes[lang] || 'en-US';
 
-    const data = {
-      audio: {
-        content: arrayBufferToBase64(audioContent)
-      },
-      config: {
-        encoding: 'LINEAR16',
-        languageCode: language,
-        model: 'video',
-        sampleRateHertz: 16000
-      }
-    };
-    if (!['en-US', 'en-GB'].includes(language) && tryEnglishSpeechModel) {
-      data.config.model = 'default';
-      data.config.alternativeLanguageCodes = ['en-US'];
-    }
-
-    const rsp = await fetch(apiUrl, {
-      referrer: '',
-      mode: 'cors',
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
-
-    if (rsp.status !== 200) {
-      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
-    }
-
-    const results = (await rsp.json()).results;
-    if (results) {
-      solution = results[0].alternatives[0].transcript.trim();
-    }
+    solution = await getGoogleSpeechApiResult(
+      apiKey,
+      audioContent,
+      language,
+      tryEnglishSpeechModel
+    );
   } else if (speechService === 'ibmSpeechApi') {
-    const {ibmSpeechApiLoc: apiLoc, ibmSpeechApiKey: apiKey} =
-      await storage.get(['ibmSpeechApiLoc', 'ibmSpeechApiKey']);
+    const {ibmSpeechApiUrl: apiUrl, ibmSpeechApiKey: apiKey} =
+      await storage.get(['ibmSpeechApiUrl', 'ibmSpeechApiKey']);
+
+    if (!apiUrl) {
+      showNotification({messageId: 'error_missingApiUrl'});
+      return;
+    }
     if (!apiKey) {
       showNotification({messageId: 'error_missingApiKey'});
       return;
     }
-    const apiUrl = ibmSpeechApiUrls[apiLoc];
-    const language =
-      captchaIbmSpeechApiLangCodes[lang] || 'en-US_BroadbandModel';
 
-    solution = await getIbmSpeechApiResult(
-      apiUrl,
-      apiKey,
-      audioContent,
-      language
-    );
+    const model = captchaIbmSpeechApiLangCodes[lang] || 'en-US_Multimedia';
+
+    solution = await getIbmSpeechApiResult(apiUrl, apiKey, audioContent, model);
+
     if (
       !solution &&
-      !['en-US_BroadbandModel', 'en-GB_BroadbandModel'].includes(language) &&
+      !['en-US_Multimedia', 'en-GB_Multimedia'].includes(model) &&
       tryEnglishSpeechModel
     ) {
       solution = await getIbmSpeechApiResult(
         apiUrl,
         apiKey,
         audioContent,
-        'en-US_BroadbandModel'
+        'en-US_Multimedia'
       );
     }
   } else if (speechService === 'microsoftSpeechApi') {
-    const {microsoftSpeechApiLoc: apiLoc, microsoftSpeechApiKey: apiKey} =
+    const {microsoftSpeechApiLoc: apiLocaction, microsoftSpeechApiKey: apiKey} =
       await storage.get(['microsoftSpeechApiLoc', 'microsoftSpeechApiKey']);
+
     if (!apiKey) {
       showNotification({messageId: 'error_missingApiKey'});
       return;
     }
-    const apiUrl = microsoftSpeechApiUrls[apiLoc];
+
     const language = captchaMicrosoftSpeechApiLangCodes[lang] || 'en-US';
 
     solution = await getMicrosoftSpeechApiResult(
-      apiUrl,
+      apiLocaction,
       apiKey,
       audioContent,
       language
@@ -520,7 +536,7 @@ async function transcribeAudio(audioUrl, lang) {
       tryEnglishSpeechModel
     ) {
       solution = await getMicrosoftSpeechApiResult(
-        apiUrl,
+        apiLocaction,
         apiKey,
         audioContent,
         'en-US'
@@ -529,7 +545,14 @@ async function transcribeAudio(audioUrl, lang) {
   }
 
   if (!solution) {
-    showNotification({messageId: 'error_captchaNotSolved', timeout: 6000});
+    if (['witSpeechApiDemo', 'witSpeechApi'].includes(speechService)) {
+      showNotification({
+        messageId: 'error_captchaNotSolvedWitai',
+        timeout: 60000
+      });
+    } else {
+      showNotification({messageId: 'error_captchaNotSolved', timeout: 6000});
+    }
   } else {
     return solution;
   }

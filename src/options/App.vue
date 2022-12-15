@@ -36,15 +36,14 @@
         </a>
 
         <div
-          class="option select"
+          class="option text-field"
           v-if="options.speechService === 'ibmSpeechApi'"
         >
-          <vn-select
-            :label="getText('optionTitle_ibmSpeechApiLoc')"
-            :items="listItems.ibmSpeechApiLoc"
-            v-model="options.ibmSpeechApiLoc"
+          <vn-text-field
+            v-model.trim="options.ibmSpeechApiUrl"
+            :label="getText('inputLabel_apiUrl')"
           >
-          </vn-select>
+          </vn-text-field>
         </div>
         <div
           class="option text-field"
@@ -271,7 +270,8 @@ import {enableContributions, clientAppVersion} from 'utils/config';
 import {
   optionKeys,
   clientAppPlatforms,
-  captchaWitSpeechApiLangCodes
+  captchaWitSpeechApiLangCodes,
+  microsoftSpeechApiRegions
 } from 'utils/data';
 
 export default {
@@ -301,46 +301,7 @@ export default {
           {scope: 'optionValue_speechService'}
         ),
         ...getListItems(
-          {
-            ibmSpeechApiLoc: [
-              'seoul',
-              'london',
-              'frankfurt',
-              'dallas',
-              'washington',
-              'sydney',
-              'tokyo'
-            ]
-          },
-          {scope: 'optionValue_ibmSpeechApiLoc'}
-        ),
-        ...getListItems(
-          {
-            microsoftSpeechApiLoc: [
-              'eastAu',
-              'centralCa',
-              'centralUs',
-              'centralFr',
-              'centralIn',
-              'eastJp',
-              'westJp',
-              'southBr',
-              'centralKr',
-              'northCh',
-              'northCentralUs',
-              'southCentralUs',
-              'westCentralUs',
-              'southUk',
-              'eastUs',
-              'eastUs2',
-              'westUs',
-              'westUs2',
-              'eastAsia',
-              'southeastAsia',
-              'westEu',
-              'northEu'
-            ]
-          },
+          {microsoftSpeechApiLoc: microsoftSpeechApiRegions},
           {scope: 'optionValue_microsoftSpeechApiLoc'}
         ),
         ...getListItems(
@@ -372,7 +333,7 @@ export default {
       options: {
         speechService: '',
         googleSpeechApiKey: '',
-        ibmSpeechApiLoc: '',
+        ibmSpeechApiUrl: '',
         ibmSpeechApiKey: '',
         microsoftSpeechApiLoc: '',
         microsoftSpeechApiKey: '',

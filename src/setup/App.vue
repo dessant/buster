@@ -135,7 +135,6 @@ export default {
         data.append('session', this.session);
 
         await fetch(`${this.apiUrl}/setup/close`, {
-          referrer: '',
           mode: 'cors',
           method: 'POST',
           body: data
@@ -150,7 +149,6 @@ export default {
       data.append('targetEnv', this.$env.targetEnv);
 
       const rsp = await fetch(`${this.apiUrl}/setup/location`, {
-        referrer: '',
         mode: 'cors',
         method: 'POST',
         body: data
@@ -176,7 +174,6 @@ export default {
       data.append('extension', this.getExtensionId());
 
       const rsp = await fetch(`${this.apiUrl}/setup/install`, {
-        referrer: '',
         mode: 'cors',
         method: 'POST',
         body: data
