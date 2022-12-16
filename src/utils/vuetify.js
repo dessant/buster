@@ -33,6 +33,8 @@ async function configTheme(vuetify) {
       theme = getDarkColorSchemeQuery().matches ? 'dark' : 'light';
     }
 
+    document.documentElement.style.setProperty('color-scheme', theme);
+
     vuetify.theme.global.name.value = theme;
   }
 
