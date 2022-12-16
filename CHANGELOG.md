@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/dessant/buster/compare/v2.0.0...v2.0.1) (2022-12-16)
+
+
+### Bug Fixes
+
+* set color scheme ([57c941a](https://github.com/dessant/buster/commit/57c941ae685b367504da03f94bf5d74ddd645ddf))
+
 ## [2.0.0](https://github.com/dessant/buster/compare/v1.3.2...v2.0.0) (2022-12-15)
 
 
