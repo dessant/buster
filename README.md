@@ -3,11 +3,11 @@
 
 <p align="center">
   </br></br>
-  <a href="https://chrome.google.com/webstore/detail/mpbjkejclgfgadiemmefgebjfooflfhl">
+  <a href="https://chrome.google.com/webstore/detail/buster-captcha-solver-for/mpbjkejclgfgadiemmefgebjfooflfhl">
     <img height="58" src="https://i.imgur.com/K9Yh8G9.png" alt="Chrome Web Store"></a>
   <a href="https://addons.mozilla.org/en-US/firefox/addon/buster-captcha-solver/">
     <img height="58" src="https://i.imgur.com/2jJOtTI.png" alt="Firefox add-ons"></a>
-  <a href="https://microsoftedge.microsoft.com/addons/detail/admkpobhocmdideidcndkfaeffadipkc">
+  <a href="https://microsoftedge.microsoft.com/addons/detail/buster-captcha-solver-fo/admkpobhocmdideidcndkfaeffadipkc">
     <img height="58" src="https://i.imgur.com/es2YFRA.png" alt="Microsoft Store"></a>
   <a href="https://addons.opera.com/en/extensions/details/buster-captcha-solver-for-humans/">
     <img height="58" src="https://i.imgur.com/IYYsrwg.png" alt="Opera add-ons"></a>
@@ -64,7 +64,7 @@ from [this](https://github.com/dessant/buster-client#readme) repository.
 
 ## License
 
-Copyright (c) 2018-2022 Armin Sebastian
+Copyright (c) 2018-2023 Armin Sebastian
 
 This software is released under the terms of the GNU General Public License v3.0.
 See the [LICENSE](LICENSE) file for further information.

@@ -61,7 +61,7 @@ jobs:
           body: |
             Download and install the extension from the [extension store](https://github.com/dessant/buster#readme) of your browser.
 
-            Learn more about this release from the [changelog](https://github.com/dessant/buster/blob/master/CHANGELOG.md#changelog).
+            Learn more about this release from the [changelog](https://github.com/dessant/buster/blob/main/CHANGELOG.md#changelog).
           files: artifacts/*/*
           fail_on_unmatched_files: true
           draft: true

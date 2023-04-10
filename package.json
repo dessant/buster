@@ -33,7 +33,7 @@
     "inspect": "cross-env NODE_ENV=production gulp inspect",
     "update": "ncu --upgrade",
     "release": "standard-version",
-    "push": "git push --follow-tags origin master"
+    "push": "git push --follow-tags origin main"
   },
   "dependencies": {
     "@fontsource/roboto": "^4.5.8",
