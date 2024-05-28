@@ -1,6 +1,18 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [3.0.0](https://github.com/dessant/buster/compare/v2.0.1...v3.0.0) (2024-05-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* browser versions older than Chrome 123, Edge 123,
+Firefox 115 and Opera 109 are no longer supported
+
+### Features
+
+* upgrade to Manifest V3 in Chrome ([42149b3](https://github.com/dessant/buster/commit/42149b35b70b93483165b210a2fdc7c6f643bde0))
 
 ### [2.0.1](https://github.com/dessant/buster/compare/v2.0.0...v2.0.1) (2022-12-16)
 
