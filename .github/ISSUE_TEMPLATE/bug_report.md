@@ -10,6 +10,9 @@ This error is outside the control of the extension, and should not be reported a
 Visit the wiki to learn more about the issue.
 
 https://github.com/dessant/buster/wiki/Inaccessible-reCAPTCHA-audio-challenge
+
+Full automation and scripting are not within the scope of this project due to the potential for misuse.
+The solver must always be manually started from the extension button.
  -->
 
 **System**

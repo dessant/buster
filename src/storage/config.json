@@ -11,8 +11,9 @@
       "DlgF14Chrh",
       "Lj3MYlSr4L",
       "20221211221603_add_theme_support",
-      "20221214080901_update_services"
+      "20221214080901_update_services",
+      "20240514170322_add_appversion"
     ],
-    "sync": []
+    "session": ["20240514122825_initial_version"]
   }
 }

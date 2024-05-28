@@ -5,11 +5,8 @@ about: Suggest an idea for this project
 ---
 
 <!--
-Full automation is not within the scope of this project due to its potential for misuse.
+Full automation and scripting are not within the scope of this project due to the potential for misuse.
 The solver must always be manually started from the extension button.
-
-The extension helps solve reCAPTCHA audio challenges, other services
-and challenge types are not within the scope of this project.
  -->
 
 **Is your feature request related to a problem? Please describe.**

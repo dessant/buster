@@ -1,14 +1,13 @@
 [chrome]
-Chrome >= 92
-Edge >= 92
-Opera >= 78
+Chrome >= 123
+Edge >= 123
+Opera >= 109
 
 [edge]
-Edge >= 92
+Edge >= 123
 
 [firefox]
-Firefox >= 91
-FirefoxAndroid >= 91
+Firefox >= 115
 
 [opera]
-Opera >= 78
+Opera >= 109

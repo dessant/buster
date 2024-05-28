@@ -10,7 +10,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "{e58d3966-3d76-4cd9-8552-1582fbc800c1}",
-      "strict_min_version": "91.0"
+      "strict_min_version": "115.0"
     }
   },
 
@@ -24,7 +24,7 @@
     "<all_urls>"
   ],
 
-  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src *; object-src 'none'; frame-ancestors http://127.0.0.1:*;",
+  "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data:; connect-src *; object-src 'none'; frame-ancestors http://127.0.0.1:*;",
 
   "icons": {
     "16": "src/assets/icons/app/icon-16.png",
@@ -66,8 +66,8 @@
       ],
       "all_frames": true,
       "run_at": "document_idle",
-      "css": ["src/solve/style.css"],
-      "js": ["src/solve/script.js"]
+      "css": ["src/base/style.css"],
+      "js": ["src/base/script.js"]
     },
     {
       "matches": ["http://127.0.0.1/buster/setup?session=*"],
@@ -89,6 +89,6 @@
   "web_accessible_resources": [
     "src/setup/index.html",
     "src/scripts/reset.js",
-    "src/solve/solver-button.css"
+    "src/base/solver-button.css"
   ]
 }

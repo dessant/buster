@@ -19,10 +19,15 @@ const {ensureDirSync, readJsonSync} = require('fs-extra');
 const sharp = require('sharp');
 const CryptoJS = require('crypto-js');
 
+const appVersion = require('./package.json').version;
+
 const targetEnv = process.env.TARGET_ENV || 'chrome';
 const isProduction = process.env.NODE_ENV === 'production';
 const enableContributions =
   (process.env.ENABLE_CONTRIBUTIONS || 'true') === 'true';
+
+const mv3 = ['chrome'].includes(targetEnv);
+
 const distDir = path.join(__dirname, 'dist', targetEnv);
 
 function initEnv() {
@@ -46,35 +51,49 @@ function js(done) {
 }
 
 function html() {
-  return src(
-    enableContributions
-      ? 'src/**/*.html'
-      : ['src/**/*.html', '!src/contribute/*.html'],
-    {base: '.'}
-  )
+  const htmlSrc = ['src/**/*.html'];
+
+  if (mv3) {
+    htmlSrc.push('!src/background/*.html');
+  }
+
+  if (!enableContributions) {
+    htmlSrc.push('!src/contribute/*.html');
+  }
+
+  if (!(mv3 && !['firefox', 'safari'].includes(targetEnv))) {
+    htmlSrc.push('!src/offscreen/*.html');
+  }
+
+  return src(htmlSrc, {base: '.'})
     .pipe(gulpif(isProduction, htmlmin({collapseWhitespace: true})))
     .pipe(dest(distDir));
 }
 
 function css() {
-  return src('src/solve/*.css', {base: '.'})
-    .pipe(postcss())
-    .pipe(dest(distDir));
+  return src('src/base/*.css', {base: '.'}).pipe(postcss()).pipe(dest(distDir));
 }
 
 async function images(done) {
   ensureDirSync(path.join(distDir, 'src/assets/icons/app'));
   const appIconSvg = readFileSync('src/assets/icons/app/icon.svg');
   const appIconSizes = [16, 19, 24, 32, 38, 48, 64, 96, 128];
+  if (targetEnv === 'safari') {
+    appIconSizes.push(256, 512, 1024);
+  }
   for (const size of appIconSizes) {
     await sharp(appIconSvg, {density: (72 * size) / 24})
       .resize(size)
       .toFile(path.join(distDir, `src/assets/icons/app/icon-${size}.png`));
   }
+
   // Chrome Web Store does not correctly display optimized icons
   if (isProduction && targetEnv !== 'chrome') {
     await new Promise(resolve => {
-      src(path.join(distDir, 'src/assets/icons/app/*.png'), {base: '.'})
+      src(path.join(distDir, 'src/assets/icons/app/*.png'), {
+        base: '.',
+        encoding: false
+      })
         .pipe(imagemin())
         .pipe(dest('.'))
         .on('error', done)
@@ -82,9 +101,23 @@ async function images(done) {
     });
   }
 
+  await new Promise(resolve => {
+    src('src/assets/icons/@(app|misc)/*.@(png|svg)', {
+      base: '.',
+      encoding: false
+    })
+      .pipe(gulpif(isProduction, imagemin()))
+      .pipe(dest(distDir))
+      .on('error', done)
+      .on('finish', resolve);
+  });
+
   if (enableContributions) {
     await new Promise(resolve => {
-      src('node_modules/vueton/components/contribute/assets/*.@(png|svg)')
+      src(
+        'node_modules/vueton/components/contribute/assets/*.@(png|webp|svg)',
+        {encoding: false}
+      )
         .pipe(gulpif(isProduction, imagemin()))
         .pipe(dest(path.join(distDir, 'src/contribute/assets')))
         .on('error', done)
@@ -104,7 +137,8 @@ async function fonts(done) {
 
   await new Promise(resolve => {
     src(
-      'node_modules/@fontsource/roboto/files/roboto-latin-@(400|500|700)-normal.woff2'
+      'node_modules/@fontsource/roboto/files/roboto-latin-@(400|500|700)-normal.woff2',
+      {encoding: false}
     )
       .pipe(dest(path.join(distDir, 'src/assets/fonts/files')))
       .on('error', done)
@@ -156,7 +190,7 @@ function manifest() {
       jsonMerge({
         fileName: 'manifest.json',
         edit: (parsedJson, file) => {
-          parsedJson.version = require('./package.json').version;
+          parsedJson.version = appVersion;
           return parsedJson;
         }
       })
@@ -165,22 +199,28 @@ function manifest() {
     .pipe(dest(distDir));
 }
 
-function license() {
+function license(done) {
   let year = '2018';
   const currentYear = new Date().getFullYear().toString();
   if (year !== currentYear) {
     year = `${year}-${currentYear}`;
   }
 
-  const notice = `Buster: Captcha Solver for Humans
+  let notice = `Buster: Captcha Solver for Humans
 Copyright (c) ${year} Armin Sebastian
+`;
 
+  if (['safari', 'samsung'].includes(targetEnv)) {
+    writeFileSync(path.join(distDir, 'NOTICE'), notice);
+    done();
+  } else {
+    notice = `${notice}
 This software is released under the terms of the GNU General Public License v3.0.
 See the LICENSE file for further information.
 `;
-
-  writeFileSync(path.join(distDir, 'NOTICE'), notice);
-  return src('LICENSE').pipe(dest(distDir));
+    writeFileSync(path.join(distDir, 'NOTICE'), notice);
+    return src('LICENSE').pipe(dest(distDir));
+  }
 }
 
 function secrets(done) {
@@ -195,7 +235,7 @@ function secrets(done) {
 
     const key = CryptoJS.SHA256(
       readFileSync(path.join(distDir, 'src/background/script.js')).toString() +
-        readFileSync(path.join(distDir, 'src/solve/script.js')).toString()
+        readFileSync(path.join(distDir, 'src/base/script.js')).toString()
     ).toString();
 
     const ciphertext = CryptoJS.AES.encrypt(data, key).toString();

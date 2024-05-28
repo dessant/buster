@@ -1,10 +1,12 @@
 import {createApp} from 'vue';
 
-import {configApp} from 'utils/app';
+import {configApp, loadFonts} from 'utils/app';
 import {configVuetify} from 'utils/vuetify';
 import App from './App';
 
 async function init() {
+  await loadFonts(['400 14px Roboto', '500 14px Roboto', '700 14px Roboto']);
+
   const app = createApp(App);
 
   await configApp(app);

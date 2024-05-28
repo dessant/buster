@@ -2,11 +2,11 @@ const path = require('node:path');
 const {lstatSync, readdirSync} = require('node:fs');
 
 const webpack = require('webpack');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const {VueLoaderPlugin} = require('vue-loader');
 const {VuetifyPlugin} = require('webpack-plugin-vuetify');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const appVersion = require('./package.json').version;
 const storageRevisions = require('./src/storage/config.json').revisions;
 
 const targetEnv = process.env.TARGET_ENV || 'chrome';
@@ -14,7 +14,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 const enableContributions =
   (process.env.ENABLE_CONTRIBUTIONS || 'true') === 'true';
 
-const provideExtApi = !['firefox'].includes(targetEnv);
+const mv3 = ['chrome'].includes(targetEnv);
+
+const provideExtApi = !['firefox', 'safari'].includes(targetEnv);
 
 const provideModules = {};
 if (provideExtApi) {
@@ -26,10 +28,14 @@ const plugins = [
     'process.env': {
       TARGET_ENV: JSON.stringify(targetEnv),
       STORAGE_REVISION_LOCAL: JSON.stringify(storageRevisions.local.at(-1)),
-      ENABLE_CONTRIBUTIONS: JSON.stringify(enableContributions.toString())
+      STORAGE_REVISION_SESSION: JSON.stringify(storageRevisions.session.at(-1)),
+      ENABLE_CONTRIBUTIONS: JSON.stringify(enableContributions.toString()),
+      APP_VERSION: JSON.stringify(appVersion),
+      MV3: JSON.stringify(mv3.toString())
     },
     __VUE_OPTIONS_API__: true,
-    __VUE_PROD_DEVTOOLS__: false
+    __VUE_PROD_DEVTOOLS__: false,
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false
   }),
   new webpack.ProvidePlugin(provideModules),
   new VueLoaderPlugin(),
@@ -37,9 +43,8 @@ const plugins = [
   new MiniCssExtractPlugin({
     filename: '[name]/style.css',
     ignoreOrder: true
-  }),
-  isProduction ? new LodashModuleReplacementPlugin({shorthands: true}) : null
-].filter(Boolean);
+  })
+];
 
 const scriptsRootDir = path.join(__dirname, 'src/scripts');
 const scripts = readdirSync(scriptsRootDir)
@@ -49,6 +54,10 @@ const scripts = readdirSync(scriptsRootDir)
 const entries = Object.fromEntries(
   scripts.map(script => [script, `./src/scripts/${script}.js`])
 );
+
+if (mv3 && !['firefox', 'safari'].includes(targetEnv)) {
+  entries.offscreen = './src/offscreen/main.js';
+}
 
 if (enableContributions) {
   entries.contribute = './src/contribute/main.js';
@@ -60,7 +69,7 @@ module.exports = {
     background: './src/background/main.js',
     options: './src/options/main.js',
     contribute: './src/contribute/main.js',
-    solve: './src/solve/main.js',
+    base: './src/base/main.js',
     setup: './src/setup/main.js',
     ...entries
   },
@@ -71,7 +80,8 @@ module.exports = {
         ? 'scripts/[name].js'
         : '[name]/script.js';
     },
-    chunkFilename: '[name]/script.js'
+    chunkFilename: '[name]/script.js',
+    asyncChunks: false
   },
   optimization: {
     splitChunks: {
@@ -120,6 +130,12 @@ module.exports = {
               sassOptions: {
                 includePaths: ['node_modules'],
                 quietDeps: true
+              },
+              additionalData: (content, loaderContext) => {
+                return `
+                  $target-env: "${targetEnv}";
+                  ${content}
+                `;
               }
             }
           }

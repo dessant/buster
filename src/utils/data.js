@@ -22,6 +22,32 @@ const clientAppPlatforms = [
   'macos/amd64'
 ];
 
+// https://google.com/recaptcha/api2/anchor*
+// https://google.com/recaptcha/api2/bframe*
+// https://www.google.com/recaptcha/api2/anchor*
+// https://www.google.com/recaptcha/api2/bframe*
+// https://google.com/recaptcha/enterprise/anchor*
+// https://google.com/recaptcha/enterprise/bframe*
+// https://www.google.com/recaptcha/enterprise/anchor*
+// https://www.google.com/recaptcha/enterprise/bframe*
+// https://recaptcha.net/recaptcha/api2/anchor*
+// https://recaptcha.net/recaptcha/api2/bframe*
+// https://www.recaptcha.net/recaptcha/api2/anchor*
+// https://www.recaptcha.net/recaptcha/api2/bframe*
+// https://recaptcha.net/recaptcha/enterprise/anchor*
+// https://recaptcha.net/recaptcha/enterprise/bframe*
+// https://www.recaptcha.net/recaptcha/enterprise/anchor*
+// https://www.recaptcha.net/recaptcha/enterprise/bframe*
+const recaptchaUrlRxString = `^https:\/\/(?:www\.)?(?:google\.com|recaptcha\.net)\/recaptcha\/(?:api2|enterprise)\/(?:anchor|bframe).*`;
+
+// https://google.com/recaptcha/api2/bframe*
+// https://www.google.com/recaptcha/api2/bframe*
+// https://google.com/recaptcha/enterprise/bframe*
+// https://www.google.com/recaptcha/enterprise/bframe*
+// https://recaptcha.net/recaptcha/api2/bframe*
+// https://www.recaptcha.net/recaptcha/api2/bframe*
+// https://recaptcha.net/recaptcha/enterprise/bframe*
+// https://www.recaptcha.net/recaptcha/enterprise/bframe*
 const recaptchaChallengeUrlRx =
   /^https:\/\/(?:www\.)?(?:google\.com|recaptcha\.net)\/recaptcha\/(?:api2|enterprise)\/bframe.*/;
 
@@ -174,7 +200,7 @@ const captchaIbmSpeechApiLangCodes = {
   zu: '' // Zulu
 };
 
-// https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts
+// https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt#supported-languages
 const captchaMicrosoftSpeechApiLangCodes = {
   ar: 'ar-EG', // Arabic
   af: 'af-ZA', // Afrikaans
@@ -243,7 +269,7 @@ const captchaMicrosoftSpeechApiLangCodes = {
   th: 'th-TH', // Thai
   tr: 'tr-TR', // Turkish
   uk: 'uk-UA', // Ukrainian
-  ur: '', // Urdu
+  ur: 'ur-IN', // Urdu
   vi: 'vi-VN', // Vietnamese
   zu: 'zu-ZA' // Zulu
 };
@@ -322,7 +348,7 @@ const captchaWitSpeechApiLangCodes = {
   zu: '' // Zulu
 };
 
-// https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/regions#speech-service
+// https://learn.microsoft.com/en-us/azure/ai-services/speech-service/regions#speech-service
 const microsoftSpeechApiRegions = [
   'southafricanorth',
   'eastasia',
@@ -338,11 +364,13 @@ const microsoftSpeechApiRegions = [
   'francecentral',
   'germanywestcentral',
   'norwayeast',
+  'swedencentral',
   'switzerlandnorth',
   'switzerlandwest',
   'uksouth',
   'uaenorth',
   'brazilsouth',
+  'qatarcentral',
   'centralus',
   'eastus',
   'eastus2',
@@ -357,6 +385,7 @@ const microsoftSpeechApiRegions = [
 export {
   optionKeys,
   clientAppPlatforms,
+  recaptchaUrlRxString,
   recaptchaChallengeUrlRx,
   captchaGoogleSpeechApiLangCodes,
   captchaIbmSpeechApiLangCodes,

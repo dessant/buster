@@ -1,11 +1,12 @@
 const path = require('node:path');
 
-const corejsVersion = require(path.join(
-  path.dirname(require.resolve('core-js')),
-  'package.json'
-)).version;
+const corejsVersion = require(
+  path.join(path.dirname(require.resolve('core-js')), 'package.json')
+).version;
 
 module.exports = function (api) {
+  api.cache(true);
+
   const presets = [
     [
       '@babel/env',
@@ -24,11 +25,7 @@ module.exports = function (api) {
     new RegExp(`node_modules\\${path.sep}(?!(vueton|wesa)\\${path.sep}).*`)
   ];
 
-  const parserOpts = {plugins: ['importAssertions']};
-
-  if (api.env('production')) {
-    plugins.push('lodash');
-  }
+  const parserOpts = {plugins: ['importAttributes']};
 
   return {presets, plugins, ignore, parserOpts};
 };

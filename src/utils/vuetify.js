@@ -1,7 +1,6 @@
 import {createVuetify} from 'vuetify';
 
-import storage from 'storage/storage';
-import {getDarkColorSchemeQuery} from 'utils/common';
+import {getAppTheme, addThemeListener} from 'utils/app';
 
 const LightTheme = {
   dark: false,
@@ -23,42 +22,50 @@ const DarkTheme = {
   }
 };
 
-async function configTheme(vuetify) {
-  async function setTheme(theme) {
+async function configTheme(vuetify, {theme = ''} = {}) {
+  async function setTheme({theme = '', dispatchChange = true} = {}) {
     if (!theme) {
-      ({appTheme: theme} = await storage.get('appTheme'));
-    }
-
-    if (theme === 'auto') {
-      theme = getDarkColorSchemeQuery().matches ? 'dark' : 'light';
+      theme = await getAppTheme();
     }
 
     document.documentElement.style.setProperty('color-scheme', theme);
-
     vuetify.theme.global.name.value = theme;
+
+    if (dispatchChange) {
+      document.dispatchEvent(new CustomEvent('themeChange', {detail: theme}));
+    }
   }
 
-  getDarkColorSchemeQuery().addEventListener('change', function () {
-    setTheme();
-  });
+  addThemeListener(setTheme);
 
-  browser.storage.onChanged.addListener(function (changes, area) {
-    if (area === 'local' && changes.appTheme) {
-      setTheme(changes.appTheme.newValue);
-    }
-  });
-
-  await setTheme();
+  await setTheme({theme, dispatchChange: false});
 }
 
 async function configVuetify(app) {
+  const theme = await getAppTheme();
+
   const vuetify = createVuetify({
     theme: {
-      themes: {light: LightTheme, dark: DarkTheme}
+      themes: {light: LightTheme, dark: DarkTheme},
+      defaultTheme: theme
+    },
+    defaults: {
+      VDialog: {
+        eager: true
+      },
+      VSelect: {
+        eager: true
+      },
+      VSnackbar: {
+        eager: true
+      },
+      VMenu: {
+        eager: true
+      }
     }
   });
 
-  await configTheme(vuetify);
+  await configTheme(vuetify, {theme});
 
   app.use(vuetify);
 }

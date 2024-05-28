@@ -33,7 +33,7 @@ please consider contributing with
 
 ## Description
 
-Buster is a browser extension which helps you to solve difficult captchas
+Buster is a browser extension which helps you to solve difficult CAPTCHAs
 by completing reCAPTCHA audio challenges using speech recognition.
 Challenges are solved by clicking on the extension button at the bottom
 of the reCAPTCHA widget.
@@ -49,10 +49,10 @@ delaying and often blocking our access to services and information
 depending on our physical and cognitive abilities, our social
 and cultural background, and the devices or networks we connect from.
 
-The difficulty of captchas can be so out of balance,
+The difficulty of CAPTCHA challenges can be so out of balance,
 that sometimes they seem friendlier to bots than they are to humans.
 
-The goal of this project is to improve our experience on the web,
+The goal of this project is to improve our user experience on the web,
 by giving us easy access to solutions utilized by automated systems.
 
 ## Client App
@@ -72,7 +72,7 @@ from [this](https://github.com/dessant/buster-client#readme) repository.
 
 ## License
 
-Copyright (c) 2018-2023 Armin Sebastian
+Copyright (c) 2018-2024 Armin Sebastian
 
 This software is released under the terms of the GNU General Public License v3.0.
 See the [LICENSE](LICENSE) file for further information.

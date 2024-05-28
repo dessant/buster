@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" v-if="dataLoaded">
+  <vn-app v-if="dataLoaded">
     <div class="wrap" v-if="!isInstallSuccess && !isInstallError">
       <div class="title">
         {{ getText('pageContent_installTitle') }}
@@ -59,11 +59,11 @@
         {{ getText('buttonLabel_goBack') }}
       </vn-button>
     </div>
-  </v-app>
+  </vn-app>
 </template>
 
 <script>
-import {Button, TextField} from 'vueton';
+import {App, Button, TextField} from 'vueton';
 
 import storage from 'storage/storage';
 import {pingClientApp} from 'utils/app';
@@ -71,6 +71,7 @@ import {getText} from 'utils/common';
 
 export default {
   components: {
+    [App.name]: App,
     [Button.name]: Button,
     [TextField.name]: TextField
   },

@@ -9,7 +9,7 @@ async function isStorageArea({area = 'local'} = {}) {
   }
 }
 
-const storageReady = {};
+const storageReady = {local: false, session: false, sync: false};
 async function isStorageReady({area = 'local'} = {}) {
   if (storageReady[area]) {
     return true;
@@ -31,16 +31,16 @@ async function ensureStorageReady({area = 'local'} = {}) {
 
       const checkStorage = async function () {
         if (await isStorageReady({area})) {
-          window.clearTimeout(timeoutId);
+          self.clearTimeout(timeoutId);
           resolve();
         } else if (stop) {
           reject(new Error(`Storage (${area}) is not ready`));
         } else {
-          window.setTimeout(checkStorage, 30);
+          self.setTimeout(checkStorage, 30);
         }
       };
 
-      const timeoutId = window.setTimeout(function () {
+      const timeoutId = self.setTimeout(function () {
         stop = true;
       }, 60000); // 1 minute
 

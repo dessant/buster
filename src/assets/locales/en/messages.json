@@ -5,7 +5,7 @@
   },
 
   "extensionDescription": {
-    "message": "Save time by asking Buster to solve captchas for you.",
+    "message": "Save time by asking Buster to solve CAPTCHAs for you.",
     "description": "Description of the extension."
   },
 
@@ -119,6 +119,11 @@
     "description": "Value of the option."
   },
 
+  "optionValue_microsoftSpeechApiLoc_swedencentral": {
+    "message": "Sweden Central",
+    "description": "Value of the option."
+  },
+
   "optionValue_microsoftSpeechApiLoc_switzerlandnorth": {
     "message": "Switzerland North",
     "description": "Value of the option."
@@ -141,6 +146,11 @@
 
   "optionValue_microsoftSpeechApiLoc_brazilsouth": {
     "message": "Brazil South",
+    "description": "Value of the option."
+  },
+
+  "optionValue_microsoftSpeechApiLoc_qatarcentral": {
+    "message": "Qatar Central",
     "description": "Value of the option."
   },
 
@@ -557,7 +567,7 @@
   },
 
   "error_captchaNotSolved": {
-    "message": "Captcha could not be solved. Try again after requesting a new challenge.",
+    "message": "CAPTCHA could not be solved. Try again after requesting a new challenge.",
     "description": "Error message."
   },
 
