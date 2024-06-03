@@ -421,12 +421,12 @@ async function getWitSpeechApiResult(apiKey, audioContent) {
   const result = {};
 
   const rsp = await fetch('https://api.wit.ai/speech?v=20240304', {
-    mode: 'cors',
     method: 'POST',
     headers: {
       Authorization: 'Bearer ' + apiKey
     },
-    body: new Blob([audioContent], {type: 'audio/wav'})
+    body: new Blob([audioContent], {type: 'audio/wav'}),
+    credentials: 'omit'
   });
 
   if (rsp.status !== 200) {
@@ -472,9 +472,9 @@ async function getGoogleSpeechApiResult(
   const rsp = await fetch(
     `https://speech.googleapis.com/v1p1beta1/speech:recognize?key=${apiKey}`,
     {
-      mode: 'cors',
       method: 'POST',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      credentials: 'omit'
     }
   );
 
@@ -512,12 +512,12 @@ async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, model) {
 
   if (targetEnv === 'firefox') {
     const rsp = await fetch('https://iam.cloud.ibm.com/identity/token', {
-      mode: 'cors',
       method: 'POST',
       body: new URLSearchParams({
         grant_type: 'urn:ibm:params:oauth:grant-type:apikey',
         apikey: apiKey
-      })
+      }),
+      credentials: 'omit'
     });
 
     if (rsp.status !== 200) {
@@ -585,7 +585,6 @@ async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, model) {
     const rsp = await fetch(
       `${apiUrl}/v1/recognize?model=${model}&profanity_filter=false`,
       {
-        mode: 'cors',
         method: 'POST',
         headers: {
           Authorization: 'Basic ' + self.btoa('apikey:' + apiKey),
@@ -593,7 +592,8 @@ async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, model) {
           // Invalid value, see description above
           Priority: '1'
         },
-        body: new Blob([audioContent], {type: 'audio/wav'})
+        body: new Blob([audioContent], {type: 'audio/wav'}),
+        credentials: 'omit'
       }
     );
 
@@ -617,13 +617,13 @@ async function getMicrosoftSpeechApiResult(
   const rsp = await fetch(
     `https://${apiLocation}.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=${language}&format=detailed&profanity=raw`,
     {
-      mode: 'cors',
       method: 'POST',
       headers: {
         'Ocp-Apim-Subscription-Key': apiKey,
         'Content-type': 'audio/wav; codec=audio/pcm; samplerate=16000'
       },
-      body: new Blob([audioContent], {type: 'audio/wav'})
+      body: new Blob([audioContent], {type: 'audio/wav'}),
+      credentials: 'omit'
     }
   );
 
