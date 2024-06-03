@@ -360,6 +360,8 @@ export default {
     getText,
 
     setup: async function () {
+      browser.runtime.onMessage.addListener(this.onMessage);
+
       const options = await storage.get(optionKeys);
 
       for (const option of Object.keys(this.options)) {
@@ -386,6 +388,12 @@ export default {
       this.verifyClientApp();
 
       this.dataLoaded = true;
+    },
+
+    onMessage: function (request, sender) {
+      if (request.id === 'reloadOptionsPage') {
+        self.location.reload();
+      }
     },
 
     verifyClientApp: async function () {

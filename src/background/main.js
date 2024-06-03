@@ -899,6 +899,8 @@ async function processMessage(request, sender) {
     return getBrowser();
   } else if (request.id === 'optionChange') {
     await onOptionChange();
+  } else if (request.id === 'clientAppInstall') {
+    await onClientAppInstall();
   }
 }
 
@@ -906,6 +908,14 @@ function onMessage(request, sender, sendResponse) {
   const response = processMessage(request, sender);
 
   return processMessageResponse(response, sendResponse);
+}
+
+async function onClientAppInstall() {
+  await storage.set({simulateUserInput: true});
+
+  await browser.runtime
+    .sendMessage({id: 'reloadOptionsPage'})
+    .catch(() => null);
 }
 
 async function onOptionChange() {

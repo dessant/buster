@@ -65,7 +65,6 @@
 <script>
 import {App, Button, TextField} from 'vueton';
 
-import storage from 'storage/storage';
 import {pingClientApp} from 'utils/app';
 import {getText} from 'utils/common';
 
@@ -139,6 +138,8 @@ export default {
           method: 'POST',
           body: data
         });
+
+        await browser.runtime.sendMessage({id: 'clientAppInstall'});
       }
     },
 
@@ -179,7 +180,6 @@ export default {
 
       if (rsp.status === 200) {
         await pingClientApp();
-        await storage.set({simulateUserInput: true});
 
         this.isInstallSuccess = true;
       } else {
