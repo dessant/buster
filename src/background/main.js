@@ -237,38 +237,22 @@ async function setChallengeLocale() {
   }
 }
 
-function prepareBackgroundRequestRules({rules = null} = {}) {
-  const data = [];
-  const initiatorDomains = [getExtensionDomain()];
-
-  for (const {id, urlFilter} of rules) {
-    data.push({
-      id,
-      action: {
-        type: 'modifyHeaders',
-        requestHeaders: [
-          {operation: 'remove', header: 'Origin'},
-          {operation: 'remove', header: 'Referer'}
-        ]
-      },
-      condition: {
-        urlFilter,
-        initiatorDomains,
-        resourceTypes: ['xmlhttprequest']
-      }
-    });
-  }
-
-  return data;
-}
-
-function removeRequestOrigin(details) {
-  const origin = window.location.origin;
+function removeRequestHeaders(details) {
   const headers = details.requestHeaders;
-  for (const header of headers) {
-    if (header.name.toLowerCase() === 'origin' && header.value === origin) {
-      headers.splice(headers.indexOf(header), 1);
-      break;
+
+  const isBackgroundRequest = headers.some(
+    header =>
+      header.name.toLowerCase() === 'origin' &&
+      header.value === self.location.origin
+  );
+
+  if (isBackgroundRequest) {
+    for (const header of headers) {
+      const name = header.name.toLowerCase();
+
+      if (name === 'origin' || name === 'referer') {
+        headers.splice(headers.indexOf(header), 1);
+      }
     }
   }
 
@@ -276,34 +260,52 @@ function removeRequestOrigin(details) {
 }
 
 async function addBackgroundRequestListener() {
-  // https://google.com/*
-  // https://www.google.com/*
-  // https://recaptcha.net/*
-  // https://www.recaptcha.net/*
-  // https://api.wit.ai/*
-  // https://speech.googleapis.com/*
-  // https://*.speech-to-text.watson.cloud.ibm.com/*
-  // https://*.stt.speech.microsoft.com/*
-  const rules = [
-    {id: 2, urlFilter: '||google.com'},
-    {id: 3, urlFilter: '||recaptcha.net'},
-    {id: 4, urlFilter: '||api.wit.ai'},
-    {id: 5, urlFilter: '||speech.googleapis.com'},
-    {id: 6, urlFilter: '||speech-to-text.watson.cloud.ibm.com'},
-    {id: 7, urlFilter: '||stt.speech.microsoft.com'}
-  ];
-  const ruleIds = rules.map(item => item.id);
+  const ruleIds = [2];
 
   if (mv3) {
     await browser.declarativeNetRequest.updateSessionRules({
       removeRuleIds: ruleIds,
-      addRules: prepareBackgroundRequestRules({rules})
+      addRules: [
+        {
+          id: ruleIds[0],
+          action: {
+            type: 'modifyHeaders',
+            requestHeaders: [
+              {operation: 'remove', header: 'Origin'},
+              {operation: 'remove', header: 'Referer'}
+            ]
+          },
+          condition: {
+            // https://google.com/*
+            // https://www.google.com/*
+            // https://recaptcha.net/*
+            // https://www.recaptcha.net/*
+            // https://api.wit.ai/*
+            // https://speech.googleapis.com/*
+            // https://iam.cloud.ibm.com/*
+            // https://*.speech-to-text.watson.cloud.ibm.com/*
+            // wss://*.speech-to-text.watson.cloud.ibm.com/*
+            // https://*.stt.speech.microsoft.com/*
+            requestDomains: [
+              'google.com',
+              'recaptcha.net',
+              'api.wit.ai',
+              'speech.googleapis.com',
+              'iam.cloud.ibm.com',
+              'speech-to-text.watson.cloud.ibm.com',
+              'stt.speech.microsoft.com'
+            ],
+            initiatorDomains: [getExtensionDomain()],
+            resourceTypes: ['websocket', 'xmlhttprequest']
+          }
+        }
+      ]
     });
 
     return ruleIds;
   } else {
     if (
-      !browser.webRequest.onBeforeSendHeaders.hasListener(removeRequestOrigin)
+      !browser.webRequest.onBeforeSendHeaders.hasListener(removeRequestHeaders)
     ) {
       const urls = [
         'https://google.com/*',
@@ -312,7 +314,8 @@ async function addBackgroundRequestListener() {
         'https://www.recaptcha.net/*',
         'https://api.wit.ai/*',
         'https://speech.googleapis.com/*',
-        'https://*.speech-to-text.watson.cloud.ibm.com/*',
+        '*://*.speech-to-text.watson.cloud.ibm.com/*',
+        'https://iam.cloud.ibm.com/*',
         'https://*.stt.speech.microsoft.com/*'
       ];
 
@@ -327,10 +330,10 @@ async function addBackgroundRequestListener() {
       }
 
       browser.webRequest.onBeforeSendHeaders.addListener(
-        removeRequestOrigin,
+        removeRequestHeaders,
         {
           urls,
-          types: ['xmlhttprequest']
+          types: ['websocket', 'xmlhttprequest']
         },
         extraInfo
       );
@@ -345,10 +348,10 @@ async function removeBackgroundRequestListener({ruleIds = null} = {}) {
     });
   } else {
     if (
-      browser.webRequest.onBeforeSendHeaders.hasListener(removeRequestOrigin)
+      browser.webRequest.onBeforeSendHeaders.hasListener(removeRequestHeaders)
     ) {
       browser.webRequest.onBeforeSendHeaders.removeListener(
-        removeRequestOrigin
+        removeRequestHeaders
       );
     }
   }
@@ -486,26 +489,122 @@ async function getGoogleSpeechApiResult(
 }
 
 async function getIbmSpeechApiResult(apiUrl, apiKey, audioContent, model) {
-  const rsp = await fetch(
-    `${apiUrl}/v1/recognize?model=${model}&profanity_filter=false`,
-    {
+  // Issue:
+
+  // IBM HTTP API: response status 400 when Priority header is sent
+  // Error: could not convert string to float: 'u=4'
+
+  // Chrome 124 and Firefox 126 sets the Priority header for HTTP/2 requests,
+  // but it cannot be removed by the extension, declarativeNetRequest
+  // and webRequest do not see the header because it is set by the browser
+  // after request filtering occurs.
+
+  // Chrome accepts a custom Priority header value, but Firefox ignores it.
+
+  // IBM has a WebSocket API, but in Chrome declarativeNetRequest rules
+  // do not match WebSocket requests from background scripts,
+  // so the Origin header we remove for API calls would be exposed.
+
+  // Solution:
+
+  // The HTTP API is used in Chrome with an invalid Priority header value
+  // that can be converted to float, and the WebSocket API is used in Firefox.
+
+  if (targetEnv === 'firefox') {
+    const rsp = await fetch('https://iam.cloud.ibm.com/identity/token', {
       mode: 'cors',
       method: 'POST',
-      headers: {
-        Authorization: 'Basic ' + self.btoa('apikey:' + apiKey),
-        'X-Watson-Learning-Opt-Out': 'true'
-      },
-      body: new Blob([audioContent], {type: 'audio/wav'})
+      body: new URLSearchParams({
+        grant_type: 'urn:ibm:params:oauth:grant-type:apikey',
+        apikey: apiKey
+      })
+    });
+
+    if (rsp.status !== 200) {
+      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
     }
-  );
 
-  if (rsp.status !== 200) {
-    throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
-  }
+    const {access_token: accessToken} = await rsp.json();
+    const wsUrl = apiUrl.replace(/^https(.*)/, 'wss$1');
 
-  const results = (await rsp.json()).results;
-  if (results && results.length) {
-    return results[0].alternatives[0].transcript.trim();
+    const ws = new WebSocket(
+      `${wsUrl}/v1/recognize?access_token=${accessToken}&model=${model}&x-watson-learning-opt-out=true`
+    );
+
+    return await new Promise((resolve, reject) => {
+      const timeoutId = self.setTimeout(function () {
+        ws.close();
+        reject(new Error('API timeout'));
+      }, 30000); // 30 seconds
+
+      function response({result, error} = {}) {
+        self.clearTimeout(timeoutId);
+
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      }
+
+      ws.onopen = function (ev) {
+        ws.send(
+          JSON.stringify({
+            action: 'start',
+            'content-type': 'audio/wav',
+            profanity_filter: false
+          })
+        );
+
+        ws.send(new Blob([audioContent]));
+
+        ws.send(JSON.stringify({action: 'stop'}));
+      };
+
+      ws.onmessage = function (ev) {
+        const results = JSON.parse(ev.data).results;
+
+        if (results) {
+          ws.close();
+
+          response({result: results[0]?.alternatives[0].transcript.trim()});
+        }
+      };
+
+      ws.onclose = function (ev) {
+        if (ev.code !== 1000) {
+          response({error: new Error(`API response: ${ev.code}`)});
+        }
+      };
+
+      ws.onerror = function (ev) {
+        response({error: new Error(`API response: ${ev.code}`)});
+      };
+    });
+  } else {
+    const rsp = await fetch(
+      `${apiUrl}/v1/recognize?model=${model}&profanity_filter=false`,
+      {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+          Authorization: 'Basic ' + self.btoa('apikey:' + apiKey),
+          'X-Watson-Learning-Opt-Out': 'true',
+          // Invalid value, see description above
+          Priority: '1'
+        },
+        body: new Blob([audioContent], {type: 'audio/wav'})
+      }
+    );
+
+    if (rsp.status !== 200) {
+      throw new Error(`API response: ${rsp.status}, ${await rsp.text()}`);
+    }
+
+    const results = (await rsp.json()).results;
+    if (results && results.length) {
+      return results[0].alternatives[0].transcript.trim();
+    }
   }
 }
 
