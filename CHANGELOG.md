@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.1.0](https://github.com/dessant/buster/compare/v3.0.0...v3.1.0) (2024-06-04)
+
+
+### Features
+
+* reload options page when client app is installed ([290dfba](https://github.com/dessant/buster/commit/290dfbac14c973e8efe007012419d7c583510d14))
+* upgrade to Manifest V3 in Edge and Opera ([f3e09bf](https://github.com/dessant/buster/commit/f3e09bfb82404bc90afeea4c79d09f976156da76))
+
+
+### Bug Fixes
+
+* omit cookies from API requests ([cb4811e](https://github.com/dessant/buster/commit/cb4811e84121b306a640ccdcb96a2dff1448d24b))
+* workaround for IBM Watson error ([cd1312e](https://github.com/dessant/buster/commit/cd1312ecb31fe89e493550fcdbd3fe78df104bef)), closes [#405](https://github.com/dessant/buster/issues/405)
+
 ## [3.0.0](https://github.com/dessant/buster/compare/v2.0.1...v3.0.0) (2024-05-28)
 
 
