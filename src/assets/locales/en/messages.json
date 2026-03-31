@@ -409,6 +409,11 @@
     "description": "Value of the option."
   },
 
+  "optionSectionTitle_sponsors": {
+    "message": "Sponsors",
+    "description": "Title of the options section."
+  },
+
   "inputLabel_apiUrl": {
     "message": "API endpoint",
     "description": "Label of the input."

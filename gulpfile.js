@@ -102,7 +102,7 @@ async function images(done) {
   }
 
   await new Promise(resolve => {
-    src('src/assets/icons/@(app|misc)/*.@(png|svg)', {
+    src('src/assets/icons/@(app|misc|sponsors)/*.@(png|svg)', {
       base: '.',
       encoding: false
     })

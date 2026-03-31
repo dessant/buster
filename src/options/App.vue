@@ -262,6 +262,27 @@
         </div>
       </div>
     </div>
+
+    <div class="section-sponsors" v-if="sponsorsEnabled">
+      <div class="section-title" v-once>
+        {{ getText('optionSectionTitle_sponsors') }}
+      </div>
+      <div class="option-wrap">
+        <div
+          class="option sponsor-logo"
+          v-for="(item, index) in sponsors"
+          :key="index"
+        >
+          <a
+            :href="getSponsorDomain(item)"
+            @click.prevent="showSponsor(item)"
+            @keyup.enter.prevent="showSponsor(item)"
+          >
+            <img :src="getSponsorLogo(item, {variant: theme})" />
+          </a>
+        </div>
+      </div>
+    </div>
   </vn-app>
 </template>
 
@@ -270,14 +291,23 @@ import {toRaw} from 'vue';
 import {App, Button, Icon, Select, Switch, TextField} from 'vueton';
 
 import storage from 'storage/storage';
-import {getListItems, showContributePage, pingClientApp} from 'utils/app';
+import {
+  getListItems,
+  showContributePage,
+  pingClientApp,
+  showSponsorPage,
+  getAppTheme,
+  getSponsorDomain,
+  getSponsorLogo
+} from 'utils/app';
 import {getText} from 'utils/common';
 import {enableContributions, clientAppVersion} from 'utils/config';
 import {
   optionKeys,
   clientAppPlatforms,
   captchaWitSpeechApiLangCodes,
-  microsoftSpeechApiRegions
+  microsoftSpeechApiRegions,
+  sponsors
 } from 'utils/data';
 
 export default {
@@ -293,6 +323,9 @@ export default {
   data: function () {
     return {
       dataLoaded: false,
+
+      getSponsorDomain,
+      getSponsorLogo,
 
       listItems: {
         ...getListItems(
@@ -328,6 +361,7 @@ export default {
       },
 
       enableContributions,
+      sponsors,
 
       witSpeechApiLang: null,
       witSpeechApis: [],
@@ -336,6 +370,9 @@ export default {
       clientAppInstalled: false,
       clientAppDownloadUrl: '',
       installGuideUrl: '',
+      sponsorsEnabled: true,
+
+      theme: '',
 
       options: {
         speechService: '',
@@ -354,6 +391,14 @@ export default {
         showContribPage: false
       }
     };
+  },
+
+  computed: {
+    appClasses: function () {
+      return {
+        'show-sponsors': this.sponsorsEnabled
+      };
+    }
   },
 
   methods: {
@@ -384,6 +429,13 @@ export default {
         getText('pageTitle_options'),
         getText('extensionName')
       ]);
+
+      this.sponsorsEnabled = !!this.sponsors.length;
+
+      this.theme = await getAppTheme(options.appTheme);
+      document.addEventListener('themeChange', ev => {
+        this.theme = ev.detail;
+      });
 
       this.verifyClientApp();
 
@@ -446,6 +498,10 @@ export default {
 
     showContribute: async function () {
       await showContributePage();
+    },
+
+    showSponsor: async function (name) {
+      await showSponsorPage({name});
     }
   },
 
@@ -510,6 +566,12 @@ export default {
   &.select,
   &.text-field {
     height: 56px;
+  }
+
+  &.sponsor-logo,
+  &.sponsor-logo a,
+  &.sponsor-logo img {
+    height: 42px;
   }
 
   & .contribute-button {

@@ -14,7 +14,6 @@ import {
   getRandomInt,
   sleep
 } from 'utils/common';
-import {recaptchaChallengeUrlRx} from 'utils/data';
 import {
   targetEnv,
   enableContributions,
@@ -22,6 +21,11 @@ import {
   appVersion,
   mv3
 } from 'utils/config';
+import {
+  recaptchaChallengeUrlRx,
+  sponsorLogoVariants,
+  sponsorSites
+} from 'utils/data';
 
 async function showNotification({
   message,
@@ -331,6 +335,14 @@ async function showOptionsPage({getTab = false, activeTab = null} = {}) {
   });
 }
 
+async function showSponsorPage({
+  name = '',
+  getTab = false,
+  activeTab = null
+} = {}) {
+  return showPage({url: sponsorSites[name], getTab, activeTab});
+}
+
 async function setAppVersion() {
   await storage.set({appVersion});
 }
@@ -423,6 +435,18 @@ async function getStartupState({event = ''} = {}) {
   return startup;
 }
 
+function getSponsorDomain(name) {
+  return new URL(sponsorSites[name]).origin;
+}
+
+function getSponsorLogo(name, {variant = ''} = {}) {
+  if (variant && sponsorLogoVariants[name]?.includes(variant)) {
+    name += `-${variant}`;
+  }
+
+  return `/src/assets/icons/sponsors/${name}.svg`;
+}
+
 function sendNativeMessage(port, message, {timeout = 10000} = {}) {
   return new Promise((resolve, reject) => {
     const id = uuidv4();
@@ -504,10 +528,13 @@ export {
   processAppUse,
   showContributePage,
   showOptionsPage,
+  showSponsorPage,
   setAppVersion,
   isSessionStartup,
   isStartup,
   getStartupState,
+  getSponsorDomain,
+  getSponsorLogo,
   sendNativeMessage,
   pingClientApp,
   meanSleep

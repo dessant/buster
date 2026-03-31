@@ -382,6 +382,14 @@ const microsoftSpeechApiRegions = [
   'westus3'
 ];
 
+const sponsorLogoVariants = {};
+
+const sponsors = ['capmonster'];
+
+const sponsorSites = {
+  capmonster: 'https://capmonster.cloud/en?utm_source=extbuster'
+};
+
 export {
   optionKeys,
   clientAppPlatforms,
@@ -391,5 +399,8 @@ export {
   captchaIbmSpeechApiLangCodes,
   captchaMicrosoftSpeechApiLangCodes,
   captchaWitSpeechApiLangCodes,
-  microsoftSpeechApiRegions
+  microsoftSpeechApiRegions,
+  sponsorLogoVariants,
+  sponsors,
+  sponsorSites
 };
