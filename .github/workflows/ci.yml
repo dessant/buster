@@ -5,21 +5,21 @@ on: push
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
       - name: Clone repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: 'false'
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci --legacy-peer-deps
       - name: Build artifacts
         run: |
           npm run build:prod:zip:chrome
@@ -32,22 +32,23 @@ jobs:
         run: sha256sum artifacts/*/*
         if: startsWith(github.ref, 'refs/tags/v')
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           name: artifacts
           path: artifacts/
+          if-no-files-found: 'error'
           retention-days: 1
   release:
     name: Release on GitHub
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [build]
     if: startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: write
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: artifacts
           path: artifacts/
