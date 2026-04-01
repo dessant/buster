@@ -1,6 +1,6 @@
 <template>
-  <vn-app v-if="dataLoaded">
-    <div class="section">
+  <vn-app v-if="dataLoaded" :class="appClasses">
+    <div class="section-services">
       <div class="section-title" v-once>
         {{ getText('optionSectionTitle_services') }}
       </div>
@@ -143,7 +143,7 @@
       </div>
     </div>
 
-    <div class="section section-client">
+    <div class="section-client">
       <div class="section-title" v-once>
         {{ getText('optionSectionTitle_client') }}
       </div>
@@ -218,7 +218,7 @@
       </div>
     </div>
 
-    <div class="section">
+    <div class="section-misc">
       <div class="section-title" v-once>
         {{ getText('optionSectionTitle_misc') }}
       </div>
@@ -430,7 +430,7 @@ export default {
         getText('extensionName')
       ]);
 
-      this.sponsorsEnabled = !!this.sponsors.length;
+      this.sponsorsEnabled = !!this.sponsors.length || enableContributions;
 
       this.theme = await getAppTheme(options.appTheme);
       document.addEventListener('themeChange', ev => {
@@ -567,20 +567,6 @@ export default {
   &.text-field {
     height: 56px;
   }
-
-  &.sponsor-logo,
-  &.sponsor-logo a,
-  &.sponsor-logo img {
-    height: 42px;
-  }
-
-  & .contribute-button {
-    @include vueton.theme-prop(color, primary);
-
-    & .vn-icon {
-      @include vueton.theme-prop(background-color, cta);
-    }
-  }
 }
 
 .text-field .v-input__control {
@@ -653,6 +639,52 @@ export default {
 
   & .v-btn__content {
     @include vueton.theme-prop(color, on-primary);
+  }
+}
+
+.section-sponsors {
+  & .sponsor-logo,
+  & .sponsor-logo a,
+  & .sponsor-logo img {
+    height: 42px;
+  }
+}
+
+.contribute-button {
+  @include vueton.theme-prop(color, primary);
+
+  & .vn-icon {
+    @include vueton.theme-prop(background-color, cta);
+  }
+}
+
+@media (min-width: 768px) {
+  .show-sponsors {
+    & .v-application__wrap {
+      grid-template-columns: minmax(280px, max-content) max-content;
+      grid-template-rows: min-content min-content 1fr;
+      grid-template-areas:
+        'services sponsors'
+        'client sponsors'
+        'misc sponsors';
+      justify-content: center;
+    }
+
+    .section-services {
+      grid-area: services;
+    }
+
+    .section-client {
+      grid-area: client;
+    }
+
+    .section-misc {
+      grid-area: misc;
+    }
+
+    .section-sponsors {
+      grid-area: sponsors;
+    }
   }
 }
 </style>
