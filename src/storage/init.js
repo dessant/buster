@@ -5,17 +5,12 @@ import {isStorageArea} from './storage';
 async function initStorage({area = 'local', data = null, silent = false} = {}) {
   const context = {
     getAvailableRevisions: async ({area} = {}) =>
-      (
-        await import(/* webpackMode: "eager" */ 'storage/config.json', {
-          with: {type: 'json'}
-        })
-      ).revisions[area],
+      (await import('storage/config.json', {with: {type: 'json'}})).default
+        .revisions[area],
     getCurrentRevision: async ({area} = {}) =>
       (await browser.storage[area].get('storageVersion')).storageVersion,
     getRevision: async ({area, revision} = {}) =>
-      import(
-        /* webpackMode: "eager" */ `storage/revisions/${area}/${revision}.js`
-      )
+      import(`storage/revisions/${area}/${revision}.js`)
   };
 
   if (area === 'local') {
