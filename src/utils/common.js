@@ -229,6 +229,10 @@ async function getPlatform() {
     os = 'windows';
   } else if (os === 'mac') {
     os = 'macos';
+  } else if (os === 'cros') {
+    os = 'chromeos';
+  } else if (os.includes('bsd')) {
+    os = 'linux';
   }
 
   if (['x86-32', 'i386'].includes(arch)) {
@@ -242,20 +246,22 @@ async function getPlatform() {
   const isWindows = os === 'windows';
   const isMacos = os === 'macos';
   const isLinux = os === 'linux';
+  const isChromeos = os === 'chromeos';
   const isAndroid = os === 'android';
   const isIos = os === 'ios';
   const isIpados = os === 'ipados';
+  const isVisionos = os === 'visionos';
 
   const isMobile = ['android', 'ios', 'ipados'].includes(os);
 
-  const isChrome = targetEnv === 'chrome';
+  const isFirefox = targetEnv === 'firefox';
   const isEdge =
     ['chrome', 'edge'].includes(targetEnv) &&
     /\sedg(?:e|a|ios)?\//i.test(navigator.userAgent);
-  const isFirefox = targetEnv === 'firefox';
   const isOpera =
     ['chrome', 'opera'].includes(targetEnv) &&
     /\sopr\//i.test(navigator.userAgent);
+  const isChrome = targetEnv === 'chrome' && !isEdge && !isOpera;
   const isSafari = targetEnv === 'safari';
   const isSamsung = targetEnv === 'samsung';
 
@@ -266,9 +272,11 @@ async function getPlatform() {
     isWindows,
     isMacos,
     isLinux,
+    isChromeos,
     isAndroid,
     isIos,
     isIpados,
+    isVisionos,
     isMobile,
     isChrome,
     isEdge,
@@ -280,8 +288,7 @@ async function getPlatform() {
 }
 
 async function isAndroid() {
-  const {os} = await getPlatform();
-  return os === 'android';
+  return (await getPlatform()).isAndroid;
 }
 
 function getDarkColorSchemeQuery() {
@@ -297,11 +304,9 @@ function getDayPrecisionEpoch(epoch) {
 }
 
 function isBackgroundPageContext() {
-  const backgroundUrl = mv3
-    ? browser.runtime.getURL('/src/background/script.js')
-    : browser.runtime.getURL('/src/background/index.html');
-
-  return self.location.href === backgroundUrl;
+  return self.location.href.startsWith(
+    browser.runtime.getURL('/src/background/')
+  );
 }
 
 function getExtensionDomain() {
@@ -534,11 +539,21 @@ function sendOffscreenMessage(message) {
   });
 }
 
-function runOnce(name, func) {
-  name = `${name}Run`;
+function getStore(name, {content = null} = {}) {
+  name = `${name}Store`;
 
   if (!self[name]) {
-    self[name] = true;
+    self[name] = content || {};
+  }
+
+  return self[name];
+}
+
+function runOnce(name, func) {
+  const store = getStore('run');
+
+  if (!store[name]) {
+    store[name] = true;
 
     if (!func) {
       return true;
@@ -580,6 +595,7 @@ export {
   prepareAudio,
   setupOffscreenDocument,
   sendOffscreenMessage,
+  getStore,
   runOnce,
   sleep
 };
