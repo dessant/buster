@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.1.1](https://github.com/dessant/buster/compare/v3.1.0...v3.1.1) (2026-04-01)
+
+
+### Bug Fixes
+
+* improve platform and context detection ([ade5f12](https://github.com/dessant/buster/commit/ade5f12971d0f7a7f9aab9c324bec3af3019e65d))
+* migrate package to ES module ([818c208](https://github.com/dessant/buster/commit/818c208181ca1a9cd8d7a27ff0fc79ee27bedfee))
+
 ## [3.1.0](https://github.com/dessant/buster/compare/v3.0.0...v3.1.0) (2024-06-04)
 
 
