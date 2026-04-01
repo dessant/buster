@@ -5,7 +5,7 @@ import {
   findNode,
   getRandomFloat,
   sleep,
-  getBrowser
+  getBrowserVersion
 } from 'utils/common';
 import {targetEnv, clientAppVersion} from 'utils/config';
 
@@ -181,10 +181,7 @@ function main() {
     const scale = window.devicePixelRatio;
 
     let evScreenPropScale = osScale;
-    if (
-      targetEnv === 'firefox' &&
-      parseInt((await getBrowser()).version.split('.')[0], 10) >= 99
-    ) {
+    if (targetEnv === 'firefox' && (await getBrowserVersion()) >= 99) {
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1753836
 
       evScreenPropScale = scale;

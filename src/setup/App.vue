@@ -66,7 +66,7 @@
 import {App, Button, TextField} from 'vueton';
 
 import {pingClientApp} from 'utils/app';
-import {getText} from 'utils/common';
+import {getText, getBrowser} from 'utils/common';
 
 export default {
   components: {
@@ -189,7 +189,7 @@ export default {
   },
 
   created: async function () {
-    this.browser = (await browser.runtime.sendMessage({id: 'getBrowser'})).name;
+    this.browser = (await getBrowser()).name;
 
     await this.setLocation();
 

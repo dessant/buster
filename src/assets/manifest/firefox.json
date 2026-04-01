@@ -21,7 +21,8 @@
     "webRequestBlocking",
     "webNavigation",
     "nativeMessaging",
-    "<all_urls>"
+    "<all_urls>",
+    "scripting"
   ],
 
   "content_security_policy": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data:; connect-src *; object-src 'none'; frame-ancestors http://127.0.0.1:*;",

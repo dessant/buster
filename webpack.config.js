@@ -25,7 +25,7 @@ export default async function (env, argv) {
 
   const provideExtApi = !['firefox', 'safari'].includes(targetEnv);
 
-  const provideModules = {Buffer: ['buffer', 'Buffer']};
+  const provideModules = {};
   if (provideExtApi) {
     provideModules.browser = 'webextension-polyfill';
   }

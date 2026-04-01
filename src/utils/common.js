@@ -17,9 +17,13 @@ function insertCSS({
   origin = 'USER'
 }) {
   if (mv3) {
-    const params = {target: {tabId, allFrames}};
+    const params = {target: {tabId}};
 
-    if (!allFrames) {
+    // Safari 17: allFrames and frameIds cannot both be specified,
+    // fixed in Safari 18.
+    if (allFrames) {
+      params.target.allFrames = true;
+    } else {
       params.target.frameIds = frameIds;
     }
 
@@ -60,10 +64,14 @@ async function executeScript({
 
   code = ''
 }) {
-  if (mv3) {
-    const params = {target: {tabId, allFrames}, world};
+  if (mv3 || (targetEnv === 'firefox' && (await getBrowserVersion()) >= 128)) {
+    const params = {target: {tabId}, world};
 
-    if (!allFrames) {
+    // Safari 17: allFrames and frameIds cannot both be specified,
+    // fixed in Safari 18.
+    if (allFrames) {
+      params.target.allFrames = true;
+    } else {
       params.target.frameIds = frameIds;
     }
 
@@ -287,6 +295,29 @@ async function getPlatform() {
   };
 }
 
+async function getBrowser() {
+  if (!isBackgroundPageContext()) {
+    return browser.runtime.sendMessage({id: 'getBrowser'});
+  }
+
+  let name, version;
+  try {
+    ({name, version} = await browser.runtime.getBrowserInfo());
+  } catch (err) {}
+
+  if (!name) {
+    ({name, version} = Bowser.getParser(self.navigator.userAgent).getBrowser());
+  }
+
+  return {name: name.toLowerCase(), version: version.toLowerCase()};
+}
+
+async function getBrowserVersion() {
+  const {version} = await getBrowser();
+
+  return parseInt(version.split('.')[0], 10);
+}
+
 async function isAndroid() {
   return (await getPlatform()).isAndroid;
 }
@@ -423,21 +454,6 @@ function findNode(
       }
     }, timeout);
   });
-}
-
-async function getBrowser() {
-  let name, version;
-  try {
-    ({name, version} = await browser.runtime.getBrowserInfo());
-  } catch (err) {}
-
-  if (!name) {
-    ({name, version} = Bowser.getParser(self.navigator.userAgent).getBrowser());
-  }
-
-  name = name.toLowerCase();
-
-  return {name, version};
 }
 
 async function normalizeAudio(buffer) {
@@ -577,6 +593,8 @@ export {
   isValidTab,
   getPlatformInfo,
   getPlatform,
+  getBrowser,
+  getBrowserVersion,
   isAndroid,
   getDarkColorSchemeQuery,
   getDayPrecisionEpoch,
@@ -589,7 +607,6 @@ export {
   querySelectorXpath,
   nodeQuerySelector,
   findNode,
-  getBrowser,
   normalizeAudio,
   sliceAudio,
   prepareAudio,
