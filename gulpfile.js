@@ -87,8 +87,7 @@ async function images(done) {
       .toFile(path.join(distDir, `src/assets/icons/app/icon-${size}.png`));
   }
 
-  // Chrome Web Store does not correctly display optimized icons
-  if (isProduction && targetEnv !== 'chrome') {
+  if (isProduction) {
     await new Promise(resolve => {
       src(path.join(distDir, 'src/assets/icons/app/*.png'), {
         base: '.',
