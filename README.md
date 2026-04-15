@@ -26,12 +26,13 @@
 
 </br>
 <div align="center">
-  <a href="https://capmonster.cloud/en?utm_source=buster">
+  <a href="https://capmonster.cloud/en/browser-extension-captcha?utm_source=buster">
     <div>
       <img height="58" src="https://i.imgur.com/2raVPL2.png" alt="CapMonster Cloud">
       <div>
         </br>
-        <sup>Automate CAPTCHA bypass with CapMonster AI</sup>
+        <sup>Automate CAPTCHA bypass with CapMonster AI.</br>
+          Download the extension for Chrome and Firefox.</sup>
       </div>
     </div>
   </a>
