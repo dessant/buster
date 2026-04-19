@@ -250,16 +250,6 @@
             v-model="options.showContribPage"
           ></vn-switch>
         </div>
-        <div class="option button" v-if="enableContributions">
-          <vn-button
-            class="contribute-button vn-icon--start"
-            @click="showContribute"
-            ><vn-icon
-              src="/src/assets/icons/misc/favorite-filled.svg"
-            ></vn-icon>
-            {{ getText('buttonLabel_contribute') }}
-          </vn-button>
-        </div>
       </div>
     </div>
 
@@ -274,12 +264,22 @@
           :key="index"
         >
           <a
-            :href="getSponsorDomain(item)"
+            :href="getSponsorUrl(item)"
             @click.prevent="showSponsor(item)"
             @keyup.enter.prevent="showSponsor(item)"
           >
             <img :src="getSponsorLogo(item, {variant: theme})" />
           </a>
+        </div>
+        <div class="option button" v-if="enableContributions">
+          <vn-button
+            class="contribute-button vn-icon--start"
+            @click="showContribute"
+            ><vn-icon
+              src="/src/assets/icons/misc/favorite-filled.svg"
+            ></vn-icon>
+            {{ getText('buttonLabel_contribute') }}
+          </vn-button>
         </div>
       </div>
     </div>
@@ -297,7 +297,7 @@ import {
   pingClientApp,
   showSponsorPage,
   getAppTheme,
-  getSponsorDomain,
+  getSponsorUrl,
   getSponsorLogo
 } from 'utils/app';
 import {getText} from 'utils/common';
@@ -324,7 +324,7 @@ export default {
     return {
       dataLoaded: false,
 
-      getSponsorDomain,
+      getSponsorUrl,
       getSponsorLogo,
 
       listItems: {
@@ -648,13 +648,21 @@ export default {
   & .sponsor-logo img {
     height: 42px;
   }
-}
 
-.contribute-button {
-  @include vueton.theme-prop(color, primary);
+  & .sponsor-logo img {
+    cursor: pointer;
+  }
 
-  & .vn-icon {
-    @include vueton.theme-prop(background-color, cta);
+  & .contribute-button {
+    @include vueton.theme-prop(color, primary);
+
+    & .vn-icon {
+      @include vueton.theme-prop(background-color, cta);
+    }
+  }
+
+  & .button:not(:only-child) {
+    margin-top: 12px;
   }
 }
 

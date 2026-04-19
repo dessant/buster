@@ -387,7 +387,7 @@ const sponsorLogoVariants = {};
 const sponsors = ['capmonster'];
 
 const sponsorSites = {
-  capmonster: 'https://capmonster.cloud/en?utm_source=extbuster'
+  capmonster: 'https://go.vapps.dev/v2/sponsor/capmonster'
 };
 
 export {

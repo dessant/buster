@@ -340,7 +340,7 @@ async function showSponsorPage({
   getTab = false,
   activeTab = null
 } = {}) {
-  return showPage({url: sponsorSites[name], getTab, activeTab});
+  return showPage({url: getSponsorUrl(name), getTab, activeTab});
 }
 
 async function setAppVersion() {
@@ -435,8 +435,8 @@ async function getStartupState({event = ''} = {}) {
   return startup;
 }
 
-function getSponsorDomain(name) {
-  return new URL(sponsorSites[name]).origin;
+function getSponsorUrl(name) {
+  return sponsorSites[name];
 }
 
 function getSponsorLogo(name, {variant = ''} = {}) {
@@ -533,7 +533,7 @@ export {
   isSessionStartup,
   isStartup,
   getStartupState,
-  getSponsorDomain,
+  getSponsorUrl,
   getSponsorLogo,
   sendNativeMessage,
   pingClientApp,

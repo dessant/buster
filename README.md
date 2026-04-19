@@ -26,7 +26,7 @@
 
 </br>
 <div align="center">
-  <a href="https://capmonster.cloud/en/browser-extension-captcha?utm_source=buster">
+  <a href="https://go.vapps.dev/v1/sponsor/capmonster">
     <div>
       <img height="58" src="https://i.imgur.com/2raVPL2.png" alt="CapMonster Cloud">
       <div>
@@ -44,9 +44,9 @@
 The continued development of Buster is made possible
 thanks to the support of awesome backers. If you'd like to join them,
 please consider contributing with
-[Patreon](https://armin.dev/go/patreon?pr=buster&src=repo),
-[PayPal](https://armin.dev/go/paypal?pr=buster&src=repo) or
-[Bitcoin](https://armin.dev/go/bitcoin?pr=buster&src=repo).
+[Patreon](https://go.vapps.dev/patreon?pr=buster&src=repo),
+[PayPal](https://go.vapps.dev/paypal?pr=buster&src=repo) or
+[Bitcoin](https://go.vapps.dev/bitcoin?pr=buster&src=repo).
 
 ## Description
 
