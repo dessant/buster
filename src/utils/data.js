@@ -389,13 +389,15 @@ const microsoftSpeechApiRegions = [
 ];
 
 const sponsorLogoVariants = {
-  lenso: ['dark']
+  lenso: ['dark'],
+  swiftproxy: ['dark']
 };
 
-const sponsors = ['lenso'];
+const sponsors = ['lenso', 'swiftproxy'];
 
 const sponsorSites = {
-  lenso: 'https://go.vapps.dev/s2/sponsor/lenso'
+  lenso: 'https://go.vapps.dev/s2/sponsor/lenso',
+  swiftproxy: 'https://go.vapps.dev/s2/sponsor/swiftproxy'
 };
 
 export {

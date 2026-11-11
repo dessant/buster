@@ -26,6 +26,23 @@
 
 </br>
 <div align="center">
+  <a href="https://go.vapps.dev/s1/sponsor/swiftproxy">
+    <div>
+      <picture>
+        <source srcset="https://i.imgur.com/d0Z02pg.png" media="(prefers-color-scheme: dark)">
+        <img height="58" src="https://i.imgur.com/OYl9a0x.png" alt="Swiftproxy"></picture>
+      <div>
+        </br>
+        <sup>Swiftproxy - Premium global residential proxy network.</br>
+          Reliable solution for web scraping and browser automation.</sup>
+      </div>
+    </div>
+  </a>
+</div>
+</br>
+
+</br>
+<div align="center">
   <a href="https://go.vapps.dev/s1/sponsor/lenso">
     <div>
       <picture>
