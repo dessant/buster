@@ -27,6 +27,8 @@ jobs:
           npm run build:prod:zip:edge
           npm run build:prod:zip:firefox
           npm run build:prod:zip:opera
+        env:
+          BUSTER_SECRETS: ${{ secrets.BUSTER_SECRETS }}
       - name: Create attestation
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         if: startsWith(github.ref, 'refs/tags/v')
