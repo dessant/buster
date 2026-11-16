@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [3.4.2](https://github.com/dessant/buster/compare/v3.4.1...v3.4.2) (2026-11-16)
+
+### Bug Fixes
+
+* add missing secrets to extension package ([c7378c1](https://github.com/dessant/buster/commit/c7378c1093e4f38b05289f2f1b6fbe1efa6a0eee))
+
 ## [3.4.1](https://github.com/dessant/buster/compare/v3.4.0...v3.4.1) (2026-11-15)
 
 ### Bug Fixes
